@@ -1,0 +1,1823 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Engineer Journey</title>
+<meta name="description" content="Track your 26-week roadmap from SAP to AI Engineer.">
+<meta name="theme-color" content="#EEF1F5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E1525" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='none' stroke='%2316213A' stroke-width='4'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23E2A21B'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+:root{
+  --paper:#EEF1F5; --surface:#FFFFFF; --surface-2:#F6F8FA;
+  --ink:#16213A; --ink-2:#4A5672; --ink-3:#7B869C;
+  --line:#D6DCE5; --line-2:#E4E8EE;
+  --accent:#E2A21B; --accent-ink:#875800; --accent-soft:#FCEFCB;
+  --check:#16213A; --check-mark:#FFFFFF;
+  --heat-0:#DFE4EC; --heat-1:rgba(22,33,58,.22); --heat-2:rgba(22,33,58,.42); --heat-3:rgba(22,33,58,.66); --heat-4:rgba(22,33,58,.92);
+  --t-dsa:#5560D8; --t-swe:#1D8677; --t-cs:#8A57C4; --t-ai:#C98500; --t-proj:#C23B6E; --t-career:#3D7A39;
+  --ok:#1D8677; --warn:#C23B6E;
+  --font:"Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --paper:#0E1525; --surface:#151F33; --surface-2:#1A263D;
+    --ink:#E6EBF4; --ink-2:#A8B3C8; --ink-3:#7E8AA2;
+    --line:#28344D; --line-2:#212C42;
+    --accent:#F0B43C; --accent-ink:#F0B43C; --accent-soft:#3A2F14;
+    --check:#E6EBF4; --check-mark:#0E1525;
+    --heat-0:#1C2740; --heat-1:rgba(230,235,244,.2); --heat-2:rgba(230,235,244,.4); --heat-3:rgba(230,235,244,.64); --heat-4:rgba(230,235,244,.9);
+    --t-dsa:#8E97F2; --t-swe:#4CC0AE; --t-cs:#B78FEC; --t-ai:#F0B43C; --t-proj:#EE7DA6; --t-career:#80C47B;
+    --ok:#4CC0AE; --warn:#EE7DA6;
+    color-scheme:dark;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.55}
+a{color:inherit}
+p{margin:0}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:-999px;top:8px;background:var(--ink);color:var(--paper);padding:8px 12px;border-radius:8px;z-index:20}
+.skip:focus{left:12px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* Header */
+.top{padding-top:26px}
+.top-row{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.brand{font-size:22px;font-weight:700;letter-spacing:-.01em;line-height:1.2}
+.status{font-size:15px;color:var(--ink-2);margin-top:3px}
+.sync{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--ink-2);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 13px;text-decoration:none;white-space:nowrap}
+.sync:hover{border-color:var(--ink-3)}
+.sync .dot{width:8px;height:8px;border-radius:50%;background:var(--ink-3)}
+.sync[data-s="synced"] .dot{background:var(--ok)}
+.sync[data-s="syncing"] .dot,.sync[data-s="connecting"] .dot{background:var(--accent);animation:blink 1s ease-in-out infinite}
+.sync[data-s="error"] .dot,.sync[data-s="offline"] .dot{background:var(--warn)}
+.sync[data-s="preview"] .dot{background:var(--accent)}
+@keyframes blink{50%{opacity:.3}}
+.banner{margin-top:16px;background:var(--accent-soft);border-radius:10px;padding:10px 14px;font-size:14px}
+.tabs{display:flex;gap:2px;margin-top:20px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs a{padding:10px 12px;text-decoration:none;color:var(--ink-2);font-size:15px;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-1px}
+.tabs a:hover{color:var(--ink)}
+.tabs a[aria-current="page"]{color:var(--ink);font-weight:700;border-bottom-color:var(--accent)}
+main.wrap{padding:30px 24px 72px;outline:none}
+
+/* Type */
+h1,h2,h3{margin:0;line-height:1.2}
+.week-head{font-size:clamp(28px,4.2vw,40px);letter-spacing:-.02em;margin:30px 0 8px;max-width:26ch}
+.page-h{font-size:clamp(26px,3.6vw,34px);letter-spacing:-.015em;margin:0 0 8px}
+.week-sub{color:var(--ink-2);margin:0 0 14px;max-width:70ch}
+h2{font-size:18px;font-weight:700;margin-bottom:12px}
+.muted{color:var(--ink-2)}
+.small{font-size:14px}
+.empty{color:var(--ink-2);padding:18px 0;border-top:1px solid var(--line)}
+
+/* Journey line */
+.journey{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 8px;scrollbar-width:thin}
+.mg{flex:var(--w) 1 0;min-width:calc(var(--w) * 27px + 16px)}
+.mg-head{font-size:13px;color:var(--ink-3);line-height:1.3;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mg-head b{display:block;color:var(--ink-2);font-weight:700}
+.mg-track{display:flex;align-items:flex-start;position:relative}
+.mg-track::before{content:"";position:absolute;left:12px;right:12px;top:16px;height:2px;background:var(--line)}
+.node{flex:1;min-width:27px;display:grid;grid-template-rows:34px auto;justify-items:center;align-items:center;position:relative;z-index:1;text-decoration:none;border-radius:8px;padding-bottom:2px}
+.node i{display:block;width:16px;height:16px;border-radius:50%;border:2px solid var(--ink-3);background:conic-gradient(var(--ink) calc(var(--p) * 1%), var(--surface) 0)}
+.node.done i{background:var(--ink);border-color:var(--ink)}
+.node.current i{width:22px;height:22px;box-shadow:0 0 0 3px var(--paper),0 0 0 6px var(--accent)}
+.node:hover i{border-color:var(--ink)}
+.node small{font-size:11px;line-height:1;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.node.current small{color:var(--accent-ink);font-weight:700}
+.node.pop i{animation:pop .7s ease}
+@keyframes pop{0%{transform:scale(1)}45%{transform:scale(1.45)}100%{transform:scale(1)}}
+.flag{flex:none;align-self:flex-start;width:13px;height:13px;transform:rotate(45deg);border:2px solid var(--ink-3);background:var(--surface);margin:10px 4px 0 6px;position:relative;z-index:1}
+.flag.done{background:var(--accent);border-color:var(--accent)}
+.here{font-size:14px;color:var(--ink-2);margin-top:6px}
+.here b{color:var(--accent-ink)}
+
+/* Progress meter */
+.meter{height:8px;background:var(--line-2);border-radius:999px;overflow:hidden}
+.meter>span{display:block;height:100%;background:var(--ink);border-radius:inherit;transition:width .45s ease}
+.meter.thin{height:6px}
+
+/* Layout */
+.dash{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(280px,1fr);gap:44px;margin-top:30px;align-items:start}
+.lower{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(280px,1fr);gap:44px;margin-top:48px;align-items:start}
+.stack>*+*{margin-top:28px}
+@media (max-width:880px){.dash,.lower{grid-template-columns:1fr;gap:32px}}
+
+/* Tasks */
+.tasks{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.task{padding:14px 0;border-bottom:1px solid var(--line)}
+.task-main{display:flex;gap:12px;align-items:flex-start;cursor:pointer;position:relative}
+.task-chk{position:absolute;left:0;top:2px;width:20px;height:20px;margin:0;opacity:0;cursor:pointer}
+.box{flex:none;width:20px;height:20px;border:2px solid var(--ink-3);border-radius:6px;margin-top:2px;display:grid;place-items:center;transition:background-color .15s,border-color .15s}
+.task-main:hover .box{border-color:var(--ink)}
+.task-chk:checked+.box{background:var(--check);border-color:var(--check)}
+.task-chk:checked+.box::after{content:"";width:10px;height:5px;border-left:2px solid var(--check-mark);border-bottom:2px solid var(--check-mark);transform:translateY(-1px) rotate(-45deg)}
+.task-chk:focus-visible+.box{outline:2px solid var(--accent);outline-offset:2px}
+.task-text{display:block;min-width:0}
+.task-title{display:block}
+.is-done .task-title{color:var(--ink-2)}
+.task-meta{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px;color:var(--ink-3);margin-top:3px}
+.track{display:inline-flex;align-items:center;gap:6px}
+.track::before,.dot{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--tc)}
+.t-dsa{--tc:var(--t-dsa)}.t-swe{--tc:var(--t-swe)}.t-cs{--tc:var(--t-cs)}.t-ai{--tc:var(--t-ai)}.t-proj{--tc:var(--t-proj)}.t-career{--tc:var(--t-career)}
+.opt{border:1px solid var(--line);border-radius:999px;padding:0 8px;line-height:1.5}
+.tip{display:block;font-size:14px;color:var(--ink-2);margin-top:5px}
+.res{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0 32px}
+.chip{display:inline-flex;align-items:baseline;gap:6px;font-size:13.5px;line-height:1.35;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:5px 11px;max-width:100%}
+.chip:hover{border-color:var(--ink-3)}
+.chip .kind{font-size:12px;color:var(--ink-3);flex:none}
+.group+.group{margin-top:30px}
+.group-h{display:flex;align-items:center;gap:8px;font-size:15px;color:var(--ink-2);margin-bottom:8px}
+.more{display:inline-block;margin-top:16px;font-size:15px}
+
+/* Panel and stats */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
+.panel h2{margin-bottom:6px}
+.panel .muted{font-size:14px;margin-bottom:14px}
+.stats{margin-top:20px}
+.stat{display:grid;grid-template-columns:1fr auto;gap:2px 12px;align-items:baseline;padding:12px 0;border-top:1px solid var(--line-2)}
+.stat span{color:var(--ink-2);font-size:14.5px}
+.stat b{font-size:20px;font-variant-numeric:tabular-nums}
+.stat small{grid-column:1/-1;color:var(--ink-3);font-size:13px}
+.stat .meter{grid-column:1/-1;margin-top:6px}
+.nudge{font-size:15px;color:var(--ink-2);border-left:3px solid var(--accent);padding:2px 0 2px 12px;margin-top:18px}
+
+/* Forms */
+.field{display:grid;gap:6px;margin-bottom:14px;font-size:14px;color:var(--ink-2)}
+input[type="text"],input[type="number"],input[type="date"],input[type="email"],input[type="password"],input[type="url"],input[type="search"],textarea{font:inherit;font-size:16px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:9px 11px;width:100%}
+textarea{resize:vertical;line-height:1.5}
+input:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
+.quick{display:flex;flex-wrap:wrap;gap:6px}
+.q,.filter{font:inherit;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:4px 12px;cursor:pointer}
+.q:hover,.filter:hover{border-color:var(--ink-3)}
+.q.on,.filter.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.check-field{display:flex;gap:10px;align-items:center;font-size:15px;margin:2px 0 16px;cursor:pointer}
+.check-field input{width:18px;height:18px;accent-color:var(--ink)}
+.btn{display:inline-block;font:inherit;font-size:15px;font-weight:700;text-decoration:none;border-radius:10px;padding:9px 16px;border:1px solid var(--ink);cursor:pointer;background:transparent;color:var(--ink);line-height:1.3}
+.btn.primary{background:var(--ink);color:var(--paper)}
+.btn.quiet{border-color:var(--line);font-weight:400}
+.btn.quiet:hover{border-color:var(--ink-3)}
+.btn.danger{border-color:var(--warn);color:var(--warn);font-weight:400}
+.btn.sm{font-size:14px;padding:6px 11px}
+.btn[aria-disabled="true"]{opacity:.4;pointer-events:none}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.linkbtn{font:inherit;background:none;border:0;padding:0;color:var(--ink);text-decoration:underline;cursor:pointer}
+.err{color:var(--warn)}
+
+/* Decisions note */
+.note-card{border:1.5px dashed var(--ink-3);border-radius:12px;padding:18px 20px}
+.note-card dl{margin:12px 0 0;display:grid;gap:10px}
+.note-card dt{font-size:13px;color:var(--ink-3)}
+.note-card dd{margin:0;font-size:15px}
+.note-card p{font-size:14px;color:var(--ink-2)}
+
+/* Heatmap */
+.heat{display:flex;gap:3px;overflow-x:auto;padding:3px 3px 6px}
+.hcol{display:grid;grid-template-rows:repeat(7,13px);gap:3px}
+.hc{width:13px;height:13px;border-radius:3px;background:var(--heat-0)}
+.hc.l1{background:var(--heat-1)}.hc.l2{background:var(--heat-2)}.hc.l3{background:var(--heat-3)}.hc.l4{background:var(--heat-4)}
+.hc.future{opacity:.4}
+.hc.today{outline:2px solid var(--accent);outline-offset:1px}
+.legend{display:flex;align-items:center;gap:4px;font-size:13px;color:var(--ink-3);margin-top:10px}
+.legend .hc{display:inline-block}
+.legend .hc:first-of-type{margin-left:4px}
+.legend .end{margin-left:4px}
+
+/* Bar chart */
+.plot{position:relative;height:130px;display:flex;align-items:flex-end;gap:10px;border-bottom:1px solid var(--line)}
+.plot .tline{position:absolute;left:0;right:0;bottom:var(--t);border-top:2px dashed var(--accent);pointer-events:none}
+.bar{flex:1;max-width:38px;margin:0 auto;background:var(--ink);border-radius:4px 4px 0 0;min-height:2px}
+.bar.cur{background:var(--accent)}
+.xlab{display:flex;gap:10px;margin-top:6px}
+.xlab span{flex:1;text-align:center;font-size:12.5px;color:var(--ink-3)}
+.chart-note{font-size:13px;color:var(--ink-3);margin-top:8px}
+
+/* Roadmap */
+.rules{margin:24px 0 8px;padding:0 0 0 18px;color:var(--ink-2);max-width:72ch}
+.rules li+li{margin-top:4px}
+.month{padding:32px 0 8px;border-top:1px solid var(--line);margin-top:28px}
+.month-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.month-h h2{font-size:23px;letter-spacing:-.01em;margin:0}
+.goal{color:var(--ink-2);margin:6px 0 14px;max-width:70ch}
+.weeks{list-style:none;margin:18px 0 0;padding:0}
+.wk{display:grid;grid-template-columns:78px 1fr 54px;gap:12px;align-items:center;padding:11px 4px;border-bottom:1px solid var(--line-2);text-decoration:none}
+.wk:hover{background:var(--surface-2)}
+.wk .n{color:var(--ink-3);font-size:14px}
+.wk .c{text-align:right;color:var(--ink-2);font-size:14px;font-variant-numeric:tabular-nums}
+.wk.cur .n{color:var(--accent-ink);font-weight:700}
+.wk em{font-style:normal;color:var(--accent-ink);font-size:14px}
+.wk.full .c{color:var(--ink);font-weight:700}
+.cp-h{font-size:15px;color:var(--ink-2);margin:24px 0 8px}
+
+/* Week page */
+.week-nav{display:flex;flex-wrap:wrap;gap:8px}
+.week-log{font-size:14px;color:var(--ink-2);margin-top:16px}
+
+/* Log */
+.logs{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.log{display:grid;grid-template-columns:120px 1fr auto;gap:12px;padding:12px 0;border-bottom:1px solid var(--line-2);align-items:start}
+.log .d{font-weight:700;font-size:15px}
+.log .b{font-size:15px;color:var(--ink-2)}
+.log .n{display:block;color:var(--ink);margin-top:2px}
+.log .acts{display:flex;gap:6px}
+@media (max-width:560px){.log{grid-template-columns:1fr}.log .acts{justify-content:flex-start}}
+
+/* Resources */
+.search{max-width:420px;margin-top:16px}
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 8px}
+.res-group{margin-top:30px}
+.res-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.res-item{padding:12px 0;border-bottom:1px solid var(--line-2)}
+.res-item a{font-weight:700;text-decoration:none}
+.res-item a:hover{text-decoration:underline}
+.res-item p{font-size:14px;color:var(--ink-2);margin-top:2px}
+
+/* Settings */
+.settings{display:grid;gap:28px;max-width:760px;margin-top:22px}
+.steps{margin:4px 0 16px;padding-left:20px;color:var(--ink-2);font-size:15px}
+.steps li+li{margin-top:4px}
+code{font-size:.92em;background:var(--surface-2);border:1px solid var(--line-2);border-radius:5px;padding:0 5px}
+
+/* Login */
+body.locked .tabs,body.locked .sync{display:none}
+.login{max-width:460px;margin-top:12px}
+.login .panel{margin-top:8px}
+.login-links{display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin-top:18px;font-size:15px}
+.banner a{color:inherit;font-weight:700}
+
+/* Onboarding */
+.onboard{max-width:620px}
+.onboard .lead{font-size:18px;color:var(--ink-2);margin:0 0 24px;max-width:60ch}
+
+/* Toast */
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,16px);opacity:0;background:var(--ink);color:var(--paper);padding:11px 18px;border-radius:10px;font-size:15px;transition:opacity .25s,transform .25s;pointer-events:none;z-index:30;max-width:calc(100vw - 32px)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:560px){
+  .wrap{padding:0 16px} main.wrap{padding:24px 16px 64px}
+  .res{margin-left:0}
+  .wk{grid-template-columns:64px 1fr 44px}
+}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top wrap">
+  <div class="top-row">
+    <div>
+      <p class="brand">AI Engineer Journey</p>
+      <p class="status" id="status"></p>
+    </div>
+    <a class="sync" id="sync" href="#/settings" data-s="local"><span class="dot" aria-hidden="true"></span><span class="t">Saved on this device</span></a>
+  </div>
+  <div id="banner"></div>
+  <nav class="tabs" aria-label="Main">
+    <a href="#/" data-route="dashboard">Dashboard</a>
+    <a href="#/week" data-route="week">This week</a>
+    <a href="#/roadmap" data-route="roadmap">Roadmap</a>
+    <a href="#/log" data-route="log">Daily log</a>
+    <a href="#/resources" data-route="resources">Resources</a>
+    <a href="#/settings" data-route="settings">Settings</a>
+  </nav>
+</header>
+<main id="main" class="wrap" tabindex="-1"></main>
+<input type="file" id="import-file" accept="application/json,.json" hidden>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+/* =====================================================================
+   AI Engineer Journey: roadmap data
+   - Edit links in RES if one ever breaks.
+   - Keep task ids (like "w3-2") unchanged: your saved progress uses them.
+   - To add a task, append it to a week's list with a new id.
+   ===================================================================== */
+
+/* Optional: paste your Supabase project URL and anon (publishable) key here
+   so sync works on every device without typing them in Settings.
+   The anon key is designed to be public; Row Level Security protects your data. */
+const CLOUD_CONFIG = { url: "https://abcdefgh.supabase.co", key: "sb_publishable_0eSGb8VngklzP1xn379QeA_fz8KcozD" };
+
+const TOTAL_WEEKS = 32;
+
+const TRACKS = {
+  dsa:    { name: "DSA" },
+  swe:    { name: "Software engineering" },
+  cs:     { name: "CS fundamentals" },
+  ai:     { name: "AI engineering" },
+  proj:   { name: "Projects" },
+  career: { name: "Career" }
+};
+const TRACK_ORDER = ["dsa", "swe", "cs", "ai", "proj", "career"];
+
+const AREAS = [
+  { id: "dsa",    name: "DSA" },
+  { id: "swe",    name: "Python and backend" },
+  { id: "cs",     name: "CS fundamentals" },
+  { id: "sd",     name: "System design" },
+  { id: "ai",     name: "AI engineering" },
+  { id: "proj",   name: "Project tools" },
+  { id: "career", name: "Career and certifications" }
+];
+
+const R  = (t, u, k, a, s) => ({ t, u, k, a, s });
+const YT = q => "https://www.youtube.com/results?search_query=" + encodeURIComponent(q);
+
+const RES = {
+  /* DSA */
+  a2z:            R("Striver's A2Z DSA Sheet", "https://takeuforward.org/prep-hub/strivers-a2z-dsa-sheet", "Sheet", "dsa", "takeUforward"),
+  tuf_yt:         R("Striver's video explanations", "https://www.youtube.com/@takeUforward", "Video", "dsa", "takeUforward on YouTube"),
+  tuf_think:      R("How to think like a programmer", "http://takeuforward.org/blogs/data-structure-and-algorithm/how-to-think-like-a-programmer?sidebar=0", "Article", "dsa", "takeUforward"),
+  yt_striver_rec: R("Striver's recursion playlist", YT("striver recursion playlist"), "Video", "dsa", "YouTube search"),
+  yt_striver_graph: R("Striver's graph series", YT("striver graph series"), "Video", "dsa", "YouTube search"),
+  yt_striver_dp:  R("Striver's dynamic programming series", YT("striver dynamic programming playlist"), "Video", "dsa", "YouTube search"),
+  yt_fiset_graph: R("William Fiset's graph theory playlist", YT("william fiset graph theory playlist"), "Video", "dsa", "YouTube search"),
+  lft_cpp:        R("DSA in C/C++ (Tamil)", "https://www.youtube.com/playlist?list=PLYM2_EX_xVvVMXkQt4qqosJTplBq5v5oX", "Video", "dsa", "Logic First Tamil"),
+  lft_java:       R("DSA in Java (Tamil, for concepts)", "https://www.youtube.com/playlist?list=PLYM2_EX_xVvX7_AmNY-Deacp3rT3MIXnE", "Video", "dsa", "Logic First Tamil"),
+  cpp_stl:        R("C++ containers reference", "https://en.cppreference.com/w/cpp/container", "Docs", "dsa", "cppreference"),
+  bigo:           R("Big-O cheat sheet", "https://www.bigocheatsheet.com/", "Article", "dsa", "bigocheatsheet.com"),
+  lc:             R("LeetCode problem set", "https://leetcode.com/problemset/", "Practice", "dsa", "LeetCode"),
+  lc_contest:     R("LeetCode contests", "https://leetcode.com/contest/", "Practice", "dsa", "LeetCode"),
+  algomaster:     R("Interview strategy lessons", "https://algomaster.io/learn/dsa", "Article", "dsa", "AlgoMaster"),
+
+  /* Python and backend */
+  py_tut:         R("The Python tutorial", "https://docs.python.org/3/tutorial/", "Docs", "swe", "python.org"),
+  py_oop_yt:      R("Python OOP tutorials", YT("corey schafer python oop tutorial"), "Video", "swe", "Corey Schafer, YouTube search"),
+  realpy_oop:     R("Object-oriented programming in Python", "https://realpython.com/python3-object-oriented-programming/", "Article", "swe", "Real Python"),
+  realpy_solid:   R("SOLID principles in Python", "https://realpython.com/solid-principles-python/", "Article", "swe", "Real Python"),
+  realpy_decor:   R("Primer on Python decorators", "https://realpython.com/primer-on-python-decorators/", "Article", "swe", "Real Python"),
+  realpy_gen:     R("Introduction to Python generators", "https://realpython.com/introduction-to-python-generators/", "Article", "swe", "Real Python"),
+  py_typing:      R("Type hints (typing module)", "https://docs.python.org/3/library/typing.html", "Docs", "swe", "python.org"),
+  py_logging:     R("Logging HOWTO", "https://docs.python.org/3/howto/logging.html", "Docs", "swe", "python.org"),
+  py_venv:        R("Virtual environments (venv)", "https://docs.python.org/3/library/venv.html", "Docs", "swe", "python.org"),
+  missing:        R("The Missing Semester (shell, Git, tools)", "https://missing.csail.mit.edu/", "Course", "swe", "MIT"),
+  learngit:       R("Learn Git Branching (interactive)", "https://learngitbranching.js.org/", "Practice", "swe", "learngitbranching.js.org"),
+  progit:         R("Pro Git book", "https://git-scm.com/book/en/v2", "Book", "swe", "git-scm.com"),
+  mdn_http:       R("HTTP guide", "https://developer.mozilla.org/en-US/docs/Web/HTTP", "Docs", "swe", "MDN"),
+  rest_guide:     R("Web API design best practices", "https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design", "Article", "swe", "Microsoft Learn"),
+  fastapi_tut:    R("FastAPI tutorial", "https://fastapi.tiangolo.com/tutorial/", "Docs", "swe", "FastAPI"),
+  fastapi_bigger: R("Bigger applications, multiple files", "https://fastapi.tiangolo.com/tutorial/bigger-applications/", "Docs", "swe", "FastAPI"),
+  fastapi_sql:    R("SQL databases in FastAPI", "https://fastapi.tiangolo.com/tutorial/sql-databases/", "Docs", "swe", "FastAPI"),
+  fastapi_sec:    R("OAuth2 with password hashing and JWT", "https://fastapi.tiangolo.com/tutorial/security/oauth2-jwt/", "Docs", "swe", "FastAPI"),
+  fastapi_test:   R("Testing FastAPI apps", "https://fastapi.tiangolo.com/tutorial/testing/", "Docs", "swe", "FastAPI"),
+  fastapi_async:  R("Concurrency and async/await", "https://fastapi.tiangolo.com/async/", "Docs", "swe", "FastAPI"),
+  fastapi_bg:     R("Background tasks", "https://fastapi.tiangolo.com/tutorial/background-tasks/", "Docs", "swe", "FastAPI"),
+  pydantic:       R("Pydantic documentation", "https://docs.pydantic.dev/latest/", "Docs", "swe", "Pydantic"),
+  pg_tut:         R("PostgreSQL tutorial", "https://www.postgresql.org/docs/current/tutorial.html", "Docs", "swe", "postgresql.org"),
+  sqla_tut:       R("SQLAlchemy unified tutorial", "https://docs.sqlalchemy.org/en/20/tutorial/", "Docs", "swe", "SQLAlchemy"),
+  alembic:        R("Alembic tutorial", "https://alembic.sqlalchemy.org/en/latest/tutorial.html", "Docs", "swe", "Alembic"),
+  pytest:         R("Get started with pytest", "https://docs.pytest.org/en/stable/getting-started.html", "Docs", "swe", "pytest"),
+  docker_start:   R("Docker get started", "https://docs.docker.com/get-started/", "Docs", "swe", "Docker"),
+  compose:        R("Docker Compose", "https://docs.docker.com/compose/", "Docs", "swe", "Docker"),
+  twelve:         R("The Twelve-Factor App", "https://12factor.net/", "Article", "swe", "12factor.net"),
+  redis:          R("Redis documentation", "https://redis.io/docs/latest/", "Docs", "swe", "Redis"),
+  rq:             R("RQ, a simple Python job queue", "https://python-rq.org/", "Docs", "swe", "python-rq.org"),
+  gha:            R("GitHub Actions documentation", "https://docs.github.com/en/actions", "Docs", "swe", "GitHub"),
+  aws_free:       R("AWS Free Tier", "https://aws.amazon.com/free/", "Tool", "swe", "AWS"),
+  aws_sb:         R("AWS Skill Builder", "https://skillbuilder.aws/", "Course", "swe", "AWS"),
+  aws_saa_yt:     R("AWS Solutions Architect Associate full course", YT("freecodecamp aws certified solutions architect associate"), "Video", "swe", "freeCodeCamp, YouTube search"),
+  aws_ecs:        R("Amazon ECS documentation", "https://docs.aws.amazon.com/ecs/", "Docs", "swe", "AWS"),
+  render:         R("Render documentation", "https://render.com/docs", "Docs", "swe", "Render"),
+
+  /* CS fundamentals */
+  cip_os:         R("Operating Systems track (your CIP course)", "https://www.geeksforgeeks.org/batch/cip-1/track/placement100-OS/video/MTExOA%3D%3D", "Course", "cs", "GeeksforGeeks"),
+  cip_dbms:       R("DBMS track (your CIP course)", "https://www.geeksforgeeks.org/batch/cip-1/track/placement100-dbms/video/NzU3", "Course", "cs", "GeeksforGeeks"),
+  cip_cn:         R("Computer Networks track (your CIP course)", "https://www.geeksforgeeks.org/batch/cip-1/track/placement100-cn/video/MTExNw%3D%3D", "Course", "cs", "GeeksforGeeks"),
+  gfg_cs:         R("CS subjects for revision", "https://www.geeksforgeeks.org/tutorials/articles-on-computer-science-subjects-gq/", "Article", "cs", "GeeksforGeeks"),
+  ostep:          R("Operating Systems: Three Easy Pieces", "https://pages.cs.wisc.edu/~remzi/OSTEP/", "Book", "cs", "OSTEP, free online"),
+  neso_os:        R("Operating systems playlist", YT("neso academy operating system"), "Video", "cs", "Neso Academy, YouTube search"),
+  neso_dbms:      R("DBMS playlist", YT("neso academy dbms"), "Video", "cs", "Neso Academy, YouTube search"),
+  neso_cn:        R("Computer networks playlist", YT("neso academy computer networks"), "Video", "cs", "Neso Academy, YouTube search"),
+  cmu_db:         R("CMU 15-445 Database Systems", "https://15445.courses.cs.cmu.edu/", "Course", "cs", "Carnegie Mellon"),
+  cmu_db_yt:      R("CMU 15-445 lectures", YT("cmu 15-445 intro to database systems lecture"), "Video", "cs", "YouTube search"),
+  useindex:       R("Use The Index, Luke", "https://use-the-index-luke.com/", "Book", "cs", "Markus Winand, free online"),
+  pg_explain:     R("Using EXPLAIN", "https://www.postgresql.org/docs/current/using-explain.html", "Docs", "cs", "postgresql.org"),
+  py_threading:   R("Python threading module", "https://docs.python.org/3/library/threading.html", "Docs", "cs", "python.org"),
+  kurose:         R("Computer networking video lectures", "https://gaia.cs.umass.edu/kurose_ross/lectures.php", "Video", "cs", "Kurose and Ross"),
+  hnasr:          R("Backend engineering videos", "https://www.youtube.com/@hnasr", "Video", "cs", "Hussein Nasser"),
+  kunal_cn:       R("Computer networking full course", YT("kunal kushwaha computer networking full course"), "Video", "cs", "Kunal Kushwaha, YouTube search"),
+  hpbn:           R("High Performance Browser Networking", "https://hpbn.co/", "Book", "cs", "Ilya Grigorik, free online"),
+  howdns:         R("How DNS works, illustrated", "https://howdns.works/", "Article", "cs", "howdns.works"),
+  url_type:       R("What happens when you type a URL", "https://github.com/alex/what-happens-when", "Article", "cs", "GitHub"),
+
+  /* System design */
+  rg_patterns:    R("Design patterns catalog", "https://refactoring.guru/design-patterns", "Article", "sd", "Refactoring Guru"),
+  rg_python:      R("Design patterns in Python", "https://refactoring.guru/design-patterns/python", "Article", "sd", "Refactoring Guru"),
+  lld_repo:       R("Awesome low-level design", "https://github.com/ashishps1/awesome-low-level-design", "Practice", "sd", "GitHub"),
+  sdp:            R("The System Design Primer", "https://github.com/donnemartin/system-design-primer", "Book", "sd", "GitHub, free"),
+  hello_sd:       R("System design in a hurry", "https://www.hellointerview.com/learn/system-design/in-a-hurry/introduction", "Course", "sd", "Hello Interview"),
+  bbg_yt:         R("System design videos", "https://www.youtube.com/@ByteByteGo", "Video", "sd", "ByteByteGo"),
+  ddia:           R("Designing Data-Intensive Applications", "https://dataintensive.net/", "Book", "sd", "Martin Kleppmann"),
+  genai_platform: R("Building a generative AI platform", "https://huyenchip.com/2024/07/25/genai-platform.html", "Article", "sd", "Chip Huyen"),
+  llm_patterns:   R("Patterns for building LLM-based systems", "https://eugeneyan.com/writing/llm-patterns/", "Article", "sd", "Eugene Yan"),
+  aie_book:       R("AI Engineering, book resources", "https://github.com/chiphuyen/aie-book", "Book", "sd", "Chip Huyen"),
+
+  /* AI engineering */
+  karpathy_intro: R("Intro to large language models", "https://www.youtube.com/watch?v=zjkBMFhNj_g", "Video", "ai", "Andrej Karpathy"),
+  karpathy_deep:  R("Deep dive into LLMs like ChatGPT", "https://www.youtube.com/watch?v=7xTGNNLPyMI", "Video", "ai", "Andrej Karpathy"),
+  illustrated:    R("The illustrated transformer", "https://jalammar.github.io/illustrated-transformer/", "Article", "ai", "Jay Alammar"),
+  threeb1b:       R("Neural networks and transformers, visually", "https://www.3blue1brown.com/topics/neural-networks", "Video", "ai", "3Blue1Brown"),
+  dlai_transformers: R("How Transformer LLMs Work", "https://www.deeplearning.ai/courses/how-transformer-llms-work", "Course", "ai", "DeepLearning.AI"),
+  dlai_prompt:    R("ChatGPT Prompt Engineering for Developers", "https://www.deeplearning.ai/courses/chatgpt-prompt-engineering-for-developers", "Course", "ai", "DeepLearning.AI"),
+  dlai_systems:   R("Building Systems with the ChatGPT API", "https://www.deeplearning.ai/courses/building-systems-with-chatgpt", "Course", "ai", "DeepLearning.AI"),
+  dlai_structured: R("Getting Structured LLM Output", "https://www.deeplearning.ai/courses/getting-structured-llm-output", "Course", "ai", "DeepLearning.AI"),
+  dlai_pydantic:  R("Pydantic for LLM Workflows", "https://www.deeplearning.ai/courses/pydantic-for-llm-workflows", "Course", "ai", "DeepLearning.AI"),
+  dlai_vectordb:  R("Vector Databases: from Embeddings to Applications", "https://www.deeplearning.ai/courses/vector-databases-embeddings-applications", "Course", "ai", "DeepLearning.AI"),
+  dlai_rag:       R("Retrieval Augmented Generation (RAG)", "https://learn.deeplearning.ai/courses/retrieval-augmented-generation", "Course", "ai", "DeepLearning.AI, PRO after module 1"),
+  dlai_adv_rag:   R("Building and Evaluating Advanced RAG", "https://www.deeplearning.ai/courses/building-evaluating-advanced-rag", "Course", "ai", "DeepLearning.AI"),
+  dlai_agentic:   R("Agentic AI with Andrew Ng", "https://www.deeplearning.ai/courses/agentic-ai", "Course", "ai", "DeepLearning.AI"),
+  dlai_langgraph: R("AI Agents in LangGraph", "https://www.deeplearning.ai/courses/ai-agents-in-langgraph", "Course", "ai", "DeepLearning.AI"),
+  dlai_mcp:       R("MCP: Build Rich-Context AI Apps with Anthropic", "https://www.deeplearning.ai/courses/mcp-build-rich-context-ai-apps-with-anthropic", "Course", "ai", "DeepLearning.AI"),
+  dlai_eval_agents: R("Evaluating AI Agents", "https://www.deeplearning.ai/courses/evaluating-ai-agents", "Course", "ai", "DeepLearning.AI"),
+  dlai_finetune:  R("Finetuning Large Language Models", "https://www.deeplearning.ai/courses/finetuning-large-language-models", "Course", "ai", "DeepLearning.AI"),
+  dlai_safety:    R("Quality and Safety for LLM Applications", "https://www.deeplearning.ai/courses/quality-safety-llm-applications", "Course", "ai", "DeepLearning.AI"),
+  dlai_all:       R("All DeepLearning.AI courses", "https://www.deeplearning.ai/courses", "Course", "ai", "DeepLearning.AI"),
+  llm_zoomcamp:   R("LLM Zoomcamp, a free RAG course", "https://github.com/DataTalksClub/llm-zoomcamp", "Course", "ai", "DataTalksClub"),
+  claude_docs:    R("Claude API documentation", "https://docs.claude.com/", "Docs", "ai", "Anthropic"),
+  claude_prompt:  R("Prompt engineering guide", "https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview", "Docs", "ai", "Anthropic"),
+  claude_tools:   R("Tool use guide", "https://docs.claude.com/en/docs/agents-and-tools/tool-use/overview", "Docs", "ai", "Anthropic"),
+  openai_docs:    R("OpenAI API documentation", "https://platform.openai.com/docs", "Docs", "ai", "OpenAI"),
+  anth_agents:    R("Building effective agents", "https://www.anthropic.com/engineering/building-effective-agents", "Article", "ai", "Anthropic"),
+  mcp_docs:       R("Model Context Protocol documentation", "https://modelcontextprotocol.io/", "Docs", "ai", "modelcontextprotocol.io"),
+  hamel_evals:    R("Your AI product needs evals", "https://hamel.dev/blog/posts/evals/", "Article", "ai", "Hamel Husain"),
+  hamel_field:    R("A field guide to improving AI products", "https://hamel.dev/blog/posts/field-guide/", "Article", "ai", "Hamel Husain"),
+  owasp_llm:      R("OWASP Top 10 for LLM applications", "https://genai.owasp.org/llm-top-10/", "Article", "ai", "OWASP"),
+  pgvector:       R("pgvector", "https://github.com/pgvector/pgvector", "Tool", "ai", "GitHub"),
+  pinecone_learn: R("Pinecone learning center", "https://www.pinecone.io/learn/", "Article", "ai", "Pinecone"),
+  hf_agents:      R("Hugging Face Agents Course", "https://huggingface.co/learn/agents-course/unit0/introduction", "Course", "ai", "Hugging Face"),
+  lc_academy:     R("LangChain Academy (LangGraph)", "https://academy.langchain.com/", "Course", "ai", "LangChain"),
+  langfuse:       R("Langfuse docs, LLM tracing", "https://langfuse.com/docs", "Docs", "ai", "Langfuse"),
+  ollama:         R("Ollama, run models locally", "https://ollama.com/", "Tool", "ai", "Ollama"),
+  sklearn:        R("scikit-learn user guide", "https://scikit-learn.org/stable/user_guide.html", "Docs", "ai", "scikit-learn"),
+  kaggle_ml:      R("Intro to Machine Learning", "https://www.kaggle.com/learn/intro-to-machine-learning", "Course", "ai", "Kaggle Learn"),
+  kaggle_iml:     R("Intermediate Machine Learning", "https://www.kaggle.com/learn/intermediate-machine-learning", "Course", "ai", "Kaggle Learn"),
+  joblib:         R("Saving models (model persistence)", "https://scikit-learn.org/stable/model_persistence.html", "Docs", "ai", "scikit-learn"),
+
+  /* Project tools */
+  dataco:         R("DataCo supply chain dataset", "https://www.kaggle.com/search?q=dataco+supply+chain", "Tool", "proj", "Kaggle search"),
+  faker:          R("Faker, synthetic data", "https://faker.readthedocs.io/en/master/", "Docs", "proj", "Faker"),
+  reportlab:      R("ReportLab, generate PDFs", "https://pypi.org/project/reportlab/", "Tool", "proj", "PyPI"),
+  pdfplumber:     R("pdfplumber, read PDFs", "https://github.com/jsvine/pdfplumber", "Tool", "proj", "GitHub"),
+  readme_guide:   R("Make a README", "https://www.makeareadme.com/", "Article", "proj", "makeareadme.com"),
+  mermaid:        R("Mermaid diagrams", "https://mermaid.js.org/", "Tool", "proj", "Mermaid"),
+  excalidraw:     R("Excalidraw, sketch diagrams", "https://excalidraw.com/", "Tool", "proj", "Excalidraw"),
+
+  /* Career and certifications */
+  tih_resume:     R("Resume guide", "https://www.techinterviewhandbook.org/resume/", "Article", "career", "Tech Interview Handbook"),
+  tih_behavioral: R("Behavioral interviews", "https://www.techinterviewhandbook.org/behavioral-interview/", "Article", "career", "Tech Interview Handbook"),
+  tih_mock:       R("Mock interviews", "https://www.techinterviewhandbook.org/mock-interviews/", "Article", "career", "Tech Interview Handbook"),
+  tih_negotiation: R("Negotiating offers", "https://www.techinterviewhandbook.org/negotiation/", "Article", "career", "Tech Interview Handbook"),
+  wellfound:      R("Wellfound startup jobs", "https://wellfound.com/jobs", "Tool", "career", "Wellfound"),
+  yc_jobs:        R("Work at a Startup", "https://www.workatastartup.com/", "Tool", "career", "Y Combinator"),
+  linkedin_jobs:  R("LinkedIn jobs", "https://www.linkedin.com/jobs/", "Tool", "career", "LinkedIn"),
+  naukri:         R("Naukri", "https://www.naukri.com/", "Tool", "career", "Naukri"),
+  instahyre:      R("Instahyre", "https://www.instahyre.com/", "Tool", "career", "Instahyre"),
+  aws_saa:        R("AWS Solutions Architect Associate", "https://aws.amazon.com/certification/certified-solutions-architect-associate/", "Course", "career", "AWS"),
+  aws_fde:        R("AWS Partner FDE credential", "https://skillbuilder.aws/certification/credential/partner-fde", "Course", "career", "AWS Skill Builder"),
+  aws_fde_blog:   R("FDE pathways announcement", "https://aws.amazon.com/blogs/apn/new-fde-pathways-for-aws-partners-get-ready-for-production-agentic-ai-delivery/", "Article", "career", "AWS"),
+  claude_cert:    R("Claude certifications", "https://www.pearsonvue.com/us/en/anthropic.html", "Course", "career", "Pearson VUE"),
+
+  /* Top-company preparation */
+  lc_top150:      R("LeetCode Top Interview 150", "https://leetcode.com/studyplan/top-interview-150/", "Practice", "dsa", "LeetCode"),
+  grind75:        R("Grind 75", "https://www.techinterviewhandbook.org/grind75/", "Practice", "dsa", "Tech Interview Handbook"),
+  mlcc:           R("Machine Learning Crash Course", "https://developers.google.com/machine-learning/crash-course", "Course", "ai", "Google, free"),
+  ml_spec:        R("Machine Learning Specialization", "https://www.deeplearning.ai/courses/machine-learning-specialization", "Course", "ai", "DeepLearning.AI, Andrew Ng"),
+  dl_spec:        R("Deep Learning Specialization", "https://www.deeplearning.ai/courses/deep-learning-specialization", "Course", "ai", "DeepLearning.AI, Andrew Ng"),
+  dlai_tip:       R("Transformers in Practice", "https://www.deeplearning.ai/courses/transformers-in-practice", "Course", "ai", "DeepLearning.AI"),
+  pytorch:        R("PyTorch: learn the basics", "https://pytorch.org/tutorials/beginner/basics/intro.html", "Docs", "ai", "PyTorch"),
+  z2h:            R("Neural Networks: Zero to Hero", "https://karpathy.ai/zero-to-hero.html", "Video", "ai", "Andrej Karpathy"),
+  hf_learn:       R("Hugging Face courses", "https://huggingface.co/learn", "Course", "ai", "Hugging Face"),
+  ml_interviews:  R("Machine learning interviews book", "https://huyenchip.com/ml-interviews-book/", "Book", "sd", "Chip Huyen, free online"),
+  rules_ml:       R("Rules of machine learning", "https://developers.google.com/machine-learning/guides/rules-of-ml", "Article", "sd", "Google"),
+  rec_sd:         R("System design for recommendations and search", "https://eugeneyan.com/writing/system-design-for-discovery/", "Article", "sd", "Eugene Yan"),
+  mlsd_book:      R("ML and generative AI system design books", "https://bytebytego.com/", "Book", "sd", "ByteByteGo"),
+  tih_prep:       R("How coding interviews work", "https://www.techinterviewhandbook.org/coding-interview-prep/", "Article", "career", "Tech Interview Handbook"),
+  google_hire:    R("How Google hires", "https://www.google.com/about/careers/applications/how-we-hire/", "Article", "career", "Google Careers"),
+  amazon_lp:      R("Amazon Leadership Principles", "https://www.amazon.jobs/content/en/our-workplace/leadership-principles", "Article", "career", "Amazon Jobs"),
+  jobs_google:    R("Google careers", "https://www.google.com/about/careers/applications/jobs/results/", "Tool", "career", "Google"),
+  jobs_ms:        R("Microsoft careers", "https://careers.microsoft.com/", "Tool", "career", "Microsoft"),
+  jobs_amazon:    R("Amazon jobs", "https://www.amazon.jobs/", "Tool", "career", "Amazon"),
+  jobs_meta:      R("Meta careers", "https://www.metacareers.com/jobs", "Tool", "career", "Meta"),
+  jobs_nvidia:    R("NVIDIA careers", "https://www.nvidia.com/en-us/about-nvidia/careers/", "Tool", "career", "NVIDIA"),
+  jobs_apple:     R("Apple jobs", "https://jobs.apple.com/", "Tool", "career", "Apple"),
+
+  /* Added from the roadmaps you shared */
+  arjancodes:     R("Clean Python engineering videos", "https://www.youtube.com/@ArjanCodes", "Video", "swe", "ArjanCodes"),
+  github_skills:  R("GitHub Skills, interactive", "https://skills.github.com/", "Practice", "swe", "GitHub"),
+  cs50p:          R("CS50's Introduction to Programming with Python", "https://cs50.harvard.edu/python/", "Course", "swe", "Harvard"),
+  automate:       R("Automate the Boring Stuff", "https://automatetheboringstuff.com/", "Book", "swe", "Al Sweigart, free online"),
+  modal:          R("Modal, deploy Python AI apps", "https://modal.com", "Tool", "swe", "Modal"),
+  numpy_quick:    R("NumPy quickstart", "https://numpy.org/doc/stable/user/quickstart.html", "Docs", "ai", "NumPy"),
+  numpy100:       R("100 NumPy exercises", "https://github.com/rougier/numpy-100", "Practice", "ai", "GitHub"),
+  kaggle_pandas:  R("Pandas course", "https://www.kaggle.com/learn/pandas", "Course", "ai", "Kaggle Learn"),
+  pandas_ex:      R("Pandas exercises", "https://github.com/guipsamora/pandas_exercises", "Practice", "ai", "GitHub"),
+  kaggle_viz:     R("Data visualization course", "https://www.kaggle.com/learn/data-visualization", "Course", "ai", "Kaggle Learn"),
+  sk_pitfalls:    R("Common pitfalls and recommended practices", "https://scikit-learn.org/stable/common_pitfalls.html", "Docs", "ai", "scikit-learn"),
+  ml_zoomcamp:    R("Machine Learning Zoomcamp", "https://github.com/DataTalksClub/machine-learning-zoomcamp", "Course", "ai", "DataTalksClub"),
+  fastai:         R("Practical Deep Learning for Coders", "https://course.fast.ai/", "Course", "ai", "fast.ai"),
+  mit_dl:         R("MIT 6.S191 Introduction to Deep Learning", "http://introtodeeplearning.com", "Course", "ai", "MIT"),
+  learnpytorch:   R("Learn PyTorch for deep learning", "https://www.learnpytorch.io/", "Book", "ai", "Daniel Bourke, free online"),
+  sbert:          R("sentence-transformers", "https://www.sbert.net", "Docs", "ai", "SBERT"),
+  hf_tokenizers:  R("How tokenizers work", "https://huggingface.co/learn/llm-course/chapter2/4", "Course", "ai", "Hugging Face"),
+  pydantic_models: R("Pydantic models", "https://docs.pydantic.dev/latest/concepts/models/", "Docs", "ai", "Pydantic"),
+  anth_contextual: R("Contextual retrieval", "https://www.anthropic.com/engineering/contextual-retrieval", "Article", "ai", "Anthropic"),
+  anth_evals:     R("Demystifying evals for AI agents", "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents", "Article", "ai", "Anthropic"),
+  owasp_pi:       R("Prompt injection prevention cheat sheet", "https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html", "Article", "ai", "OWASP"),
+  labonne:        R("LLM Course by Maxime Labonne", "https://github.com/mlabonne/llm-course", "Course", "ai", "GitHub"),
+  langgraph_docs: R("LangGraph documentation", "https://langchain-ai.github.io/langgraph/", "Docs", "ai", "LangChain"),
+  ragas:          R("Ragas, RAG evaluation", "https://docs.ragas.io", "Docs", "ai", "Ragas"),
+  mlflow:         R("MLflow, experiment tracking", "https://mlflow.org/", "Tool", "ai", "MLflow"),
+  madewithml:     R("Made With ML, MLOps course", "https://madewithml.com/", "Course", "ai", "Made With ML"),
+  otel_genai:     R("OpenTelemetry GenAI conventions", "https://opentelemetry.io/docs/specs/semconv/gen-ai/", "Docs", "ai", "OpenTelemetry"),
+  vllm:           R("vLLM documentation", "https://docs.vllm.ai/", "Docs", "ai", "vLLM"),
+  unsloth:        R("Unsloth fine-tuning guides", "https://docs.unsloth.ai/", "Docs", "ai", "Unsloth"),
+  hf_peft:        R("PEFT (LoRA) documentation", "https://huggingface.co/docs/peft", "Docs", "ai", "Hugging Face"),
+  hf_training:    R("Fine-tuning with Transformers", "https://huggingface.co/docs/transformers/training", "Docs", "ai", "Hugging Face"),
+  interview_warmup: R("Interview Warmup", "https://grow.google/certificates/interview-warmup/", "Practice", "career", "Google"),
+  sde_sheet:      R("Striver's SDE Sheet", "https://takeuforward.org/interviews/strivers-sde-sheet-top-coding-interview-problems/", "Sheet", "dsa", "takeUforward"),
+  docker_multistage: R("Docker multi-stage builds", "https://docs.docker.com/build/building/multi-stage/", "Docs", "swe", "Docker")
+};
+
+/* =====================================================================
+   The final 32-week plan (8 months).
+   Task ids use letters ("w3-a") so they never clash with earlier versions.
+   ===================================================================== */
+const MONTHS = [
+  { n: 1, short: "Foundations", title: "Foundations: Python, Git, SQL and your first LLM call",
+    goal: "Engineering-grade Python, Python for AI (NumPy, Pandas, plots), Git, SQL, APIs, and an LLM call you understand end to end.",
+    weeks: [1, 2, 3, 4], dsaTarget: 35,
+    checkpoints: [["m1-a", "Comfortable with Python engineering, Git branches and pull requests"], ["m1-b", "NumPy, Pandas and plots refreshed with real exercises"], ["m1-c", "An LLM-powered FastAPI endpoint with input validation and a provider-failure test"], ["m1-d", "About 35 DSA problems solved"]] },
+  { n: 2, short: "ML and backend", title: "ML fundamentals and your project's foundation",
+    goal: "Solid classical ML with honest evaluation, plus the backend your AI system will live inside.",
+    weeks: [5, 6, 7, 8], dsaTarget: 80,
+    checkpoints: [["m2-a", "Classic ML project shipped: honest split, baseline, confusion matrix, one documented failure"], ["m2-b", "Flagship API and database run with docker compose, with tests in CI"], ["m2-c", "Can explain bias-variance, regularization, and precision vs recall"], ["m2-d", "About 80 DSA problems solved"]] },
+  { n: 3, short: "DL and RAG", title: "Deep learning basics and RAG from scratch",
+    goal: "Understand how neural networks and transformers work, and build retrieval without frameworks, measured from day one.",
+    weeks: [9, 10, 11, 12], dsaTarget: 125,
+    checkpoints: [["m3-a", "Can explain backpropagation and how a transformer processes text"], ["m3-b", "RAG built without frameworks, with citations, abstention and role-based access"], ["m3-c", "Eval report with retrieval hit rate and answer correctness on a golden set"], ["m3-d", "About 125 DSA problems solved"]] },
+  { n: 4, short: "Agents", title: "LLM engineering: structured output, agents and MCP",
+    goal: "Reliable structured extraction, then a bounded agent built from primitives, rebuilt with one framework, and exposed through MCP.",
+    weeks: [13, 14, 15, 16], dsaTarget: 170,
+    checkpoints: [["m4-a", "Invoice extraction with field-level error analysis"], ["m4-b", "Bounded agent with tool traces, a step budget and human approval"], ["m4-c", "Procurement tools exposed through an MCP server"], ["m4-d", "About 170 DSA problems solved"]] },
+  { n: 5, short: "Production", title: "Production AI, fine-tuning and design basics",
+    goal: "Operate your AI system like production: tracing, experiments, evals in CI, safety tests, caching, a fine-tuning experiment and a real deployment.",
+    weeks: [17, 18, 19, 20], dsaTarget: 210,
+    checkpoints: [["m5-a", "Tracing, experiment tracking and evals in CI are live"], ["m5-b", "Prompt-injection and permission tests pass"], ["m5-c", "Fine-tuning compared with prompting and the classical baseline, with a write-up"], ["m5-d", "Flagship deployed with a working rollback"], ["m5-e", "About 210 DSA problems solved"]] },
+  { n: 6, short: "Design and apply", title: "System design, ML system design and applications",
+    goal: "Interview-ready on system design, ML system design and GenAI design, with the flagship packaged and applications out to top companies.",
+    weeks: [21, 22, 23, 24], dsaTarget: 250,
+    checkpoints: [["m6-a", "Can design a URL shortener and a RAG system end to end"], ["m6-b", "Can walk through a recommendation or ranking ML design end to end"], ["m6-c", "Flagship packaged: README, architecture, failure report, eval cases, demo video"], ["m6-d", "20+ applications or referral requests sent, mostly to top companies"], ["m6-e", "About 250 DSA problems solved"]] },
+  { n: 7, short: "Interview prep", title: "Interview preparation",
+    goal: "Timed DSA, mock interviews across every round type, and behavioral stories ready.",
+    weeks: [25, 26, 27, 28], dsaTarget: 290,
+    checkpoints: [["m7-a", "Solving medium problems in 30 to 40 minutes"], ["m7-b", "6+ mock interviews across DSA, design and projects"], ["m7-c", "8 to 10 behavioral stories mapped to Amazon's Leadership Principles"], ["m7-d", "About 290 DSA problems solved"]] },
+  { n: 8, short: "Offers", title: "Interview mode and offers",
+    goal: "Turn interviews at top companies into offers, and keep your skills sharp while you interview.",
+    weeks: [29, 30, 31, 32], dsaTarget: 320,
+    checkpoints: [["m8-a", "Interviews scheduled and offers in progress"], ["m8-b", "Next phase planned: A2Z second pass and one new project idea"]] }
+];
+
+const W = (focus, tasks) => ({
+  focus,
+  tasks: tasks.map(([id, tr, t, r = [], o = {}]) => ({ id, tr, t, r, opt: !!o.opt, tip: o.tip || "" }))
+});
+
+const WEEKS = [
+  /* Month 1: Foundations */
+  W("Python engineering, Git and A2Z basics", [
+    ["w1-a", "dsa", "A2Z step 1: C++ basics and STL refresh", ["a2z", "tuf_yt", "cpp_stl", "bigo"], { tip: "Move fast through pattern printing, but don't skip the STL, basic recursion and hashing lessons." }],
+    ["w1-b", "dsa", "Skim Striver's guide to thinking like a programmer", ["tuf_think"], { tip: "You already know most of it. Ten minutes is enough." }],
+    ["w1-c", "swe", "Python engineering: OOP, dataclasses, type hints, exceptions, modules, virtual environments", ["py_tut", "realpy_oop", "py_typing", "arjancodes"]],
+    ["w1-d", "swe", "Git and GitHub every day: commits, branches, pull requests", ["learngit", "progit", "github_skills"]],
+    ["w1-e", "swe", "Terminal basics: navigation, permissions, environment variables, SSH", ["missing"]],
+    ["w1-f", "career", "Learn how top companies interview: coding, system design, ML and behavioral rounds", ["tih_prep", "google_hire"], { tip: "Knowing the target early tells you why each task in this plan matters." }]
+  ]),
+  W("Python for AI: NumPy, Pandas and plots", [
+    ["w2-a", "dsa", "A2Z step 1: basic maths, basic recursion and hashing", ["a2z", "tuf_yt", "lft_cpp"]],
+    ["w2-b", "dsa", "A2Z step 2: sorting techniques", ["a2z", "tuf_yt"]],
+    ["w2-c", "ai", "NumPy: arrays, broadcasting, vectorization, matrix multiply. Do the first 50 exercises", ["numpy_quick", "numpy100"], { tip: "If you wrote a for loop over an array, there's almost always a vectorized way." }],
+    ["w2-d", "ai", "Pandas: load a messy dataset, clean it, and answer 5 questions with groupby", ["kaggle_pandas", "pandas_ex"]],
+    ["w2-e", "ai", "Matplotlib, Seaborn and notebooks: three labeled plots that answer three questions", ["kaggle_viz"]],
+    ["w2-f", "swe", "Python: generators, decorators, context managers and async/await basics", ["realpy_gen", "realpy_decor", "fastapi_async"], { tip: "Beginner guides skip async. You need it, because LLM apps call slow APIs concurrently." }]
+  ]),
+  W("APIs, JSON, SQL and how LLMs work", [
+    ["w3-a", "dsa", "A2Z step 3: arrays (easy)", ["a2z", "tuf_yt"]],
+    ["w3-b", "swe", "HTTP, REST and JSON: call a public API, parse the response, handle errors and timeouts", ["mdn_http", "rest_guide"]],
+    ["w3-c", "swe", "SQL with PostgreSQL: SELECT, JOIN, GROUP BY, window functions", ["pg_tut"], { tip: "Your SAP SQL experience transfers directly." }],
+    ["w3-d", "ai", "How LLMs work: tokens, context windows, sampling, embeddings", ["karpathy_intro", "dlai_transformers"]],
+    ["w3-e", "ai", "Your first raw LLM API call with plain HTTP requests, no framework", ["claude_docs", "openai_docs"], { tip: "Print the raw JSON response. Note the token counts and latency." }],
+    ["w3-f", "cs", "OOP principles and an introduction to SOLID", ["realpy_oop", "realpy_solid", "py_oop_yt"]]
+  ]),
+  W("FastAPI basics and prompts as code", [
+    ["w4-a", "dsa", "A2Z step 3: arrays (medium)", ["a2z", "tuf_yt"]],
+    ["w4-b", "swe", "FastAPI: routes, Pydantic models, dependency injection and the automatic docs", ["fastapi_tut", "pydantic"]],
+    ["w4-c", "swe", "Testing with pytest and FastAPI's test client", ["pytest", "fastapi_test"]],
+    ["w4-d", "ai", "Prompt engineering: clear instructions, few-shot examples, output formats", ["dlai_prompt", "claude_prompt", "dlai_systems"]],
+    ["w4-e", "proj", "Mini app: an endpoint that summarizes text with an LLM, with input validation, timeouts and a test for provider failure", ["fastapi_tut", "claude_docs"], { tip: "A blank input should be rejected before any model call." }],
+    ["w4-f", "career", "Month 1 review: check your checkpoint and adjust your schedule", []]
+  ]),
+
+  /* Month 2: ML fundamentals and the project's foundation */
+  W("ML fundamentals and the project database", [
+    ["w5-a", "dsa", "A2Z step 3: arrays (hard, a few selected)", ["a2z", "tuf_yt"], { tip: "Save the rest of the hard problems for your second pass." }],
+    ["w5-b", "ai", "ML fundamentals: supervised learning, train, validation and test splits, overfitting, data leakage", ["mlcc", "kaggle_iml", "sk_pitfalls"], { tip: "Top companies ask ML basics even for AI engineering roles." }],
+    ["w5-c", "ai", "Linear and logistic regression, gradient descent and regularization", ["mlcc", "ml_spec"]],
+    ["w5-d", "swe", "SQLAlchemy ORM and database migrations", ["sqla_tut", "alembic"]],
+    ["w5-e", "proj", "Flagship setup: Procurement Copilot repo and a PostgreSQL schema for vendors, POs, goods receipts and invoices, with synthetic data", ["fastapi_sql", "faker", "readme_guide"], { tip: "Use your SAP MM knowledge for the data model. Never client data." }]
+  ]),
+  W("Metrics, trees and DBMS", [
+    ["w6-a", "dsa", "A2Z step 4: binary search on 1D arrays", ["a2z", "tuf_yt"]],
+    ["w6-b", "ai", "Metrics: confusion matrix, precision, recall, F1, ROC-AUC, class imbalance", ["mlcc", "sklearn"]],
+    ["w6-c", "ai", "Decision trees, ensembles, bias-variance, cross-validation and hyperparameter tuning", ["mlcc", "ml_spec"]],
+    ["w6-d", "cs", "DBMS: keys, normalization, joins, indexes (B+ trees) and EXPLAIN plans", ["cip_dbms", "useindex", "pg_explain"], { tip: "The same idea as ST05 SQL traces in SAP." }],
+    ["w6-e", "proj", "Flagship API: endpoints for POs, goods receipts and invoices, with tests", ["fastapi_tut", "fastapi_test"]]
+  ]),
+  W("Docker, transactions and your first ML baseline", [
+    ["w7-a", "dsa", "A2Z step 4: binary search on answers and 2D arrays", ["a2z", "tuf_yt"]],
+    ["w7-b", "ai", "Unsupervised basics: k-means and PCA, and embeddings as vectors", ["mlcc", "sklearn"]],
+    ["w7-c", "swe", "Docker and docker compose, with configuration through environment variables", ["docker_start", "compose", "twelve"]],
+    ["w7-d", "cs", "DBMS: transactions, ACID, isolation levels, locking and deadlocks", ["cip_dbms", "cmu_db_yt"], { tip: "Compare with SAP lock objects and SELECT inside LOOP." }],
+    ["w7-e", "proj", "ML project: a labeled supplier-email triage dataset, an honest split and a TF-IDF plus logistic regression baseline", ["sklearn", "sk_pitfalls"], { tip: "Split before fitting, and keep near-duplicate emails in the same split." }],
+    ["w7-f", "swe", "Simple auth for the flagship: every request tied to a user, company and role", ["fastapi_sec"], { tip: "Keep it simple. Later, the role limits what your assistant may read." }]
+  ]),
+  W("Error analysis and shipping the baseline", [
+    ["w8-a", "dsa", "A2Z step 5: strings (basic and medium)", ["a2z", "tuf_yt"]],
+    ["w8-b", "ai", "Error analysis: failure slices and one concrete data repair", ["sk_pitfalls", "mlcc"]],
+    ["w8-c", "proj", "ML project: serve the classifier through FastAPI in Docker, with a README showing metrics and one documented failure", ["readme_guide"]],
+    ["w8-d", "proj", "Flagship: docker compose runs the API and database, and CI runs tests on every push", ["gha", "compose"]],
+    ["w8-e", "career", "Month 2 review", []]
+  ]),
+
+  /* Month 3: Deep learning and RAG from scratch */
+  W("Neural networks and your golden question set", [
+    ["w9-a", "dsa", "A2Z step 6: linked lists (singly and doubly)", ["a2z", "tuf_yt", "lft_cpp"]],
+    ["w9-b", "ai", "Neural networks and backpropagation, by building micrograd", ["threeb1b", "z2h", "mit_dl"], { tip: "The first Zero to Hero video is enough for interviews." }],
+    ["w9-c", "ai", "Embeddings and similarity, hands-on with sentence-transformers", ["sbert", "dlai_vectordb"]],
+    ["w9-d", "cs", "OS: processes, threads, context switching and CPU scheduling", ["cip_os", "ostep"]],
+    ["w9-e", "proj", "Flagship RAG: write procurement policy documents and a 30 to 50 question golden set before building retrieval", ["hamel_evals"], { tip: "Include questions the documents can't answer. The right reply is to say so." }]
+  ]),
+  W("PyTorch and keyword-first RAG", [
+    ["w10-a", "dsa", "A2Z step 6: linked lists (medium, a few hard)", ["a2z", "tuf_yt"]],
+    ["w10-b", "ai", "PyTorch basics: tensors, autograd, a training loop, and a small classifier", ["pytorch", "learnpytorch"]],
+    ["w10-c", "cs", "OS: synchronization, deadlocks, and a race-condition experiment with Python threads", ["cip_os", "py_threading"], { tip: "Make two threads update one counter, watch it go wrong, then fix it with a lock." }],
+    ["w10-d", "proj", "Flagship RAG from scratch: chunking, a keyword (BM25) baseline, grounded answers with citations, and abstaining when evidence is missing", ["llm_zoomcamp", "dlai_rag", "anth_contextual"], { tip: "No LangChain yet. Measure retrieval hit rate on your golden set. DeepLearning.AI's full RAG course needs PRO after module 1; LLM Zoomcamp is free." }],
+    ["w10-e", "proj", "Compare chunking strategies (fixed-size, recursive, semantic) on your golden set, and keep each rule with its exceptions in one chunk", ["llm_zoomcamp", "pinecone_learn"], { tip: "Pick the strategy your retrieval hit rate supports, not the one a tutorial uses." }]
+  ]),
+  W("Transformers and vector search", [
+    ["w11-a", "dsa", "A2Z step 7: recursion patterns and subsequences", ["a2z", "yt_striver_rec"]],
+    ["w11-b", "ai", "Transformers: attention, positional encoding, encoder vs decoder", ["illustrated", "dlai_transformers", "dlai_tip"]],
+    ["w11-c", "ai", "Tokenization, decoding (temperature, top-p), KV cache and context limits", ["hf_tokenizers", "karpathy_deep"]],
+    ["w11-d", "proj", "Flagship RAG: embeddings in pgvector, hybrid search that merges keyword and vector results with Reciprocal Rank Fusion, then a cross-encoder reranker, each compared with your keyword baseline", ["pgvector", "pinecone_learn", "dlai_adv_rag", "sbert"], { tip: "Add each technique only when failed cases justify it. sentence-transformers also provides cross-encoder rerankers." }],
+    ["w11-f", "ai", "Vector indexes: how HNSW and IVF trade a little recall for a lot of speed, and when exact search is fine", ["pinecone_learn", "pgvector"], { tip: "A common interview question: why is approximate search used at scale?" }],
+    ["w11-e", "cs", "OS: memory, paging, virtual memory and page replacement (LRU)", ["cip_os", "ostep", "neso_os"], { tip: "LRU here connects to the LRU cache DSA problem." }]
+  ]),
+  W("Access control and honest evaluation", [
+    ["w12-a", "dsa", "A2Z step 7: a few hard backtracking problems, and step 8 bit manipulation basics", ["a2z", "tuf_yt"]],
+    ["w12-b", "ai", "Build a small GPT from scratch with Karpathy", ["z2h"], { opt: true, tip: "The best way to truly understand transformers, if you have the time." }],
+    ["w12-c", "proj", "Flagship RAG: role-based retrieval, so finance-only policies never reach a buyer's prompt", ["owasp_pi"], { tip: "Relevance never grants access. Enforce scope in your code, not the prompt." }],
+    ["w12-d", "proj", "Flagship RAG: eval report (retrieval hit rate, answer correctness, abstention) and your first failure report", ["hamel_evals", "anth_evals"]],
+    ["w12-e", "career", "Start a job tracker and save 10 target job descriptions from top companies", ["jobs_google", "jobs_ms", "jobs_amazon", "linkedin_jobs"], { tip: "Search titles like AI Engineer, Software Engineer (AI/ML) and Applied AI." }],
+    ["w12-f", "career", "Month 3 review", []]
+  ]),
+
+  /* Month 4: Structured output, agents and MCP */
+  W("Structured outputs and context engineering", [
+    ["w13-a", "dsa", "A2Z step 9: stacks and queues, including monotonic stack", ["a2z", "tuf_yt", "lft_java"]],
+    ["w13-b", "ai", "Structured outputs: JSON schemas, Pydantic validation and retries. A schema checks shape, not truth", ["dlai_structured", "pydantic_models", "dlai_pydantic"]],
+    ["w13-c", "ai", "Context engineering: what goes into the window, token budgets and contextual retrieval", ["anth_contextual", "labonne"]],
+    ["w13-d", "proj", "Flagship extraction: invoice PDF to typed fields (vendor, PO number, lines, totals, needs_review). Missing stays missing", ["pdfplumber", "reportlab", "pydantic_models"]],
+    ["w13-e", "cs", "Networks: OSI and TCP/IP models, TCP vs UDP and the handshake", ["kunal_cn", "cip_cn", "kurose"]]
+  ]),
+  W("Field-level evaluation and tool calling", [
+    ["w14-a", "dsa", "A2Z step 10: sliding window and two pointers", ["a2z", "tuf_yt"]],
+    ["w14-b", "ai", "Tool (function) calling under the hood, without a framework", ["claude_tools", "openai_docs"]],
+    ["w14-c", "proj", "Flagship extraction: field-level error analysis on 30+ invoices, including malformed and ambiguous ones", ["hamel_field"]],
+    ["w14-d", "proj", "Flagship: three-way match logic (invoice vs PO vs goods receipt) with quantity and price mismatch flags", []],
+    ["w14-e", "cs", "Networks: DNS, HTTP/HTTPS, TLS and what happens when you type a URL", ["cip_cn", "howdns", "url_type", "hnasr"]]
+  ]),
+  W("Agents from primitives", [
+    ["w15-a", "dsa", "A2Z step 11: heaps", ["a2z", "tuf_yt"]],
+    ["w15-b", "ai", "Agents: workflows vs agents, the ReAct loop and stopping conditions", ["anth_agents", "dlai_agentic"]],
+    ["w15-c", "proj", "Flagship agent from scratch: read-only tools get_po, get_goods_receipt and vendor_history, a 4-call budget and a full trace", ["anth_agents"], { tip: "The model proposes; your app validates and executes." }],
+    ["w15-d", "career", "AWS Solutions Architect Associate prep", ["aws_saa", "aws_saa_yt"], { opt: true, tip: "Only worth it if it gets you onto real AI projects at work." }]
+  ]),
+  W("Approvals, LangGraph, MCP and memory", [
+    ["w16-a", "dsa", "A2Z step 12: greedy (selected problems)", ["a2z", "tuf_yt"]],
+    ["w16-b", "ai", "LangGraph: rebuild your agent with one framework", ["dlai_langgraph", "langgraph_docs", "lc_academy"], { tip: "One framework is enough. Skip CrewAI and AutoGen for now." }],
+    ["w16-c", "ai", "MCP: expose your procurement tools as an MCP server", ["dlai_mcp", "mcp_docs"]],
+    ["w16-d", "proj", "Flagship agent: propose a vendor email or return, with human approval bound to the exact action and ownership checks", ["owasp_pi", "anth_agents"]],
+    ["w16-e", "ai", "Memory patterns: conversation state, long-term notes, and when not to use memory", ["hf_agents"]],
+    ["w16-f", "career", "Update LinkedIn and connect with engineers at your target companies", [], { tip: "Former SAP or IT services engineers now at top companies are the most likely to help." }],
+    ["w16-g", "career", "Month 4 review", []]
+  ]),
+
+  /* Month 5: Production AI, fine-tuning and design basics */
+  W("Observability and agent evaluation", [
+    ["w17-a", "dsa", "A2Z step 13: binary trees (traversals)", ["a2z", "tuf_yt"]],
+    ["w17-b", "proj", "Flagship tracing with Langfuse: prompts, retrieved IDs, tool calls, latency, tokens and cost", ["langfuse", "otel_genai"]],
+    ["w17-c", "ai", "Evaluating agents: task success, trajectory checks, graders calibrated to human judgment", ["anth_evals", "dlai_eval_agents"]],
+    ["w17-d", "swe", "System design basics: scalability, load balancing, caching and databases", ["hello_sd", "sdp", "bbg_yt"]],
+    ["w17-e", "career", "AWS FDE Validated pathways", ["aws_fde", "aws_fde_blog"], { opt: true, tip: "Needs an active AWS associate-level certification first." }]
+  ]),
+  W("LLMOps: versions, experiments and evals in CI", [
+    ["w18-a", "dsa", "A2Z step 13: binary trees (medium, a few hard)", ["a2z", "tuf_yt"]],
+    ["w18-b", "proj", "Flagship: version prompts and configs, and track experiments with MLflow", ["mlflow", "madewithml"]],
+    ["w18-c", "proj", "Flagship: CI runs your eval suite on every prompt, retrieval or model change", ["gha", "ragas"]],
+    ["w18-f", "proj", "Flagship graders: exact checks (schema, citations, tool status) plus an LLM judge calibrated against your own labels, and faithfulness and groundedness metrics", ["anth_evals", "ragas", "hamel_field"], { tip: "Grow the suite to about 50 cases, including missing-evidence, wrong-role and prompt-injection cases." }],
+    ["w18-d", "swe", "System design: replication, sharding, CAP, message queues and rate limiting", ["sdp", "ddia"]],
+    ["w18-e", "career", "Resume version 1", ["tih_resume"]]
+  ]),
+  W("Safety, caching and local models", [
+    ["w19-a", "dsa", "A2Z step 14: binary search trees", ["a2z", "tuf_yt"]],
+    ["w19-b", "proj", "Flagship security tests: prompt injection hidden in invoice text, PII redaction in logs, a tool allow-list", ["owasp_pi", "owasp_llm", "dlai_safety"]],
+    ["w19-c", "proj", "Flagship caching (exact and semantic) keyed by permission scope, plus a cost and latency budget", ["redis", "genai_platform"]],
+    ["w19-d", "ai", "Local models: run an open model with Ollama, learn what vLLM does, and understand quantization (GGUF, AWQ, FP8) and KV cache memory", ["ollama", "vllm"], { tip: "Practice the estimate: parameters times bytes per weight, plus KV cache that grows with context length." }],
+    ["w19-e", "swe", "Low-level design: SOLID, key patterns, and a parking lot design", ["rg_patterns", "lld_repo"]]
+  ]),
+  W("Fine-tuning experiment and deployment", [
+    ["w20-a", "dsa", "A2Z step 15: graphs (BFS, DFS, components, cycle detection)", ["a2z", "yt_striver_graph", "yt_fiset_graph"]],
+    ["w20-b", "ai", "Fine-tuning: when to use it (and when not), and LoRA and QLoRA concepts", ["dlai_finetune", "hf_peft"]],
+    ["w20-c", "proj", "Fine-tune a small open model with LoRA on your triage data, and compare it with prompting and the classical baseline on the same test set", ["unsloth", "hf_peft", "hf_training"], { tip: "Evaluation first, then fine-tuning. Often prompting or retrieval wins." }],
+    ["w20-d", "proj", "Deploy the flagship to the cloud with a tested rollback", ["render", "aws_ecs", "aws_free", "modal"]],
+    ["w20-g", "swe", "Production Docker: multi-stage builds, a non-root user, and secrets kept out of the image", ["docker_multistage", "twelve"]],
+    ["w20-e", "career", "Final one-page resume, and ask 5 engineers for referrals", ["tih_resume"], { tip: "Share your demo and one line on why you fit the role." }],
+    ["w20-f", "career", "Month 5 review", []]
+  ]),
+
+  /* Month 6: System design, ML system design and applications */
+  W("Design practice and first applications", [
+    ["w21-a", "dsa", "A2Z step 15: topological sort, shortest paths and disjoint sets", ["a2z", "yt_striver_graph"]],
+    ["w21-b", "swe", "Design practice: URL shortener and rate limiter", ["hello_sd", "sdp"]],
+    ["w21-c", "ai", "ML system design framework: framing, data, features, model, offline and online evaluation, serving, monitoring", ["ml_interviews", "rules_ml", "mlsd_book"], { tip: "Google, Meta and Amazon often run a separate ML design round for AI and ML roles." }],
+    ["w21-d", "proj", "Package the flagship: architecture.md, failure-report.md and evals/cases.jsonl", ["readme_guide", "mermaid"]],
+    ["w21-e", "career", "Apply: first batch of 10, top companies through referrals plus strong product companies", ["jobs_google", "jobs_ms", "jobs_amazon", "jobs_meta", "linkedin_jobs"]]
+  ]),
+  W("Generative AI system design", [
+    ["w22-a", "dsa", "A2Z step 16: dynamic programming (1D and 2D grids)", ["a2z", "yt_striver_dp"]],
+    ["w22-b", "ai", "GenAI system design: RAG for 10k users, LLM gateway, routing and fallbacks", ["genai_platform", "llm_patterns", "aie_book"]],
+    ["w22-c", "swe", "Design practice: notification system and chat application", ["hello_sd", "bbg_yt"]],
+    ["w22-d", "swe", "Low-level design practice: LRU cache and rate limiter", ["lld_repo"]],
+    ["w22-e", "proj", "Record a 2 to 3 minute demo, and post about one failure you fixed", []]
+  ]),
+  W("ML system design practice", [
+    ["w23-a", "dsa", "A2Z step 16: DP on subsequences, strings and LIS", ["a2z", "yt_striver_dp"]],
+    ["w23-b", "ai", "ML design practice: recommendation feed and search ranking", ["rec_sd", "mlsd_book"]],
+    ["w23-c", "swe", "Design practice: news feed and file storage", ["hello_sd", "sdp"]],
+    ["w23-d", "career", "Apply: second batch, and follow up on referrals", ["jobs_nvidia", "jobs_apple", "wellfound", "linkedin_jobs"], { tip: "Keep a few strong product companies and AI startups in the mix." }],
+    ["w23-e", "career", "Claude Certified Developer exam", ["claude_cert"], { opt: true, tip: "Only if your company covers it." }]
+  ]),
+  W("Timed DSA begins", [
+    ["w24-a", "dsa", "A2Z step 16: selected DP (stocks and partitions)", ["a2z", "yt_striver_dp"]],
+    ["w24-b", "dsa", "LeetCode Top Interview 150: timed medium sets", ["lc_top150", "sde_sheet", "grind75", "algomaster"], { tip: "Mixed problems with no chapter label, the way real interviews feel. Prefer staying with Striver? Use his SDE Sheet instead. Pick one, not both." }],
+    ["w24-c", "ai", "ML design practice: fraud detection and ads click prediction", ["mlsd_book", "rules_ml"]],
+    ["w24-d", "ai", "Computer vision basics with a pretrained model", ["fastai"], { opt: true, tip: "Only if a target role mentions vision." }],
+    ["w24-e", "career", "Month 6 review", []]
+  ]),
+
+  /* Month 7: Interview preparation */
+  W("Mocks begin", [
+    ["w25-a", "dsa", "Top Interview 150: timed mediums, plus two hard problems", ["lc_top150"]],
+    ["w25-b", "dsa", "Redo every problem you marked as failed", ["lc"]],
+    ["w25-c", "swe", "Two mock system design interviews", ["hello_sd", "tih_mock"]],
+    ["w25-d", "career", "Behavioral stories (STAR) from your SAP work, mapped to Amazon's Leadership Principles", ["tih_behavioral", "amazon_lp"], { tip: "The same stories work for Google, Microsoft and Meta." }],
+    ["w25-e", "career", "Apply: third batch", ["jobs_google", "jobs_ms", "jobs_amazon", "jobs_meta"]]
+  ]),
+  W("DSA mocks and ML breadth", [
+    ["w26-a", "dsa", "Two mock DSA interviews", ["tih_mock"]],
+    ["w26-b", "dsa", "A weekly contest plus one mixed timed set", ["lc_contest"]],
+    ["w26-c", "ai", "ML and LLM breadth revision with the ML interviews book", ["ml_interviews"]],
+    ["w26-d", "ai", "Mock: one ML system design and one GenAI design", ["mlsd_book", "genai_platform"]],
+    ["w26-e", "cs", "One-page notes: DBMS and OS", ["gfg_cs"]]
+  ]),
+  W("Project deep-dives and online assessments", [
+    ["w27-a", "dsa", "Online assessment practice: two problems in 90 minutes", ["lc_contest"]],
+    ["w27-b", "dsa", "A2Z step 17: tries", ["a2z"], { opt: true }],
+    ["w27-c", "proj", "Deep-dive prep: design choices, failures, eval results, scaling, cost and security", []],
+    ["w27-d", "proj", "Two mock project deep-dive interviews", ["tih_mock"]],
+    ["w27-e", "cs", "One-page notes: networks and OOP", ["gfg_cs"]]
+  ]),
+  W("Company-specific preparation", [
+    ["w28-a", "dsa", "Mixed timed sets, explaining your approach out loud", ["lc"]],
+    ["w28-b", "career", "Company-specific prep: Google (coding without an IDE), Meta (speed), Amazon (Leadership Principles), Microsoft", ["google_hire", "amazon_lp", "tih_prep", "interview_warmup"]],
+    ["w28-c", "ai", "Revise RAG, agents, evals and fine-tuning trade-offs", ["aie_book", "karpathy_deep"]],
+    ["w28-d", "career", "Follow up on applications and referrals", []],
+    ["w28-e", "career", "Month 7 review", []]
+  ]),
+
+  /* Month 8: Interview mode and offers */
+  W("Interview mode", [
+    ["w29-a", "dsa", "Daily timed practice, with hard problems twice a week", ["lc_top150"]],
+    ["w29-b", "swe", "Mock design interviews: one high-level design and one GenAI design", ["hello_sd", "genai_platform"]],
+    ["w29-c", "proj", "Keep the flagship alive: one small improvement with a measured result", []],
+    ["w29-d", "career", "Apply in batches so offers arrive close together", ["linkedin_jobs"]]
+  ]),
+  W("Stay sharp", [
+    ["w30-a", "dsa", "A contest, then redo the problems you failed", ["lc_contest", "lc"]],
+    ["w30-b", "dsa", "One mock DSA interview", ["tih_mock"]],
+    ["w30-c", "ai", "Mock ML and LLM breadth interview with a friend", ["ml_interviews"]],
+    ["w30-d", "career", "Behavioral mock using your STAR stories", ["tih_behavioral"]]
+  ]),
+  W("Offers", [
+    ["w31-a", "dsa", "Pattern revision from your A2Z notes", ["a2z"]],
+    ["w31-b", "career", "Negotiate using competing offers and your total experience", ["tih_negotiation"]],
+    ["w31-c", "proj", "Publish a second write-up: fine-tuning vs prompting results", []]
+  ]),
+  W("Next phase", [
+    ["w32-a", "dsa", "Daily practice to stay sharp", ["lc"]],
+    ["w32-b", "career", "Month 8 review, and plan the A2Z second pass (advanced strings, remaining hard problems)", ["a2z"]],
+    ["w32-c", "career", "Still interviewing? Keep this rhythm. The plan stretches; you don't quit", []]
+  ])
+];
+
+const DECISIONS = [
+  ["Target", "AI Engineer, Software Engineer (AI/ML) and Applied AI roles at top tech companies such as Google, Microsoft, Amazon, Meta, Apple and NVIDIA. Strong product companies and AI startups stay in the list, so one company never decides the outcome."],
+  ["Projects", "One flagship, Procurement Copilot, built in layers (backend, RAG, extraction, agent, production), plus one classic ML project that you later fine-tune."],
+  ["DSA", "Striver's A2Z in C++, with Logic First Tamil for new concepts, then LeetCode Top Interview 150 for timed practice."],
+  ["AI and ML", "Google's ML Crash Course, DeepLearning.AI, Karpathy and official docs. Primitives before frameworks; LangGraph as the one agent framework."],
+  ["Software engineering", "Python, FastAPI, PostgreSQL, Docker, CI and one cloud (AWS), learned inside your AI project."],
+  ["CS fundamentals", "Your GeeksforGeeks CIP tracks, interview-level only."],
+  ["Skip for now", "Computer vision, classic NLP (POS tagging, parsing), RNN/LSTM depth, Kubeflow, Airflow, KServe, Terraform, and extra agent frameworks."]
+];
+
+const NUDGES = [
+  "Consistency beats intensity. One focused block is a good day.",
+  "A minimum day still counts. Show up, then rest.",
+  "You don't need to feel ready. You only need today's block.",
+  "Understanding grows with practice, not with re-reading.",
+  "Good enough to move on is a skill. Your weekly review will deepen it.",
+  "Every checked box is something an interviewer can ask you about.",
+  "Compare yourself with last month, not with anyone else."
+];
+
+/* =====================================================================
+   App
+   ===================================================================== */
+const STORAGE_KEY = "aej-state-v1";
+const CLOUD_KEY = "aej-cloud-v1";
+const SUPABASE_CDN = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
+
+/* ---------- Helpers ---------- */
+const $ = (s, el = document) => el.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const pad = n => String(n).padStart(2, "0");
+const ymd = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const parseYmd = s => { const [y, m, d] = String(s).split("-").map(Number); return new Date(y, m - 1, d, 12); };
+const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+const todayStr = () => ymd(new Date());
+const dayDiff = (a, b) => Math.round((parseYmd(b) - parseYmd(a)) / 86400000);
+const isYmd = s => /^\d{4}-\d{2}-\d{2}$/.test(s || "") && !isNaN(parseYmd(s));
+const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
+const fmtDate = s => parseYmd(s).toLocaleDateString(undefined, { month: "short", day: "numeric" });
+const fmtDateLong = s => parseYmd(s).toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
+const round1 = v => Math.round(v * 10) / 10;
+const nowIso = () => new Date().toISOString();
+function fmtMin(m) { m = Math.round(m || 0); const h = Math.floor(m / 60), r = m % 60; return h ? (r ? `${h}h ${r}m` : `${h}h`) : `${r}m`; }
+function dayOfYear() { const n = new Date(); return Math.floor((n - new Date(n.getFullYear(), 0, 0)) / 86400000); }
+function meter(p, cls = "") { const v = Math.round(clamp(p, 0, 1) * 100); return `<div class="meter ${cls}" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${v}"><span style="width:${v}%"></span></div>`; }
+
+/* ---------- Storage ---------- */
+const Store = (() => {
+  let ok = false; const mem = {};
+  try { const k = "__aej_test"; localStorage.setItem(k, "1"); localStorage.removeItem(k); ok = true; } catch (e) { ok = false; }
+  return {
+    persistent: ok,
+    get(k) { try { if (ok) { const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } return k in mem ? mem[k] : null; } catch (e) { return null; } },
+    set(k, v) { if (ok) { try { localStorage.setItem(k, JSON.stringify(v)); return; } catch (e) { /* fall through */ } } mem[k] = v; },
+    del(k) { if (ok) { try { localStorage.removeItem(k); } catch (e) { /* ignore */ } } delete mem[k]; }
+  };
+})();
+
+function defaultState() {
+  return { v: 1, settings: { name: "", start: "", target: 20, dsaOffset: 0, updated_at: null }, tasks: {}, logs: {}, reviews: {}, pending: [], meta: { syncedUser: null } };
+}
+function loadState() {
+  const s = Store.get(STORAGE_KEY); const d = defaultState();
+  if (!s || typeof s !== "object") return d;
+  return {
+    ...d, ...s,
+    settings: { ...d.settings, ...(s.settings || {}) },
+    tasks: s.tasks || {}, logs: s.logs || {}, reviews: s.reviews || {},
+    pending: Array.isArray(s.pending) ? s.pending : [],
+    meta: { ...d.meta, ...(s.meta || {}) }
+  };
+}
+let state = loadState();
+function saveLocal() { Store.set(STORAGE_KEY, state); }
+const ui = { resQuery: "", resArea: "all", showCloudForm: false, pop: null, offline: false, recovery: false, authMode: "in", lastEmail: "" };
+
+/* ---------- Plan maths ---------- */
+const TASK_WEEK = {}; const CP_MONTH = {};
+function buildIndex() {
+  WEEKS.forEach((wk, i) => wk.tasks.forEach(t => { TASK_WEEK[t.id] = i + 1; }));
+  MONTHS.forEach(m => m.checkpoints.forEach(([id]) => { CP_MONTH[id] = m; }));
+}
+function planWeekOf(dateStr) {
+  if (!state.settings.start) return 0;
+  const d = dayDiff(state.settings.start, dateStr);
+  return d < 0 ? 0 : Math.floor(d / 7) + 1;
+}
+const currentWeek = () => Math.min(planWeekOf(todayStr()), TOTAL_WEEKS + 1); // 0 = not started, 27 = finished
+const clampWeek = w => clamp(w, 1, TOTAL_WEEKS);
+function weekRange(w) { const s = addDays(parseYmd(state.settings.start), 7 * (w - 1)); return [ymd(s), ymd(addDays(s, 6))]; }
+const monthOfWeek = w => MONTHS.find(m => m.weeks.includes(w)) || MONTHS[MONTHS.length - 1];
+
+function weekStats(w) {
+  const ts = WEEKS[w - 1].tasks.filter(t => !t.opt);
+  const done = ts.filter(t => state.tasks[t.id]).length;
+  return { done, total: ts.length, pct: ts.length ? done / ts.length : 0 };
+}
+function monthStats(m) {
+  let done = 0, total = 0;
+  m.weeks.forEach(w => { const s = weekStats(w); done += s.done; total += s.total; });
+  m.checkpoints.forEach(([id]) => { total++; if (state.tasks[id]) done++; });
+  return { done, total, pct: total ? done / total : 0 };
+}
+function overallStats() {
+  let done = 0, total = 0;
+  MONTHS.forEach(m => { const s = monthStats(m); done += s.done; total += s.total; });
+  return { done, total, pct: total ? done / total : 0 };
+}
+const checkpointsDone = m => m.checkpoints.every(([id]) => state.tasks[id]);
+
+/* ---------- Log maths ---------- */
+const logActive = l => !!l && ((l.minutes || 0) > 0 || (l.dsa || 0) > 0 || !!l.min);
+function streak() {
+  let s = todayStr();
+  if (!logActive(state.logs[s])) s = ymd(addDays(parseYmd(s), -1));
+  let n = 0;
+  while (logActive(state.logs[s])) { n++; s = ymd(addDays(parseYmd(s), -1)); }
+  return n;
+}
+function bestStreak() {
+  const days = Object.keys(state.logs).filter(d => logActive(state.logs[d])).sort();
+  let best = 0, cur = 0, prev = null;
+  for (const d of days) { cur = prev && dayDiff(prev, d) === 1 ? cur + 1 : 1; best = Math.max(best, cur); prev = d; }
+  return best;
+}
+function weekLogStats(w) {
+  if (!state.settings.start || w < 1 || w > TOTAL_WEEKS) return { minutes: 0, dsa: 0, days: 0 };
+  const [a] = weekRange(w); let minutes = 0, dsa = 0, days = 0;
+  for (let i = 0; i < 7; i++) {
+    const l = state.logs[ymd(addDays(parseYmd(a), i))];
+    if (l) { minutes += l.minutes || 0; dsa += l.dsa || 0; if (logActive(l)) days++; }
+  }
+  return { minutes, dsa, days };
+}
+const totalDsa = () => Object.values(state.logs).reduce((s, l) => s + (l.dsa || 0), 0) + (Number(state.settings.dsaOffset) || 0);
+
+/* ---------- Mutations ---------- */
+function setTask(id, done) {
+  const w = TASK_WEEK[id]; const m = CP_MONTH[id];
+  const before = w ? weekStats(w) : null;
+  if (done) state.tasks[id] = nowIso(); else delete state.tasks[id];
+  saveLocal(); Cloud.queue("task:" + id);
+  if (w && done) {
+    const after = weekStats(w);
+    if (before.done < before.total && after.done === after.total) { ui.pop = w; toast(`Week ${w} complete. That's real progress.`); }
+  }
+  if (m && done && checkpointsDone(m)) toast(`Month ${m.n} checkpoint reached. Take a moment to notice it.`);
+}
+function saveLog(date, data) {
+  const l = {
+    minutes: clamp(parseInt(data.minutes, 10) || 0, 0, 1440),
+    dsa: clamp(parseInt(data.dsa, 10) || 0, 0, 200),
+    min: !!data.min,
+    note: String(data.note || "").slice(0, 1000).trim(),
+    updated_at: nowIso()
+  };
+  if (!logActive(l) && !l.note) delete state.logs[date]; else state.logs[date] = l;
+  saveLocal(); Cloud.queue("log:" + date);
+}
+function saveReview(w, note) {
+  note = String(note || "").slice(0, 4000).trim();
+  if (note) state.reviews[String(w)] = { note, updated_at: nowIso() }; else delete state.reviews[String(w)];
+  saveLocal(); Cloud.queue("review:" + w);
+}
+function saveSettings(patch) {
+  state.settings = { ...state.settings, ...patch, updated_at: nowIso() };
+  saveLocal(); Cloud.queue("settings");
+}
+
+/* ---------- Cloud sync (Supabase) ---------- */
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    if (window.supabase && window.supabase.createClient) return resolve();
+    const s = document.createElement("script");
+    s.src = src; s.async = true; s.onload = () => resolve(); s.onerror = () => reject(new Error("script"));
+    document.head.appendChild(s);
+  });
+}
+function friendlyError(e) {
+  const msg = String((e && (e.message || e.error_description)) || e || "");
+  if (/failed to fetch|networkerror|load failed/i.test(msg)) return "Can't reach Supabase. Check your internet connection and the project URL.";
+  if (/invalid login credentials/i.test(msg)) return "Email or password is incorrect.";
+  if (/email not confirmed/i.test(msg)) return "Confirm your email using the link Supabase sent, then sign in.";
+  if (/does not exist|could not find the table|schema cache/i.test(msg)) return "The tables weren't found. Run schema.sql in the Supabase SQL editor.";
+  if (/invalid api key|jwt|apikey|no api key/i.test(msg)) return "The project key looks wrong. Copy the anon or publishable key again.";
+  if (/user already registered/i.test(msg)) return "An account with this email already exists. Sign in instead.";
+  if (/signups? not allowed|signup.*disabled/i.test(msg)) return "New sign-ups are turned off for this project. Sign in with your existing account.";
+  if (/should be different/i.test(msg)) return "Choose a password that's different from your current one.";
+  if (/rate limit|too many/i.test(msg)) return "Too many attempts. Wait a minute, then try again.";
+  return msg || "Something went wrong while syncing.";
+}
+function isSecretKey(k) {
+  if (/^sb_secret_/.test(k)) return true;
+  try {
+    const seg = k.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
+    return JSON.parse(atob(seg + "=".repeat((4 - seg.length % 4) % 4))).role === "service_role";
+  } catch (e) { return false; }
+}
+const splitKey = k => { const i = k.indexOf(":"); return i < 0 ? [k, ""] : [k.slice(0, i), k.slice(i + 1)]; };
+const fromSettingsRow = r => ({ name: r.display_name || "", start: r.start_date || "", target: r.weekly_target_hours || 20, dsaOffset: r.dsa_offset || 0, updated_at: r.updated_at });
+
+const Cloud = {
+  client: null, session: null, status: "local", message: "", lastSync: 0, _lock: Promise.resolve(), _t: null,
+  config() {
+    if (CLOUD_CONFIG.url && CLOUD_CONFIG.key) return { url: CLOUD_CONFIG.url, key: CLOUD_CONFIG.key, source: "file" };
+    return Store.get(CLOUD_KEY) || { url: "", key: "" };
+  },
+  configured() { const c = this.config(); return !!(c.url && c.key); },
+  uid() { return this.session && this.session.user ? this.session.user.id : null; },
+  setStatus(s, msg = "") {
+    this.status = s; this.message = msg; renderSync();
+    const typing = document.activeElement && document.activeElement.matches("input, textarea");
+    if ((isLocked() || parseRoute().name === "settings") && !typing) render();
+  },
+  run(fn) { const p = this._lock.then(fn, fn); this._lock = p.catch(() => {}); return p; },
+
+  async init() {
+    this.client = null; this.session = null;
+    if (!Store.persistent) { this.setStatus("preview"); return; }
+    if (!this.configured()) { this.setStatus("local"); return; }
+    this.setStatus("connecting");
+    try { await loadScript(SUPABASE_CDN); }
+    catch (e) { this.setStatus("error", "Couldn't load the sync library. Check your connection and reload the page."); return; }
+    try {
+      const c = this.config();
+      if (/type=recovery/.test(location.hash)) ui.recovery = true;
+      this.client = window.supabase.createClient(c.url.trim(), c.key.trim());
+      this.client.auth.onAuthStateChange((event, session) => {
+        this.session = session;
+        if (event === "PASSWORD_RECOVERY") { ui.recovery = true; setTimeout(render, 0); }
+        else if (event === "SIGNED_OUT") { this.setStatus("signedout"); setTimeout(render, 0); }
+        else if (event === "SIGNED_IN" && Date.now() - this.lastSync > 5000) setTimeout(() => this.fullSync(), 0);
+      });
+      const { data, error } = await this.client.auth.getSession();
+      if (error) throw error;
+      this.session = data.session;
+      if (this.session) await this.fullSync(); else this.setStatus("signedout");
+    } catch (e) { this.setStatus("error", friendlyError(e)); }
+    render();
+  },
+  async signIn(email, password) {
+    const { data, error } = await this.client.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    this.session = data.session; await this.fullSync();
+  },
+  async signUp(email, password) {
+    const { data, error } = await this.client.auth.signUp({ email, password, options: { emailRedirectTo: location.origin + location.pathname } });
+    if (error) throw error;
+    if (data.session) { this.session = data.session; await this.fullSync(); return "in"; }
+    return "confirm";
+  },
+  async signOut() {
+    if (this.client) { try { await this.client.auth.signOut(); } catch (e) { /* ignore */ } }
+    this.session = null;
+    state = defaultState(); saveLocal();   // signing out removes your progress from this device; the cloud copy stays
+    ui.offline = false; this.message = "";
+    this.setStatus("signedout"); render();
+  },
+  async changePassword(password) {
+    const { error } = await this.client.auth.updateUser({ password });
+    if (error) throw error;
+  },
+  async resetPassword(email) {
+    const { error } = await this.client.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname });
+    if (error) throw error;
+  },
+
+  queue(key) {
+    if (!state.pending.includes(key)) state.pending.push(key);
+    saveLocal();
+    if (!this.client || !this.session) return;
+    clearTimeout(this._t);
+    this._t = setTimeout(() => { this.flushPending(); }, 700);
+  },
+  flushPending() {
+    return this.run(async () => {
+      if (!this.client || !this.session || !state.pending.length) return;
+      this.setStatus("syncing");
+      try { await this._flush(); this.lastSync = Date.now(); this.setStatus("synced"); }
+      catch (e) { this.setStatus(navigator.onLine ? "error" : "offline", friendlyError(e)); }
+    });
+  },
+  async _flush() {
+    while (state.pending.length) { await this._push(state.pending[0]); state.pending.shift(); saveLocal(); }
+  },
+  async _push(key) {
+    const [type, id] = splitKey(key); const uid = this.uid(); const db = this.client; let res = null;
+    if (type === "task") {
+      const at = state.tasks[id];
+      res = at ? await db.from("task_progress").upsert({ user_id: uid, task_id: id, completed_at: at }, { onConflict: "user_id,task_id" })
+               : await db.from("task_progress").delete().eq("user_id", uid).eq("task_id", id);
+    } else if (type === "log") {
+      const l = state.logs[id];
+      res = l ? await db.from("daily_logs").upsert({ user_id: uid, log_date: id, minutes: l.minutes || 0, dsa_solved: l.dsa || 0, minimum_day: !!l.min, note: l.note || null, updated_at: l.updated_at || nowIso() }, { onConflict: "user_id,log_date" })
+              : await db.from("daily_logs").delete().eq("user_id", uid).eq("log_date", id);
+    } else if (type === "review") {
+      const r = state.reviews[id]; const n = Number(id);
+      res = r ? await db.from("week_reviews").upsert({ user_id: uid, week_no: n, note: r.note, updated_at: r.updated_at || nowIso() }, { onConflict: "user_id,week_no" })
+              : await db.from("week_reviews").delete().eq("user_id", uid).eq("week_no", n);
+    } else if (type === "settings") {
+      const s = state.settings;
+      res = await db.from("settings").upsert({ user_id: uid, display_name: s.name || null, start_date: s.start || null, weekly_target_hours: Number(s.target) || 20, dsa_offset: Number(s.dsaOffset) || 0, updated_at: s.updated_at || nowIso() }, { onConflict: "user_id" });
+    }
+    if (res && res.error) throw res.error;
+  },
+
+  fullSync() {
+    return this.run(async () => {
+      if (!this.client || !this.session) return;
+      this.setStatus("syncing");
+      try {
+        const uid = this.uid(); const db = this.client;
+        const sameUser = state.meta.syncedUser === uid;
+        if (sameUser) await this._flush();
+        const [s, t, l, r] = await Promise.all([
+          db.from("settings").select("*").eq("user_id", uid).maybeSingle(),
+          db.from("task_progress").select("task_id,completed_at").eq("user_id", uid),
+          db.from("daily_logs").select("*").eq("user_id", uid),
+          db.from("week_reviews").select("*").eq("user_id", uid)
+        ]);
+        for (const x of [s, t, l, r]) if (x.error) throw x.error;
+        const remote = {
+          settings: s.data ? fromSettingsRow(s.data) : null,
+          tasks: Object.fromEntries((t.data || []).map(x => [x.task_id, x.completed_at])),
+          logs: Object.fromEntries((l.data || []).map(x => [x.log_date, { minutes: x.minutes || 0, dsa: x.dsa_solved || 0, min: !!x.minimum_day, note: x.note || "", updated_at: x.updated_at }])),
+          reviews: Object.fromEntries((r.data || []).map(x => [String(x.week_no), { note: x.note, updated_at: x.updated_at }]))
+        };
+        const remoteEmpty = !Object.keys(remote.tasks).length && !Object.keys(remote.logs).length && !Object.keys(remote.reviews).length;
+        const localHasData = Object.keys(state.tasks).length || Object.keys(state.logs).length || Object.keys(state.reviews).length;
+        if (sameUser && !(remoteEmpty && localHasData)) {
+          if (remote.settings && remote.settings.start) state.settings = { ...state.settings, ...remote.settings };
+          else if (state.settings.start) state.pending.push("settings");
+          state.tasks = remote.tasks; state.logs = remote.logs; state.reviews = remote.reviews;
+        } else {
+          state.pending = mergeRemote(remote);
+        }
+        state.meta.syncedUser = uid; saveLocal();
+        await this._flush();
+        this.lastSync = Date.now();
+        this.setStatus("synced");
+        const typing = document.activeElement && document.activeElement.matches("input, textarea");
+        if (!typing) render();
+      } catch (e) { this.setStatus(navigator.onLine ? "error" : "offline", friendlyError(e)); }
+    });
+  }
+};
+
+/* First sync on a device: keep everything from both sides, then upload what the cloud is missing. */
+function mergeRemote(remote) {
+  const push = [];
+  const ms = x => (x ? Date.parse(x) : 0) || 0;
+  const newer = (a, b) => ms(a) > ms(b);
+  if (remote.settings && remote.settings.start && (!state.settings.start || !newer(state.settings.updated_at, remote.settings.updated_at))) {
+    state.settings = { ...state.settings, ...remote.settings };
+  } else if (state.settings.start) push.push("settings");
+  for (const [id, at] of Object.entries(remote.tasks)) {
+    if (!state.tasks[id] || ms(at) < ms(state.tasks[id])) state.tasks[id] = at;
+  }
+  for (const id of Object.keys(state.tasks)) if (remote.tasks[id] !== state.tasks[id]) push.push("task:" + id);
+  for (const [d, l] of Object.entries(remote.logs)) {
+    if (!state.logs[d] || newer(l.updated_at, state.logs[d].updated_at)) state.logs[d] = l;
+  }
+  for (const d of Object.keys(state.logs)) if (!remote.logs[d] || remote.logs[d] !== state.logs[d]) push.push("log:" + d);
+  for (const [w, rv] of Object.entries(remote.reviews)) {
+    if (!state.reviews[w] || newer(rv.updated_at, state.reviews[w].updated_at)) state.reviews[w] = rv;
+  }
+  for (const w of Object.keys(state.reviews)) if (!remote.reviews[w] || remote.reviews[w] !== state.reviews[w]) push.push("review:" + w);
+  return push;
+}
+
+/* ---------- Rendering ---------- */
+function parseRoute() {
+  const h = location.hash.replace(/^#\/?/, "");
+  const [name, arg] = h.split("/");
+  return { name: name || "dashboard", arg: arg ? decodeURIComponent(arg) : "" };
+}
+const SYNC_TEXT = {
+  local: "Saved on this device", preview: "Preview: progress isn't saved", connecting: "Connecting",
+  signedout: "Sign in to sync", syncing: "Syncing", synced: "Synced", offline: "Offline, saved here", error: "Sync problem"
+};
+function renderSync() {
+  const el = $("#sync"); if (!el) return;
+  el.dataset.s = Cloud.status;
+  el.querySelector(".t").textContent = SYNC_TEXT[Cloud.status] || Cloud.status;
+  el.title = Cloud.message || "";
+}
+function renderHeader() {
+  const st = $("#status"); const s = state.settings; let text = "Not started yet";
+  if (document.body.classList.contains("locked")) text = "Sign in to continue";
+  else if (s.start) {
+    const cw = currentWeek();
+    if (cw === 0) text = `Starts on ${fmtDateLong(s.start)}`;
+    else if (cw > TOTAL_WEEKS) text = `${TOTAL_WEEKS}-week plan complete`;
+    else text = `Week ${cw} of ${TOTAL_WEEKS}, month ${monthOfWeek(cw).n}${s.name ? `. Keep going, ${s.name}.` : ""}`;
+  }
+  st.textContent = text;
+  let banner = "";
+  if (!Store.persistent) banner = "This preview can't save progress. Host the site (see the README) and your progress will be kept.";
+  else if (ui.offline) banner = `Working offline on this device. Changes are kept here; <a href="#/settings">sign in</a> when you're connected to sync them.`;
+  else if (!Cloud.configured() && !document.body.classList.contains("locked")) banner = `Progress is saved in this browser only. <a href="#/settings">Set up your login and database</a> to use it on any device.`;
+  $("#banner").innerHTML = banner ? `<p class="banner">${banner}</p>` : "";
+}
+function setActiveNav(name) {
+  document.querySelectorAll(".tabs a").forEach(a => {
+    if (a.dataset.route === name) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+  });
+}
+function isLocked() { return Store.persistent && Cloud.configured() && !Cloud.session && !ui.offline; }
+function render() {
+  const locked = ui.recovery || isLocked();
+  document.body.classList.toggle("locked", locked);
+  if (locked) {
+    $("#main").innerHTML = ui.recovery && Cloud.session ? viewRecovery() : viewLogin();
+    renderHeader(); renderSync();
+    return;
+  }
+  const route = parseRoute();
+  setActiveNav(route.name);
+  const views = { week: viewWeek, roadmap: viewRoadmap, log: viewLog, resources: viewResources, settings: viewSettings };
+  $("#main").innerHTML = (views[route.name] || viewDashboard)(route.arg);
+  renderHeader(); renderSync();
+  const j = $(".journey"), cur = $(".node.current");
+  if (j && cur && j.scrollWidth > j.clientWidth) {
+    j.scrollLeft += cur.getBoundingClientRect().left - j.getBoundingClientRect().left - j.clientWidth / 2;
+  }
+  if (ui.pop) setTimeout(() => { ui.pop = null; }, 800);
+}
+function rerenderKeepFocus(id) {
+  render();
+  const el = document.querySelector(`.task-chk[data-id="${CSS.escape(id)}"]`);
+  if (el) el.focus({ preventScroll: true });
+}
+
+/* ---------- Pieces ---------- */
+function resChip(r) {
+  return `<a class="chip" href="${esc(r.u)}" target="_blank" rel="noopener noreferrer"><span class="kind">${esc(r.k)}</span>${esc(r.t)}</a>`;
+}
+function taskHTML(t, hideTrack) {
+  const done = !!state.tasks[t.id];
+  const res = (t.r || []).map(k => RES[k]).filter(Boolean);
+  return `<li class="task ${done ? "is-done" : ""}">
+    <label class="task-main">
+      <input type="checkbox" class="task-chk" data-id="${t.id}" ${done ? "checked" : ""}>
+      <span class="box" aria-hidden="true"></span>
+      <span class="task-text">
+        <span class="task-title">${esc(t.t)}</span>
+        ${hideTrack && !t.opt ? "" : `<span class="task-meta">${hideTrack ? "" : `<span class="track t-${t.tr}">${TRACKS[t.tr].name}</span>`}${t.opt ? `<span class="opt">Optional</span>` : ""}</span>`}
+        ${t.tip ? `<span class="tip">${esc(t.tip)}</span>` : ""}
+      </span>
+    </label>
+    ${res.length ? `<div class="res">${res.map(resChip).join("")}</div>` : ""}
+  </li>`;
+}
+function cpHTML([id, t]) {
+  const done = !!state.tasks[id];
+  return `<li class="task ${done ? "is-done" : ""}">
+    <label class="task-main">
+      <input type="checkbox" class="task-chk" data-id="${id}" ${done ? "checked" : ""}>
+      <span class="box" aria-hidden="true"></span>
+      <span class="task-text"><span class="task-title">${esc(t)}</span></span>
+    </label></li>`;
+}
+function journeyHTML(cw) {
+  return `<div class="journey" aria-label="Your ${TOTAL_WEEKS} weeks">` + MONTHS.map(m => `
+    <div class="mg" style="--w:${m.weeks.length}">
+      <div class="mg-head"><b>Month ${m.n}</b> ${esc(m.short)}</div>
+      <div class="mg-track">
+        ${m.weeks.map(w => {
+          const s = weekStats(w);
+          const cls = [s.total && s.done === s.total ? "done" : "", w === cw ? "current" : "", ui.pop === w ? "pop" : ""].join(" ");
+          return `<a class="node ${cls}" href="#/week/${w}" style="--p:${Math.round(s.pct * 100)}" aria-label="Week ${w}: ${s.done} of ${s.total} tasks done${w === cw ? ", this week" : ""}"><i></i><small aria-hidden="true">${w}</small></a>`;
+        }).join("")}
+        <span class="flag ${checkpointsDone(m) ? "done" : ""}" role="img" aria-label="Month ${m.n} checkpoint ${checkpointsDone(m) ? "reached" : "not reached yet"}"></span>
+      </div>
+    </div>`).join("") + `</div>`;
+}
+function heatHTML() {
+  const start = parseYmd(state.settings.start); const today = todayStr(); let cols = "";
+  for (let w = 1; w <= TOTAL_WEEKS; w++) {
+    let cells = "";
+    for (let d = 0; d < 7; d++) {
+      const ds = ymd(addDays(start, 7 * (w - 1) + d)); const l = state.logs[ds];
+      const lvl = !logActive(l) ? 0 : l.minutes >= 180 ? 4 : l.minutes >= 120 ? 3 : l.minutes >= 60 ? 2 : 1;
+      const label = `${fmtDate(ds)}: ${l ? `${fmtMin(l.minutes)}, ${l.dsa || 0} problems` : "no log"}`;
+      cells += `<span class="hc l${lvl}${ds > today ? " future" : ""}${ds === today ? " today" : ""}" title="${esc(label)}"></span>`;
+    }
+    cols += `<div class="hcol">${cells}</div>`;
+  }
+  return `<div class="heat" role="img" aria-label="Study activity for each day of the plan">${cols}</div>
+    <div class="legend" aria-hidden="true">Less<span class="hc"></span><span class="hc l1"></span><span class="hc l2"></span><span class="hc l3"></span><span class="hc l4"></span><span class="end">More</span></div>`;
+}
+function barsHTML(cw) {
+  const last = clampWeek(cw || 1); const first = Math.max(1, last - 7); const target = Number(state.settings.target) || 20;
+  const weeks = []; for (let w = first; w <= last; w++) weeks.push({ w, h: weekLogStats(w).minutes / 60 });
+  const max = Math.max(target * 1.25, ...weeks.map(x => x.h), 1);
+  return `<div class="plot" style="--t:${(target / max * 100).toFixed(1)}%" role="img" aria-label="Study hours for the last ${weeks.length} weeks against a ${target}-hour target">
+      <div class="tline"></div>
+      ${weeks.map(x => `<div class="bar ${x.w === cw ? "cur" : ""}" style="height:${(x.h / max * 100).toFixed(1)}%" title="Week ${x.w}: ${round1(x.h)} hours"></div>`).join("")}
+    </div>
+    <div class="xlab" aria-hidden="true">${weeks.map(x => `<span>W${x.w}</span>`).join("")}</div>
+    <p class="chart-note">Dashed line: your ${target}-hour weekly target. This week is in marigold.</p>`;
+}
+function logFormHTML(dateStr, compact) {
+  const l = state.logs[dateStr] || {};
+  return `<form data-form="log" class="logform">
+    ${compact ? `<input type="hidden" name="date" value="${dateStr}">` : `<label class="field"><span>Date</span><input type="date" name="date" value="${dateStr}" max="${todayStr()}" required></label>`}
+    <div class="field" role="group" aria-labelledby="min-l-${compact ? "c" : "f"}"><span id="min-l-${compact ? "c" : "f"}">Minutes studied</span>
+      <div class="quick">${[30, 60, 90, 120, 180].map(m => `<button type="button" class="q ${l.minutes === m ? "on" : ""}" data-act="qmin" data-min="${m}">${m < 60 ? m + "m" : (m / 60) + "h"}</button>`).join("")}</div>
+      <input type="number" name="minutes" min="0" max="1440" step="5" inputmode="numeric" value="${l.minutes ?? ""}" aria-label="Minutes studied">
+    </div>
+    <label class="field"><span>DSA problems solved</span><input type="number" name="dsa" min="0" max="200" inputmode="numeric" value="${l.dsa ?? ""}"></label>
+    <label class="check-field"><input type="checkbox" name="min" ${l.min ? "checked" : ""}><span>Minimum day (just the DSA hour)</span></label>
+    <label class="field"><span>Note, optional</span><input type="text" name="note" maxlength="1000" value="${esc(l.note || "")}" placeholder="What did you learn?"></label>
+    <button class="btn primary" type="submit">${state.logs[dateStr] ? "Update log" : "Save log"}</button>
+  </form>`;
+}
+function nudgeText() {
+  const t = todayStr(); const any = Object.keys(state.logs).length > 0; const st = streak();
+  if (!any) return "Start with today's first block. Thirty focused minutes is a real start.";
+  if (logActive(state.logs[t])) return st >= 3 ? `${st} days in a row. Keep it steady, not perfect.` : "Today is logged. Rest well; consistency is the whole game.";
+  const y = ymd(addDays(parseYmd(t), -1));
+  if (!logActive(state.logs[y])) return "Missed a day or two? That's normal. A minimum day today puts you back on track.";
+  return NUDGES[dayOfYear() % NUDGES.length];
+}
+
+/* ---------- Views ---------- */
+function viewLogin() {
+  if (Cloud.status === "connecting" || (Cloud.status === "local" && Cloud.configured())) {
+    return `<section class="login"><p class="muted">Connecting to your account.</p></section>`;
+  }
+  const unreachable = !Cloud.client || Cloud.status === "error" || Cloud.status === "offline";
+  const offlineLink = `<button type="button" class="linkbtn" data-act="go-offline">Can't connect right now? Work offline on this device</button>`;
+  if (!Cloud.client) {
+    return `<section class="login">
+      <h1 class="page-h">Sign in</h1>
+      <p class="err" style="margin:8px 0 16px">${esc(Cloud.message || "Couldn't reach your database.")}</p>
+      <div class="row"><button type="button" class="btn primary" data-act="retry-cloud">Try again</button></div>
+      <div class="login-links">${offlineLink}</div>
+    </section>`;
+  }
+  const up = ui.authMode === "up";
+  return `<section class="login">
+    <h1 class="page-h">${up ? "Create your account" : "Sign in"}</h1>
+    <p class="week-sub">${up ? "Do this once. Afterwards, turn off new sign-ups in Supabase so nobody else can register (see the README)." : "Your progress is stored in your own database and syncs to every device you sign in on."}</p>
+    <form data-form="auth" class="panel">
+      <label class="field"><span>Email</span><input type="email" name="email" required autocomplete="email" value="${esc(ui.lastEmail)}"></label>
+      <label class="field"><span>Password${up ? ", at least 8 characters" : ""}</span><input type="password" name="password" required minlength="${up ? 8 : 6}" autocomplete="${up ? "new-password" : "current-password"}"></label>
+      ${up ? `<label class="field"><span>Confirm password</span><input type="password" name="password2" required minlength="8" autocomplete="new-password"></label>` : ""}
+      <button class="btn primary" type="submit" value="${up ? "up" : "in"}">${up ? "Create account" : "Sign in"}</button>
+      ${Cloud.message ? `<p class="err" style="margin-top:12px">${esc(Cloud.message)}</p>` : ""}
+    </form>
+    <div class="login-links">
+      ${up ? `<button type="button" class="linkbtn" data-act="auth-mode" data-mode="in">I already have an account</button>`
+           : `<button type="button" class="linkbtn" data-act="forgot">Forgot your password?</button><button type="button" class="linkbtn" data-act="auth-mode" data-mode="up">First time here? Create your account</button>`}
+      ${unreachable ? offlineLink : ""}
+    </div>
+  </section>`;
+}
+function viewRecovery() {
+  return `<section class="login">
+    <h1 class="page-h">Choose a new password</h1>
+    <p class="week-sub">You opened a password reset link. Set a new password to continue.</p>
+    <form data-form="newpass" class="panel">
+      <label class="field"><span>New password, at least 8 characters</span><input type="password" name="password" required minlength="8" autocomplete="new-password"></label>
+      <label class="field"><span>Confirm new password</span><input type="password" name="password2" required minlength="8" autocomplete="new-password"></label>
+      <button class="btn primary" type="submit">Save new password</button>
+      ${Cloud.message ? `<p class="err" style="margin-top:12px">${esc(Cloud.message)}</p>` : ""}
+    </form>
+  </section>`;
+}
+function viewOnboarding() {
+  return `<section class="onboard">
+    <h1 class="week-head">From SAP to AI Engineer, one week at a time</h1>
+    <p class="lead">Set the day you started, or will start. The tracker works out which week you're in, shows that week's tasks with their resources, and counts the days you show up.</p>
+    <form data-form="start" class="panel">
+      <label class="field"><span>Your name, optional</span><input type="text" name="name" autocomplete="given-name" value="${esc(state.settings.name)}"></label>
+      <label class="field"><span>Start date</span><input type="date" name="start" value="${todayStr()}" required></label>
+      <label class="field"><span>Weekly study target in hours. For top companies, 20 to 25 works well.</span><input type="number" name="target" min="1" max="80" value="${state.settings.target || 20}"></label>
+      <button class="btn primary" type="submit">Start my plan</button>
+      ${Cloud.configured() ? "" : `<p class="muted small" style="margin-top:14px">To sign in from any device, set up your login and database in Settings after you start. It takes about 10 minutes.</p>`}
+    </form>
+  </section>`;
+}
+
+function viewDashboard() {
+  if (!state.settings.start) return viewOnboarding();
+  const cw = currentWeek(); const w = clampWeek(cw);
+  const wk = WEEKS[w - 1]; const m = monthOfWeek(w); const ws = weekStats(w); const [a, b] = weekRange(w);
+  let head, sub;
+  if (cw === 0) { const d = dayDiff(todayStr(), state.settings.start); head = `Your plan starts in ${d} ${d === 1 ? "day" : "days"}`; sub = `Week 1 begins on ${fmtDateLong(state.settings.start)}: ${wk.focus}.`; }
+  else if (cw > TOTAL_WEEKS) { head = `You finished the ${TOTAL_WEEKS}-week plan`; sub = "Keep logging practice. Next comes the second pass of A2Z and more interviews."; }
+  else { head = `Week ${w}: ${wk.focus}`; sub = `Month ${m.n}: ${m.title}. ${fmtDate(a)} to ${fmtDate(b)}. ${ws.done} of ${ws.total} tasks done.`; }
+
+  const st = streak(), best = bestStreak(); const wl = weekLogStats(cw);
+  const target = Number(state.settings.target) || 20; const hrs = wl.minutes / 60;
+  const dsa = totalDsa(); const o = overallStats();
+  const review = fmtDateLong(ymd(addDays(parseYmd(state.settings.start), 27)));
+
+  return `
+  ${journeyHTML(cw)}
+  <p class="here">${cw >= 1 && cw <= TOTAL_WEEKS ? `You're in <b>week ${cw}</b> of ${TOTAL_WEEKS}. ` : ""}Overall, ${o.done} of ${o.total} tasks and checkpoints done.</p>
+  <h1 class="week-head">${esc(head)}</h1>
+  <p class="week-sub">${esc(sub)}</p>
+  ${cw <= TOTAL_WEEKS ? meter(ws.pct) : meter(o.pct)}
+
+  <div class="dash">
+    <section aria-labelledby="tw-h">
+      <h2 id="tw-h">${cw === 0 ? "Week 1 tasks" : "This week's tasks"}</h2>
+      <ul class="tasks">${wk.tasks.map(t => taskHTML(t)).join("")}</ul>
+      <a class="more" href="#/week/${w}">Open week ${w} for your weekly review</a>
+    </section>
+    <aside class="stack">
+      <div class="panel">
+        <h2>Today, ${esc(fmtDateLong(todayStr()))}</h2>
+        ${logFormHTML(todayStr(), true)}
+        <div class="stats">
+          <div class="stat"><span>Days in a row</span><b>${st}</b><small>Best so far: ${best}</small></div>
+          <div class="stat"><span>Active days this week</span><b>${wl.days} of 7</b></div>
+          <div class="stat"><span>Hours this week</span><b>${round1(hrs)} of ${target}</b>${meter(hrs / target, "thin")}</div>
+          <div class="stat"><span>DSA problems solved</span><b>${dsa}</b><small>Month ${m.n} target: about ${m.dsaTarget}</small></div>
+        </div>
+        <p class="nudge">${esc(nudgeText())}</p>
+      </div>
+    </aside>
+  </div>
+
+  <div class="lower">
+    <section aria-labelledby="cp-h">
+      <h2 id="cp-h">Month ${m.n} checkpoint</h2>
+      <p class="muted small" style="margin-bottom:12px">${esc(m.goal)}</p>
+      <ul class="tasks">${m.checkpoints.map(cpHTML).join("")}</ul>
+    </section>
+    <aside class="note-card" aria-labelledby="dec-h">
+      <h2 id="dec-h">Decisions you've already made</h2>
+      <p>Review these on ${esc(review)}, not before. Until then, this list is your answer to any doubt.</p>
+      <dl>${DECISIONS.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
+    </aside>
+  </div>
+
+  <div class="lower">
+    <section aria-labelledby="heat-h">
+      <h2 id="heat-h">Consistency</h2>
+      <p class="muted small" style="margin-bottom:12px">Each square is a day of your plan, one column per week. Darker means more study time.</p>
+      ${heatHTML()}
+    </section>
+    <section aria-labelledby="bars-h">
+      <h2 id="bars-h">Hours per week</h2>
+      ${barsHTML(cw)}
+    </section>
+  </div>`;
+}
+
+function viewWeek(arg) {
+  if (!state.settings.start) return viewOnboarding();
+  const cw = currentWeek();
+  const w = arg ? clampWeek(parseInt(arg, 10) || 1) : clampWeek(cw);
+  const wk = WEEKS[w - 1], m = monthOfWeek(w), s = weekStats(w); const [a, b] = weekRange(w);
+  const groups = TRACK_ORDER.map(tr => ({ tr, items: wk.tasks.filter(t => t.tr === tr) })).filter(g => g.items.length);
+  const review = (state.reviews[String(w)] || {}).note || ""; const wl = weekLogStats(w);
+  return `
+  <div class="week-nav">
+    <a class="btn quiet sm" href="#/week/${Math.max(1, w - 1)}" ${w === 1 ? 'aria-disabled="true" tabindex="-1"' : ""}>Previous week</a>
+    <a class="btn quiet sm" href="#/week/${Math.min(TOTAL_WEEKS, w + 1)}" ${w === TOTAL_WEEKS ? 'aria-disabled="true" tabindex="-1"' : ""}>Next week</a>
+    ${cw >= 1 && cw <= TOTAL_WEEKS && w !== cw ? `<a class="btn quiet sm" href="#/week/${cw}">Back to this week</a>` : ""}
+  </div>
+  <h1 class="week-head">Week ${w}: ${esc(wk.focus)}</h1>
+  <p class="week-sub">${fmtDate(a)} to ${fmtDate(b)}${w === cw ? ", this week" : ""}. Month ${m.n}: ${esc(m.title)}. ${s.done} of ${s.total} tasks done.</p>
+  ${meter(s.pct)}
+  <div class="dash">
+    <div>${groups.map(g => `<section class="group"><h2 class="group-h"><span class="dot t-${g.tr}" aria-hidden="true"></span>${TRACKS[g.tr].name}</h2><ul class="tasks">${g.items.map(t => taskHTML(t, true)).join("")}</ul></section>`).join("")}</div>
+    <aside>
+      <div class="panel">
+        <h2>Weekly review</h2>
+        <p class="muted">Every Sunday: redo the DSA problems you failed, check your month checkpoint, and plan next week.</p>
+        <form data-form="review" data-week="${w}">
+          <label class="field"><span>What went well, and what will you adjust?</span><textarea name="note" rows="7" maxlength="4000">${esc(review)}</textarea></label>
+          <button class="btn primary" type="submit">Save review</button>
+        </form>
+      </div>
+      <p class="week-log">In week ${w}: ${fmtMin(wl.minutes)} studied, ${wl.dsa} DSA ${wl.dsa === 1 ? "problem" : "problems"}, ${wl.days} active ${wl.days === 1 ? "day" : "days"}.</p>
+    </aside>
+  </div>`;
+}
+
+function viewRoadmap() {
+  const cw = currentWeek(); const o = overallStats();
+  return `
+  <h1 class="page-h">Your ${TOTAL_WEEKS}-week roadmap</h1>
+  <p class="week-sub">${o.done} of ${o.total} tasks and checkpoints done.</p>
+  ${meter(o.pct)}
+  <ul class="rules">
+    <li>Build, don't binge: for every hour of watching, spend an hour typing.</li>
+    <li>Primitives before frameworks: build it by hand once, then use a library.</li>
+    <li>Measure from day one: every AI feature gets a test set before it gets clever.</li>
+    <li>Every project shows a number, admits a failure, and has a demo someone can try.</li>
+    <li>DSA every day and projects every weekend. Top companies hire through strong interviews and referrals.</li>
+    <li>On hard days, do a minimum day: just the DSA hour. Every Sunday, write a short weekly review.</li>
+    <li>Behind schedule? The plan stretches; you don't quit.</li>
+  </ul>
+  ${MONTHS.map(m => {
+    const ms = monthStats(m);
+    return `<section class="month" id="month-${m.n}">
+      <div class="month-h"><h2>Month ${m.n}: ${esc(m.title)}</h2><span class="muted small">${ms.done} of ${ms.total} done</span></div>
+      <p class="goal">${esc(m.goal)}</p>
+      ${meter(ms.pct, "thin")}
+      <ul class="weeks">${m.weeks.map(w => {
+        const s = weekStats(w);
+        return `<li><a class="wk ${w === cw ? "cur" : ""} ${s.total && s.done === s.total ? "full" : ""}" href="#/week/${w}">
+          <span class="n">Week ${w}</span><span class="f">${esc(WEEKS[w - 1].focus)}${w === cw ? ` <em>this week</em>` : ""}</span><span class="c">${s.done}/${s.total}</span></a></li>`;
+      }).join("")}</ul>
+      <h3 class="cp-h">Checkpoint</h3>
+      <ul class="tasks">${m.checkpoints.map(cpHTML).join("")}</ul>
+    </section>`;
+  }).join("")}`;
+}
+
+function viewLog(arg) {
+  const date = isYmd(arg) && arg <= todayStr() ? arg : todayStr();
+  const entries = Object.entries(state.logs).sort((x, y) => y[0].localeCompare(x[0]));
+  const totMin = entries.reduce((s, [, l]) => s + (l.minutes || 0), 0);
+  const active = entries.filter(([, l]) => logActive(l)).length;
+  return `
+  <h1 class="page-h">Daily log</h1>
+  <p class="week-sub">${fmtMin(totMin)} studied, ${totalDsa()} DSA problems and ${active} active days in total.</p>
+  <div class="dash">
+    <section aria-labelledby="hist-h">
+      <h2 id="hist-h">History</h2>
+      ${entries.length ? `<ul class="logs">${entries.map(([d, l]) => `<li class="log">
+          <span class="d">${esc(fmtDateLong(d))}</span>
+          <span class="b">${fmtMin(l.minutes)}, ${l.dsa || 0} ${(l.dsa || 0) === 1 ? "problem" : "problems"}${l.min ? ", minimum day" : ""}${l.note ? `<span class="n">${esc(l.note)}</span>` : ""}</span>
+          <span class="acts"><a class="btn quiet sm" href="#/log/${d}">Edit</a><button type="button" class="btn quiet sm" data-act="del-log" data-date="${d}">Delete</button></span>
+        </li>`).join("")}</ul>`
+        : `<p class="empty">No logs yet. Log today's study time here; even a minimum day counts.</p>`}
+    </section>
+    <aside><div class="panel"><h2>${date === todayStr() ? "Log today" : "Edit " + esc(fmtDateLong(date))}</h2>${logFormHTML(date, false)}</div></aside>
+  </div>`;
+}
+
+function resourceUsage() {
+  const used = {};
+  WEEKS.forEach((wk, i) => wk.tasks.forEach(t => (t.r || []).forEach(k => { (used[k] = used[k] || new Set()).add(i + 1); })));
+  return used;
+}
+function resListHTML() {
+  const q = ui.resQuery.trim().toLowerCase(); const used = resourceUsage();
+  const groups = AREAS.filter(a => ui.resArea === "all" || ui.resArea === a.id).map(a => ({
+    a, items: Object.entries(RES).filter(([, r]) => r.a === a.id && (!q || `${r.t} ${r.s} ${r.k}`.toLowerCase().includes(q)))
+  })).filter(g => g.items.length);
+  if (!groups.length) return `<p class="empty">No resources match "${esc(ui.resQuery)}". Try a shorter word.</p>`;
+  return groups.map(g => `<section class="res-group"><h2>${esc(g.a.name)}</h2><ul class="res-list">${g.items.map(([k, r]) => {
+    const wks = used[k] ? [...used[k]].sort((x, y) => x - y) : [];
+    return `<li class="res-item"><a href="${esc(r.u)}" target="_blank" rel="noopener noreferrer">${esc(r.t)}</a>
+      <p>${esc(r.k)}, ${esc(r.s)}. ${wks.length ? `Used in week${wks.length > 1 ? "s" : ""} ${wks.join(", ")}.` : "Extra resource for when you want more."}</p></li>`;
+  }).join("")}</ul></section>`).join("");
+}
+function viewResources() {
+  return `
+  <h1 class="page-h">Resources</h1>
+  <p class="week-sub">Every link in the plan, in one place. Videos are usually free on DeepLearning.AI; certificates and some graded labs need PRO.</p>
+  <div class="search"><label class="field"><span>Search resources</span><input type="search" id="res-q" value="${esc(ui.resQuery)}" placeholder="For example: RAG, FastAPI, graphs"></label></div>
+  <div class="filters" role="group" aria-label="Filter by area">
+    <button type="button" class="filter ${ui.resArea === "all" ? "on" : ""}" data-act="filter" data-area="all">All</button>
+    ${AREAS.map(a => `<button type="button" class="filter ${ui.resArea === a.id ? "on" : ""}" data-act="filter" data-area="${a.id}">${esc(a.name)}</button>`).join("")}
+  </div>
+  <div id="res-list">${resListHTML()}</div>`;
+}
+
+function cloudSectionHTML() {
+  const c = Cloud.config(); const fromFile = c.source === "file";
+  if (!Store.persistent) return `<p class="muted">This preview can't save data or sync. Host the site (see the README) to use sync.</p>`;
+  const setup = `
+    <p class="muted" style="margin-bottom:10px">Login is off, so your progress lives in this browser only. Connect a free Supabase database to sign in with your email and password from any device.</p>
+    <ol class="steps">
+      <li>Create a free project at supabase.com.</li>
+      <li>Open its SQL editor and run <code>supabase/schema.sql</code> from this site's files.</li>
+      <li>From the project's API settings, copy the project URL and the anon (publishable) key, and paste them below.</li>
+    </ol>`;
+  if (!Cloud.configured() || (ui.showCloudForm && !fromFile)) {
+    return `${setup}
+    <form data-form="cloud">
+      <label class="field"><span>Project URL</span><input type="url" name="url" required placeholder="https://your-project.supabase.co" value="${esc(fromFile ? "" : c.url)}"></label>
+      <label class="field"><span>Anon or publishable key</span><input type="text" name="key" required autocomplete="off" spellcheck="false" value="${esc(fromFile ? "" : c.key)}"></label>
+      <div class="row"><button class="btn primary" type="submit">Save and connect</button>${ui.showCloudForm ? `<button type="button" class="btn quiet" data-act="cancel-cloud">Cancel</button>` : ""}</div>
+    </form>`;
+  }
+  const project = esc((c.url || "").replace(/^https?:\/\//, "").replace(/\/.*$/, ""));
+  const changeLink = fromFile ? `<p class="muted small" style="margin-top:12px">Project ${project} is set in index.html (CLOUD_CONFIG).</p>`
+    : `<p class="muted small" style="margin-top:12px">Project ${project}. <button type="button" class="linkbtn" data-act="edit-cloud">Change project</button> or <button type="button" class="linkbtn" data-act="disconnect">turn sync off</button>.</p>`;
+  if (Cloud.status === "connecting") return `<p class="muted">Connecting to your project.</p>`;
+  if (!Cloud.client) return `<p class="err">${esc(Cloud.message || "Sync isn't connected.")}</p><div class="row" style="margin-top:12px"><button type="button" class="btn quiet" data-act="retry-cloud">Try again</button></div>${changeLink}`;
+  if (!Cloud.session) return `
+    <p class="muted" style="margin-bottom:14px">Sign in with the same account on each device. Your progress on this device is kept and merged.</p>
+    <form data-form="auth">
+      <label class="field"><span>Email</span><input type="email" name="email" required autocomplete="email"></label>
+      <label class="field"><span>Password, at least 6 characters</span><input type="password" name="password" required minlength="6" autocomplete="current-password"></label>
+      <div class="row"><button class="btn primary" type="submit" value="in">Sign in</button><button class="btn quiet" type="submit" value="up">Create account</button></div>
+    </form>
+    ${Cloud.message ? `<p class="err" style="margin-top:12px">${esc(Cloud.message)}</p>` : ""}
+    ${changeLink}`;
+  const pending = state.pending.length;
+  return `
+    <p>Signed in as <b>${esc(Cloud.session.user.email || "")}</b>.</p>
+    <p class="muted small" style="margin-top:4px">${esc(SYNC_TEXT[Cloud.status] || "")}${pending ? `. ${pending} change${pending > 1 ? "s" : ""} waiting to upload.` : "."}${Cloud.message && Cloud.status !== "synced" ? " " + esc(Cloud.message) : ""}</p>
+    <div class="row" style="margin-top:14px"><button type="button" class="btn primary" data-act="sync-now">Sync now</button><button type="button" class="btn quiet" data-act="sign-out">Sign out</button></div>
+    <p class="muted small" style="margin-top:10px">Signing out removes your progress from this device only. It stays safe in your database.</p>
+    <form data-form="changepass" style="margin-top:22px">
+      <label class="field"><span>Change password, at least 8 characters</span><input type="password" name="password" required minlength="8" autocomplete="new-password"></label>
+      <button class="btn quiet" type="submit">Change password</button>
+    </form>
+    ${changeLink}`;
+}
+function viewSettings() {
+  const s = state.settings;
+  return `
+  <h1 class="page-h">Settings</h1>
+  <div class="settings">
+    <section class="panel">
+      <h2>Your plan</h2>
+      <form data-form="settings">
+        <label class="field"><span>Your name, optional</span><input type="text" name="name" value="${esc(s.name)}"></label>
+        <label class="field"><span>Start date</span><input type="date" name="start" value="${esc(s.start || todayStr())}" required></label>
+        <label class="field"><span>Weekly study target in hours</span><input type="number" name="target" min="1" max="80" value="${esc(s.target || 20)}"></label>
+        <label class="field"><span>DSA problems you'd already solved before using this tracker</span><input type="number" name="dsaOffset" min="0" max="2000" value="${esc(s.dsaOffset || 0)}"></label>
+        <button class="btn primary" type="submit">Save plan settings</button>
+      </form>
+    </section>
+    <section class="panel">
+      <h2>Login and sync</h2>
+      ${cloudSectionHTML()}
+    </section>
+    <section class="panel">
+      <h2>Backup</h2>
+      <p class="muted">Download a copy of all your progress, or restore one. Good to do once a month.</p>
+      <div class="row"><button type="button" class="btn quiet" data-act="export">Download backup</button><button type="button" class="btn quiet" data-act="import">Restore from backup</button><button type="button" class="btn danger" data-act="reset">Clear this device</button></div>
+    </section>
+  </div>`;
+}
+
+/* ---------- Backup ---------- */
+function exportData() {
+  const data = { app: "ai-engineer-journey", v: 1, exported_at: nowIso(), settings: state.settings, tasks: state.tasks, logs: state.logs, reviews: state.reviews };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `ai-engineer-journey-${todayStr()}.json`;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+  toast("Backup downloaded");
+}
+async function importFile(file) {
+  if (!file) return;
+  try {
+    const data = JSON.parse(await file.text());
+    if (data.app !== "ai-engineer-journey" || typeof data.tasks !== "object") throw new Error("not a backup");
+    if (!confirm("Replace the progress on this device with this backup?")) return;
+    state.settings = { ...defaultState().settings, ...(data.settings || {}) };
+    state.tasks = data.tasks || {}; state.logs = data.logs || {}; state.reviews = data.reviews || {};
+    state.pending = []; state.meta.syncedUser = null; saveLocal();
+    toast("Backup restored"); render();
+    if (Cloud.session) Cloud.fullSync();
+  } catch (e) { toast("That file isn't a tracker backup."); }
+}
+function resetLocal() {
+  if (!confirm("Clear all progress on this device? If you use sync, your cloud copy is kept and will come back when you sync.")) return;
+  const keep = state.meta.syncedUser; state = defaultState(); state.meta.syncedUser = keep; saveLocal();
+  toast("This device was cleared"); render();
+  if (Cloud.session) Cloud.fullSync();
+}
+
+/* ---------- Toast ---------- */
+function toast(msg) {
+  const t = $("#toast"); t.textContent = msg; t.classList.add("show");
+  clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove("show"), 2800);
+}
+
+/* ---------- Events ---------- */
+document.addEventListener("change", e => {
+  const t = e.target;
+  if (t.matches(".task-chk")) { setTask(t.dataset.id, t.checked); rerenderKeepFocus(t.dataset.id); }
+  else if (t.id === "import-file") { importFile(t.files[0]); t.value = ""; }
+});
+document.addEventListener("input", e => {
+  if (e.target.id === "res-q") { ui.resQuery = e.target.value; const box = $("#res-list"); if (box) box.innerHTML = resListHTML(); }
+});
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-act]"); if (!b) return;
+  const act = b.dataset.act;
+  if (act === "qmin") {
+    const f = b.closest("form"); f.querySelector('[name="minutes"]').value = b.dataset.min;
+    f.querySelectorAll(".q").forEach(x => x.classList.toggle("on", x === b));
+  } else if (act === "del-log") {
+    const d = b.dataset.date;
+    if (confirm(`Delete the log for ${fmtDateLong(d)}?`)) { delete state.logs[d]; saveLocal(); Cloud.queue("log:" + d); toast("Log deleted"); render(); }
+  } else if (act === "filter") { ui.resArea = b.dataset.area; render(); }
+  else if (act === "export") exportData();
+  else if (act === "import") $("#import-file").click();
+  else if (act === "reset") resetLocal();
+  else if (act === "sync-now") Cloud.fullSync();
+  else if (act === "sign-out") {
+    const n = state.pending.length;
+    if (confirm(n ? `${n} change${n > 1 ? "s haven't" : " hasn't"} uploaded yet and will be lost from this device. Sign out anyway?` : "Sign out on this device?")) Cloud.signOut();
+  }
+  else if (act === "auth-mode") { ui.authMode = b.dataset.mode; Cloud.message = ""; render(); }
+  else if (act === "go-offline") { ui.offline = true; render(); }
+  else if (act === "forgot") {
+    const email = ((document.querySelector('form[data-form="auth"] [name="email"]') || {}).value || "").trim();
+    if (!email) { toast("Enter your email first, then choose Forgot your password."); return; }
+    ui.lastEmail = email;
+    Cloud.resetPassword(email).then(() => toast("Check your email for a password reset link."))
+      .catch(err => { Cloud.message = friendlyError(err); render(); });
+  }
+  else if (act === "edit-cloud") { ui.showCloudForm = true; render(); }
+  else if (act === "cancel-cloud") { ui.showCloudForm = false; render(); }
+  else if (act === "retry-cloud") Cloud.init();
+  else if (act === "disconnect") {
+    if (confirm("Turn sync off on this device? Your progress stays here and in the cloud.")) {
+      if (Cloud.client) Cloud.client.auth.signOut().catch(() => {});
+      Store.del(CLOUD_KEY); Cloud.init(); toast("Sync turned off on this device"); render();
+    }
+  }
+});
+document.addEventListener("submit", async e => {
+  const f = e.target; const kind = f.dataset.form; if (!kind) return;
+  e.preventDefault();
+  const fd = new FormData(f);
+  if (kind === "log") {
+    const date = fd.get("date");
+    if (!isYmd(date) || date > todayStr()) { toast("Pick a date up to today."); return; }
+    saveLog(date, { minutes: fd.get("minutes"), dsa: fd.get("dsa"), min: fd.get("min") === "on", note: fd.get("note") });
+    toast(state.logs[date] ? `Log saved for ${fmtDateLong(date)}` : "Empty log removed");
+    if (parseRoute().name === "log") location.hash = "#/log"; render();
+  } else if (kind === "review") {
+    saveReview(Number(f.dataset.week), fd.get("note")); toast("Weekly review saved"); render();
+  } else if (kind === "start" || kind === "settings") {
+    const start = fd.get("start");
+    if (!isYmd(start)) { toast("Pick a valid start date."); return; }
+    const patch = { name: String(fd.get("name") || "").trim().slice(0, 60), start, target: clamp(parseInt(fd.get("target"), 10) || 20, 1, 80) };
+    if (kind === "settings") patch.dsaOffset = clamp(parseInt(fd.get("dsaOffset"), 10) || 0, 0, 2000);
+    saveSettings(patch);
+    toast(kind === "start" ? "Your plan has started. One week at a time." : "Plan settings saved");
+    if (kind === "start") location.hash = "#/"; render();
+  } else if (kind === "cloud") {
+    const url = String(fd.get("url") || "").trim().replace(/\/+$/, ""); const key = String(fd.get("key") || "").trim();
+    if (!/^https:\/\//.test(url)) { toast("The project URL should start with https://"); return; }
+    if (isSecretKey(key)) { toast("That's a secret key. Use the anon or publishable key instead."); return; }
+    Store.set(CLOUD_KEY, { url, key }); ui.showCloudForm = false;
+    await Cloud.init(); render();
+  } else if (kind === "auth") {
+    const mode = (e.submitter && e.submitter.value) || "in";
+    const email = String(fd.get("email") || "").trim(); const password = String(fd.get("password") || "");
+    ui.lastEmail = email;
+    if (mode === "up" && password !== String(fd.get("password2") || "")) { toast("The two passwords don't match."); return; }
+    try {
+      Cloud.message = "";
+      if (mode === "up") {
+        const r = await Cloud.signUp(email, password);
+        if (r === "confirm") { ui.authMode = "in"; toast("Account created. Open the link in your email, then sign in."); }
+        else toast("Account created and signed in");
+      } else { await Cloud.signIn(email, password); toast("Signed in. Your progress is syncing."); }
+      render();
+    } catch (err) { Cloud.message = friendlyError(err); render(); }
+  } else if (kind === "newpass" || kind === "changepass") {
+    const password = String(fd.get("password") || "");
+    if (kind === "newpass" && password !== String(fd.get("password2") || "")) { toast("The two passwords don't match."); return; }
+    try {
+      await Cloud.changePassword(password);
+      Cloud.message = ""; ui.recovery = false;
+      if (kind === "newpass") history.replaceState(null, "", location.pathname + "#/");
+      toast("Password updated"); f.reset(); render();
+      if (kind === "newpass") Cloud.fullSync();
+    } catch (err) { Cloud.message = friendlyError(err); if (kind === "changepass") toast(Cloud.message); render(); }
+  }
+});
+window.addEventListener("hashchange", () => { render(); window.scrollTo(0, 0); });
+window.addEventListener("online", () => { if (Cloud.session) Cloud.fullSync(); });
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible" && Cloud.session && Date.now() - Cloud.lastSync > 60000) Cloud.fullSync();
+});
+
+/* ---------- Start ---------- */
+buildIndex();
+render();
+Cloud.init();
+</script>
+</body>
+</html>
