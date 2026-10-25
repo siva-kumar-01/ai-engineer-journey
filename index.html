@@ -326,7 +326,8 @@ const AREAS = [
   { id: "sd",     name: "System design" },
   { id: "ai",     name: "AI engineering" },
   { id: "proj",   name: "Project tools" },
-  { id: "career", name: "Career and certifications" }
+  { id: "career", name: "Career and certifications" },
+  { id: "news",   name: "Staying current" }
 ];
 
 const R  = (t, u, k, a, s) => ({ t, u, k, a, s });
@@ -573,8 +574,14 @@ const RES = {
   py_asyncio:     R("asyncio documentation", "https://docs.python.org/3/library/asyncio.html", "Docs", "swe", "python.org"),
   sd_resources:   R("Awesome system design resources", "https://github.com/ashishps1/awesome-system-design-resources", "Article", "sd", "GitHub"),
   lc_resources:   R("Awesome LeetCode resources", "https://github.com/ashishps1/awesome-leetcode-resources", "Article", "dsa", "GitHub"),
-  ai_eng_hub:     R("AI engineering hub, extra project ideas", "https://github.com/patchy631/ai-engineering-hub", "Practice", "proj", "GitHub")
+  ai_eng_hub:     R("AI engineering hub, extra project ideas", "https://github.com/patchy631/ai-engineering-hub", "Practice", "proj", "GitHub"),
+  the_batch:      R("The Batch, weekly AI news", "https://www.deeplearning.ai/the-batch/", "Article", "news", "DeepLearning.AI"),
+  latent_space:   R("Latent Space, the AI engineer newsletter and podcast", "https://www.latent.space/", "Article", "news", "Latent Space"),
+  simon_willison: R("Simon Willison's weblog, hands-on LLM news", "https://simonwillison.net/", "Article", "news", "Simon Willison")
 };
+
+/* Weekly "stay current" habit shown on the dashboard */
+const STAY_CURRENT = ["the_batch", "latent_space", "simon_willison"];
 
 /* =====================================================================
    The final 32-week plan (8 months).
@@ -718,7 +725,7 @@ const WEEKS = [
     ["w12-d", "proj", "Flagship RAG: eval report (retrieval hit rate, answer correctness, abstention) and your first failure report", ["hamel_evals", "anth_evals"]],
     ["w12-e", "career", "Start a job tracker and save 10 target job descriptions from top companies", ["jobs_google", "jobs_ms", "jobs_amazon", "linkedin_jobs"], { tip: "Search titles like AI Engineer, Software Engineer (AI/ML) and Applied AI." }],
     ["w12-g", "ai", "Frameworks: rebuild your retrieval step once with LlamaIndex or LangChain, and compare it with your hand-built version", ["llamaindex_docs", "langchain_docs"], { tip: "Job descriptions often list these. Knowing what a framework does for you, and what it hides, is the interview answer." }],
-    ["w12-f", "career", "Month 3 review", []]
+    ["w12-f", "career", "Month 3 review, plus a job-description check", ["linkedin_jobs"], { tip: "Skim 5 new AI Engineer job descriptions from your target companies. If a skill keeps appearing that your plan doesn't cover, note it here." }]
   ]),
 
   /* Month 4: Structured output, agents and MCP */
@@ -752,7 +759,7 @@ const WEEKS = [
     ["w16-d", "proj", "Flagship agent: propose a vendor email or return, with human approval bound to the exact action and ownership checks", ["owasp_pi", "anth_agents"]],
     ["w16-e", "ai", "Memory patterns: conversation state, long-term notes, and when not to use memory", ["hf_agents"]],
     ["w16-f", "career", "Update LinkedIn and connect with engineers at your target companies", [], { tip: "Former SAP or IT services engineers now at top companies are the most likely to help." }],
-    ["w16-g", "career", "Month 4 review", []]
+    ["w16-g", "career", "Month 4 review, plus a job-description check", ["linkedin_jobs"], { tip: "Skim 5 new AI Engineer job descriptions from your target companies. If a skill keeps appearing that your plan doesn't cover, note it here." }]
   ]),
 
   /* Month 5: Production AI, fine-tuning and design basics */
@@ -786,7 +793,7 @@ const WEEKS = [
     ["w20-d", "proj", "Deploy the flagship to the cloud with a tested rollback", ["render", "aws_ecs", "aws_free", "modal"]],
     ["w20-g", "swe", "Production Docker: multi-stage builds, a non-root user, and secrets kept out of the image", ["docker_multistage", "twelve"]],
     ["w20-e", "career", "Final one-page resume, and ask 5 engineers for referrals", ["tih_resume"], { tip: "Share your demo and one line on why you fit the role." }],
-    ["w20-f", "career", "Month 5 review", []]
+    ["w20-f", "career", "Month 5 review, plus a job-description check", ["linkedin_jobs"], { tip: "Skim 5 new AI Engineer job descriptions from your target companies. If a skill keeps appearing that your plan doesn't cover, note it here." }]
   ]),
 
   /* Month 6: System design, ML system design and applications */
@@ -847,7 +854,7 @@ const WEEKS = [
     ["w28-b", "career", "Company-specific prep: read your target companies' reported interview loops and questions, practice coding without an IDE (Google), at speed (Meta), and with an AI assistant, and map stories to Amazon's Leadership Principles", ["ai_iq_company", "google_hire", "amazon_lp", "interview_warmup"], { tip: "Some 2026 loops, including at Meta and Anthropic, include an AI-assisted coding round." }],
     ["w28-c", "ai", "Revise RAG, agents, evals and fine-tuning trade-offs, plus inference basics: KV cache, prefill vs decode, batching and latency metrics", ["aie_book", "ai_iq_topics", "karpathy_deep"]],
     ["w28-d", "career", "Follow up on applications and referrals", []],
-    ["w28-e", "career", "Month 7 review", []]
+    ["w28-e", "career", "Month 7 review, plus a job-description check", ["linkedin_jobs"], { tip: "Skim 5 new AI Engineer job descriptions from your target companies. If a skill keeps appearing that your plan doesn't cover, note it here." }]
   ]),
 
   /* Month 8: Interview mode and offers */
@@ -1555,11 +1562,18 @@ function viewDashboard() {
       <p class="muted small" style="margin-bottom:12px">${esc(m.goal)}</p>
       <ul class="tasks">${m.checkpoints.map(cpHTML).join("")}</ul>
     </section>
-    <aside class="note-card" aria-labelledby="dec-h">
-      <h2 id="dec-h">Decisions you've already made</h2>
-      <p>Review these on ${esc(review)}, not before. Until then, this list is your answer to any doubt.</p>
-      <dl>${DECISIONS.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
-    </aside>
+    <div class="stack">
+      <aside class="note-card" aria-labelledby="dec-h">
+        <h2 id="dec-h">Decisions you've already made</h2>
+        <p>Review these on ${esc(review)}, not before. Until then, this list is your answer to any doubt.</p>
+        <dl>${DECISIONS.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
+      </aside>
+      <aside class="panel" aria-labelledby="cur-h">
+        <h2 id="cur-h">Stay current: 30 minutes a week</h2>
+        <p class="muted">Once a week, skim these and note only what affects your project or your interviews in your weekly review. Everything else can wait.</p>
+        <div class="res" style="margin-left:0">${STAY_CURRENT.map(k => RES[k]).filter(Boolean).map(resChip).join("")}</div>
+      </aside>
+    </div>
   </div>
 
   <div class="lower">
@@ -1598,7 +1612,7 @@ function viewWeek(arg) {
         <h2>Weekly review</h2>
         <p class="muted">Every Sunday: redo the DSA problems you failed, check your month checkpoint, and plan next week.</p>
         <form data-form="review" data-week="${w}">
-          <label class="field"><span>What went well, and what will you adjust?</span><textarea name="note" rows="7" maxlength="4000">${esc(review)}</textarea></label>
+          <label class="field"><span>What went well, and what will you adjust? Add anything from your weekly AI update that affects your project.</span><textarea name="note" rows="7" maxlength="4000">${esc(review)}</textarea></label>
           <button class="btn primary" type="submit">Save review</button>
         </form>
       </div>
