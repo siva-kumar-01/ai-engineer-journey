@@ -564,7 +564,16 @@ const RES = {
   langchain_docs: R("LangChain documentation", "https://docs.langchain.com/", "Docs", "ai", "LangChain"),
   claude_vision:  R("Vision guide", "https://docs.claude.com/en/docs/build-with-claude/vision", "Docs", "ai", "Anthropic"),
   ms_rai:         R("Responsible AI principles", "https://www.microsoft.com/en-us/ai/responsible-ai", "Article", "ai", "Microsoft"),
-  openai_moderation: R("Moderation guide", "https://platform.openai.com/docs/guides/moderation", "Docs", "ai", "OpenAI")
+  openai_moderation: R("Moderation guide", "https://platform.openai.com/docs/guides/moderation", "Docs", "ai", "OpenAI"),
+  ai_iq_company:  R("AI engineering interview questions, company by company", "https://github.com/pallavi-shekhar/ai-engineering-interview-questions-company-wise", "Practice", "career", "GitHub, Outcome School"),
+  ai_iq_topics:   R("AI engineering interview questions, topic by topic", "https://github.com/amitshekhariitbhu/ai-engineering-interview-questions", "Practice", "career", "GitHub, Outcome School"),
+  aimlinterviews: R("AI and ML interviews guide (FAANG)", "https://github.com/alirezadir/AIMLInterviews", "Book", "career", "Ali Aminian, GitHub"),
+  harness_course: R("Learn harness engineering", "https://github.com/walkinglabs/learn-harness-engineering", "Course", "swe", "GitHub"),
+  prompt_guide:   R("Prompt Engineering Guide", "https://github.com/dair-ai/Prompt-Engineering-Guide", "Docs", "ai", "DAIR.AI"),
+  py_asyncio:     R("asyncio documentation", "https://docs.python.org/3/library/asyncio.html", "Docs", "swe", "python.org"),
+  sd_resources:   R("Awesome system design resources", "https://github.com/ashishps1/awesome-system-design-resources", "Article", "sd", "GitHub"),
+  lc_resources:   R("Awesome LeetCode resources", "https://github.com/ashishps1/awesome-leetcode-resources", "Article", "dsa", "GitHub"),
+  ai_eng_hub:     R("AI engineering hub, extra project ideas", "https://github.com/patchy631/ai-engineering-hub", "Practice", "proj", "GitHub")
 };
 
 /* =====================================================================
@@ -641,7 +650,7 @@ const WEEKS = [
     ["w4-a", "dsa", "A2Z step 3: arrays (medium)", ["a2z", "tuf_yt"]],
     ["w4-b", "swe", "FastAPI: routes, Pydantic models, dependency injection and the automatic OpenAPI docs", ["fastapi_tut", "pydantic"]],
     ["w4-c", "swe", "Testing with pytest and FastAPI's test client", ["pytest", "fastapi_test"]],
-    ["w4-d", "ai", "Prompt engineering: clear instructions, few-shot examples, output formats", ["dlai_prompt", "claude_prompt", "dlai_systems"]],
+    ["w4-d", "ai", "Prompt engineering: clear instructions, few-shot examples, output formats", ["dlai_prompt", "claude_prompt", "dlai_systems", "prompt_guide"]],
     ["w4-e", "proj", "Mini app: an endpoint that summarizes text with an LLM, with input validation, timeouts and a test for provider failure", ["fastapi_tut", "claude_docs"], { tip: "A blank input should be rejected before any model call." }],
     ["w4-f", "career", "Month 1 review: check your checkpoint and adjust your schedule", []]
   ]),
@@ -653,7 +662,7 @@ const WEEKS = [
     ["w5-c", "ai", "Linear and logistic regression, gradient descent and regularization", ["mlcc", "ml_spec"]],
     ["w5-d", "swe", "SQLAlchemy ORM and database migrations", ["sqla_tut", "alembic"]],
     ["w5-e", "proj", "Flagship setup: Procurement Copilot repo and a PostgreSQL schema for vendors, POs, goods receipts and invoices, with synthetic data", ["fastapi_sql", "faker", "readme_guide"], { tip: "Use your SAP MM knowledge for the data model. Never client data." }],
-    ["w5-f", "swe", "Set up an AI coding assistant (such as GitHub Copilot, Cursor or Claude Code) and practice reviewing every change it makes", ["copilot_docs", "claude_code"], { tip: "Interviewers increasingly ask how you use AI tools. Keep solving DSA problems yourself." }]
+    ["w5-f", "swe", "Set up an AI coding assistant (such as GitHub Copilot, Cursor or Claude Code) and practice reviewing every change it makes", ["copilot_docs", "claude_code", "harness_course"], { tip: "Interviewers increasingly ask how you use AI tools. Keep solving DSA problems yourself. The harness engineering course is for later, once you use an assistant daily." }]
   ]),
   W("Metrics, trees and DBMS", [
     ["w6-a", "dsa", "A2Z step 4: binary search on 1D arrays", ["a2z", "tuf_yt"]],
@@ -718,7 +727,8 @@ const WEEKS = [
     ["w13-b", "ai", "Structured outputs: JSON schemas, Pydantic validation and retries. A schema checks shape, not truth", ["dlai_structured", "pydantic_models", "dlai_pydantic"]],
     ["w13-c", "ai", "Context engineering: what goes into the window, token budgets and contextual retrieval", ["anth_contextual", "labonne"]],
     ["w13-d", "proj", "Flagship extraction: invoice PDF to typed fields (vendor, PO number, lines, totals, needs_review). Missing stays missing", ["pdfplumber", "reportlab", "pydantic_models"]],
-    ["w13-e", "cs", "Networks: OSI and TCP/IP models, TCP vs UDP and the handshake", ["kunal_cn", "cip_cn", "kurose"]]
+    ["w13-e", "cs", "Networks: OSI and TCP/IP models, TCP vs UDP and the handshake", ["kunal_cn", "cip_cn", "kurose"]],
+    ["w13-f", "swe", "Async batch processing: run your extraction over hundreds of invoices with a concurrency limit, retries with backoff and jitter, and per-item error handling", ["py_asyncio", "fastapi_async"], { tip: "Anthropic and Perplexity have asked candidates to write exactly this in interviews." }]
   ]),
   W("Field-level evaluation and tool calling", [
     ["w14-a", "dsa", "A2Z step 10: sliding window and two pointers", ["a2z", "tuf_yt"]],
@@ -783,7 +793,7 @@ const WEEKS = [
   W("Design practice and first applications", [
     ["w21-a", "dsa", "A2Z step 15: topological sort, shortest paths and disjoint sets", ["a2z", "yt_striver_graph"]],
     ["w21-b", "swe", "Design practice: URL shortener and rate limiter", ["hello_sd", "sdp"]],
-    ["w21-c", "ai", "ML system design framework: framing, data, features, model, offline and online evaluation, serving, monitoring", ["ml_interviews", "rules_ml", "mlsd_book"], { tip: "Google, Meta and Amazon often run a separate ML design round for AI and ML roles." }],
+    ["w21-c", "ai", "ML system design framework: framing, data, features, model, offline and online evaluation, serving, monitoring", ["ml_interviews", "rules_ml", "mlsd_book", "aimlinterviews"], { tip: "Google, Meta and Amazon often run a separate ML design round for AI and ML roles." }],
     ["w21-d", "proj", "Package the flagship: architecture.md, failure-report.md and evals/cases.jsonl", ["readme_guide", "mermaid"]],
     ["w21-e", "career", "Apply: first batch of 10, top companies through referrals plus strong product companies", ["jobs_google", "jobs_ms", "jobs_amazon", "jobs_meta", "linkedin_jobs"]]
   ]),
@@ -820,9 +830,10 @@ const WEEKS = [
   W("DSA mocks and ML breadth", [
     ["w26-a", "dsa", "Two mock DSA interviews", ["tih_mock"]],
     ["w26-b", "dsa", "A weekly contest plus one mixed timed set", ["lc_contest"]],
-    ["w26-c", "ai", "ML and LLM breadth revision with the ML interviews book", ["ml_interviews"]],
+    ["w26-c", "ai", "ML and LLM breadth revision: work through real interview questions by topic", ["ai_iq_topics", "aimlinterviews", "ml_interviews"], { tip: "Answer out loud first, then check. Note topics you couldn't explain and revisit them." }],
     ["w26-d", "ai", "Mock: one ML system design and one GenAI design", ["mlsd_book", "genai_platform"]],
-    ["w26-e", "cs", "One-page notes: DBMS and OS", ["gfg_cs"]]
+    ["w26-e", "cs", "One-page notes: DBMS and OS", ["gfg_cs"]],
+    ["w26-f", "ai", "ML coding practice: implement attention with a causal mask, top-k and top-p sampling, and k-means from scratch in NumPy", ["aimlinterviews", "ai_iq_topics"], { tip: "Google, Amazon and Anthropic have asked for implementations like these in coding rounds." }]
   ]),
   W("Project deep-dives and online assessments", [
     ["w27-a", "dsa", "Online assessment practice: two problems in 90 minutes", ["lc_contest"]],
@@ -833,8 +844,8 @@ const WEEKS = [
   ]),
   W("Company-specific preparation", [
     ["w28-a", "dsa", "Mixed timed sets, explaining your approach out loud", ["lc"]],
-    ["w28-b", "career", "Company-specific prep: Google (coding without an IDE), Meta (speed), Amazon (Leadership Principles), Microsoft", ["google_hire", "amazon_lp", "tih_prep", "interview_warmup"]],
-    ["w28-c", "ai", "Revise RAG, agents, evals and fine-tuning trade-offs", ["aie_book", "karpathy_deep"]],
+    ["w28-b", "career", "Company-specific prep: read your target companies' reported interview loops and questions, practice coding without an IDE (Google), at speed (Meta), and with an AI assistant, and map stories to Amazon's Leadership Principles", ["ai_iq_company", "google_hire", "amazon_lp", "interview_warmup"], { tip: "Some 2026 loops, including at Meta and Anthropic, include an AI-assisted coding round." }],
+    ["w28-c", "ai", "Revise RAG, agents, evals and fine-tuning trade-offs, plus inference basics: KV cache, prefill vs decode, batching and latency metrics", ["aie_book", "ai_iq_topics", "karpathy_deep"]],
     ["w28-d", "career", "Follow up on applications and referrals", []],
     ["w28-e", "career", "Month 7 review", []]
   ]),
