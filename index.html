@@ -152,9 +152,9 @@ h2{font-size:18px;font-weight:700;margin-bottom:12px}
 
 /* Forms */
 .field{display:grid;gap:6px;margin-bottom:14px;font-size:14px;color:var(--ink-2)}
-input[type="text"],input[type="number"],input[type="date"],input[type="email"],input[type="password"],input[type="url"],input[type="search"],textarea{font:inherit;font-size:16px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:9px 11px;width:100%}
+input[type="text"],input[type="number"],input[type="date"],input[type="email"],input[type="password"],input[type="url"],input[type="search"],select,textarea{font:inherit;font-size:16px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:9px 11px;width:100%}
 textarea{resize:vertical;line-height:1.5}
-input:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
 .quick{display:flex;flex-wrap:wrap;gap:6px}
 .q,.filter{font:inherit;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:4px 12px;cursor:pointer}
 .q:hover,.filter:hover{border-color:var(--ink-3)}
@@ -544,7 +544,27 @@ const RES = {
   hf_training:    R("Fine-tuning with Transformers", "https://huggingface.co/docs/transformers/training", "Docs", "ai", "Hugging Face"),
   interview_warmup: R("Interview Warmup", "https://grow.google/certificates/interview-warmup/", "Practice", "career", "Google"),
   sde_sheet:      R("Striver's SDE Sheet", "https://takeuforward.org/interviews/strivers-sde-sheet-top-coding-interview-problems/", "Sheet", "dsa", "takeUforward"),
-  docker_multistage: R("Docker multi-stage builds", "https://docs.docker.com/build/building/multi-stage/", "Docs", "swe", "Docker")
+  docker_multistage: R("Docker multi-stage builds", "https://docs.docker.com/build/building/multi-stage/", "Docs", "swe", "Docker"),
+  roadmap_sh:     R("AI Engineer roadmap, interactive checklist", "https://roadmap.sh/ai-engineer", "Tool", "ai", "roadmap.sh"),
+  hf_llm_course:  R("Hugging Face LLM Course", "https://huggingface.co/learn/llm-course/en/chapter1/1", "Course", "ai", "Hugging Face"),
+  anth_academy:   R("Anthropic Academy", "https://www.anthropic.com/learn", "Course", "ai", "Anthropic"),
+  dlai_python:    R("AI Python for Beginners", "https://www.deeplearning.ai/short-courses/ai-python-for-beginners/", "Course", "swe", "DeepLearning.AI"),
+  aefs:           R("AI Engineering from Scratch", "https://aiengineeringfromscratch.com/", "Course", "ai", "Rohit Ghumare, free and open source"),
+  aefs_agent:     R("Inside an AI agent, interactive simulation", "https://aiengineeringfromscratch.com/inside-an-ai-agent", "Tool", "ai", "AI Engineering from Scratch"),
+  aefs_gpu:       R("Inside an LLM serving GPU, interactive simulation", "https://aiengineeringfromscratch.com/inside-an-llm-serving-gpu", "Tool", "ai", "AI Engineering from Scratch"),
+  roadmap_backend: R("Backend developer roadmap", "https://roadmap.sh/backend", "Tool", "swe", "roadmap.sh"),
+  copilot_docs:   R("GitHub Copilot documentation", "https://docs.github.com/en/copilot", "Docs", "swe", "GitHub"),
+  claude_code:    R("Claude Code documentation", "https://docs.claude.com/en/docs/claude-code/overview", "Docs", "swe", "Anthropic"),
+  oauth_com:      R("OAuth 2.0 Simplified", "https://www.oauth.com/", "Article", "swe", "Aaron Parecki"),
+  owasp_top10:    R("OWASP Top 10 web security risks", "https://owasp.org/www-project-top-ten/", "Article", "swe", "OWASP"),
+  mdn_cors:       R("Cross-Origin Resource Sharing (CORS)", "https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS", "Docs", "swe", "MDN"),
+  fastapi_stream: R("FastAPI custom responses, including StreamingResponse", "https://fastapi.tiangolo.com/advanced/custom-response/", "Docs", "swe", "FastAPI"),
+  mdn_sse:        R("Server-sent events", "https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events", "Docs", "swe", "MDN"),
+  llamaindex_docs: R("LlamaIndex documentation", "https://docs.llamaindex.ai/", "Docs", "ai", "LlamaIndex"),
+  langchain_docs: R("LangChain documentation", "https://docs.langchain.com/", "Docs", "ai", "LangChain"),
+  claude_vision:  R("Vision guide", "https://docs.claude.com/en/docs/build-with-claude/vision", "Docs", "ai", "Anthropic"),
+  ms_rai:         R("Responsible AI principles", "https://www.microsoft.com/en-us/ai/responsible-ai", "Article", "ai", "Microsoft"),
+  openai_moderation: R("Moderation guide", "https://platform.openai.com/docs/guides/moderation", "Docs", "ai", "OpenAI")
 };
 
 /* =====================================================================
@@ -599,7 +619,7 @@ const WEEKS = [
     ["w1-c", "swe", "Python engineering: OOP, dataclasses, type hints, exceptions, modules, virtual environments", ["py_tut", "realpy_oop", "py_typing", "arjancodes"]],
     ["w1-d", "swe", "Git and GitHub every day: commits, branches, pull requests", ["learngit", "progit", "github_skills"]],
     ["w1-e", "swe", "Terminal basics: navigation, permissions, environment variables, SSH", ["missing"]],
-    ["w1-f", "career", "Learn how top companies interview: coding, system design, ML and behavioral rounds", ["tih_prep", "google_hire"], { tip: "Knowing the target early tells you why each task in this plan matters." }]
+    ["w1-f", "career", "Learn how top companies interview: coding, system design, ML and behavioral rounds", ["tih_prep", "google_hire", "roadmap_sh"], { tip: "Knowing the target early tells you why each task in this plan matters. roadmap.sh shows the whole AI engineering stack on one page." }]
   ]),
   W("Python for AI: NumPy, Pandas and plots", [
     ["w2-a", "dsa", "A2Z step 1: basic maths, basic recursion and hashing", ["a2z", "tuf_yt", "lft_cpp"]],
@@ -619,7 +639,7 @@ const WEEKS = [
   ]),
   W("FastAPI basics and prompts as code", [
     ["w4-a", "dsa", "A2Z step 3: arrays (medium)", ["a2z", "tuf_yt"]],
-    ["w4-b", "swe", "FastAPI: routes, Pydantic models, dependency injection and the automatic docs", ["fastapi_tut", "pydantic"]],
+    ["w4-b", "swe", "FastAPI: routes, Pydantic models, dependency injection and the automatic OpenAPI docs", ["fastapi_tut", "pydantic"]],
     ["w4-c", "swe", "Testing with pytest and FastAPI's test client", ["pytest", "fastapi_test"]],
     ["w4-d", "ai", "Prompt engineering: clear instructions, few-shot examples, output formats", ["dlai_prompt", "claude_prompt", "dlai_systems"]],
     ["w4-e", "proj", "Mini app: an endpoint that summarizes text with an LLM, with input validation, timeouts and a test for provider failure", ["fastapi_tut", "claude_docs"], { tip: "A blank input should be rejected before any model call." }],
@@ -632,7 +652,8 @@ const WEEKS = [
     ["w5-b", "ai", "ML fundamentals: supervised learning, train, validation and test splits, overfitting, data leakage", ["mlcc", "kaggle_iml", "sk_pitfalls"], { tip: "Top companies ask ML basics even for AI engineering roles." }],
     ["w5-c", "ai", "Linear and logistic regression, gradient descent and regularization", ["mlcc", "ml_spec"]],
     ["w5-d", "swe", "SQLAlchemy ORM and database migrations", ["sqla_tut", "alembic"]],
-    ["w5-e", "proj", "Flagship setup: Procurement Copilot repo and a PostgreSQL schema for vendors, POs, goods receipts and invoices, with synthetic data", ["fastapi_sql", "faker", "readme_guide"], { tip: "Use your SAP MM knowledge for the data model. Never client data." }]
+    ["w5-e", "proj", "Flagship setup: Procurement Copilot repo and a PostgreSQL schema for vendors, POs, goods receipts and invoices, with synthetic data", ["fastapi_sql", "faker", "readme_guide"], { tip: "Use your SAP MM knowledge for the data model. Never client data." }],
+    ["w5-f", "swe", "Set up an AI coding assistant (such as GitHub Copilot, Cursor or Claude Code) and practice reviewing every change it makes", ["copilot_docs", "claude_code"], { tip: "Interviewers increasingly ask how you use AI tools. Keep solving DSA problems yourself." }]
   ]),
   W("Metrics, trees and DBMS", [
     ["w6-a", "dsa", "A2Z step 4: binary search on 1D arrays", ["a2z", "tuf_yt"]],
@@ -647,13 +668,14 @@ const WEEKS = [
     ["w7-c", "swe", "Docker and docker compose, with configuration through environment variables", ["docker_start", "compose", "twelve"]],
     ["w7-d", "cs", "DBMS: transactions, ACID, isolation levels, locking and deadlocks", ["cip_dbms", "cmu_db_yt"], { tip: "Compare with SAP lock objects and SELECT inside LOOP." }],
     ["w7-e", "proj", "ML project: a labeled supplier-email triage dataset, an honest split and a TF-IDF plus logistic regression baseline", ["sklearn", "sk_pitfalls"], { tip: "Split before fitting, and keep near-duplicate emails in the same split." }],
-    ["w7-f", "swe", "Simple auth for the flagship: every request tied to a user, company and role", ["fastapi_sec"], { tip: "Keep it simple. Later, the role limits what your assistant may read." }]
+    ["w7-f", "swe", "Simple auth for the flagship (JWT): every request tied to a user, company and role. Also learn sessions vs tokens and how OAuth sign-in works", ["fastapi_sec", "oauth_com"], { tip: "Keep it simple. Later, the role limits what your assistant may read." }]
   ]),
   W("Error analysis and shipping the baseline", [
     ["w8-a", "dsa", "A2Z step 5: strings (basic and medium)", ["a2z", "tuf_yt"]],
     ["w8-b", "ai", "Error analysis: failure slices and one concrete data repair", ["sk_pitfalls", "mlcc"]],
     ["w8-c", "proj", "ML project: serve the classifier through FastAPI in Docker, with a README showing metrics and one documented failure", ["readme_guide"]],
     ["w8-d", "proj", "Flagship: docker compose runs the API and database, and CI runs tests on every push", ["gha", "compose"]],
+    ["w8-f", "swe", "Web security basics: OWASP Top 10, CORS, HTTPS, password hashing (bcrypt or Argon2) and keeping secrets out of code", ["owasp_top10", "mdn_cors", "twelve"]],
     ["w8-e", "career", "Month 2 review", []]
   ]),
 
@@ -674,7 +696,7 @@ const WEEKS = [
   ]),
   W("Transformers and vector search", [
     ["w11-a", "dsa", "A2Z step 7: recursion patterns and subsequences", ["a2z", "yt_striver_rec"]],
-    ["w11-b", "ai", "Transformers: attention, positional encoding, encoder vs decoder", ["illustrated", "dlai_transformers", "dlai_tip"]],
+    ["w11-b", "ai", "Transformers: attention, positional encoding, encoder vs decoder", ["illustrated", "dlai_transformers", "dlai_tip", "hf_llm_course"]],
     ["w11-c", "ai", "Tokenization, decoding (temperature, top-p), KV cache and context limits", ["hf_tokenizers", "karpathy_deep"]],
     ["w11-d", "proj", "Flagship RAG: embeddings in pgvector, hybrid search that merges keyword and vector results with Reciprocal Rank Fusion, then a cross-encoder reranker, each compared with your keyword baseline", ["pgvector", "pinecone_learn", "dlai_adv_rag", "sbert"], { tip: "Add each technique only when failed cases justify it. sentence-transformers also provides cross-encoder rerankers." }],
     ["w11-f", "ai", "Vector indexes: how HNSW and IVF trade a little recall for a lot of speed, and when exact search is fine", ["pinecone_learn", "pgvector"], { tip: "A common interview question: why is approximate search used at scale?" }],
@@ -686,6 +708,7 @@ const WEEKS = [
     ["w12-c", "proj", "Flagship RAG: role-based retrieval, so finance-only policies never reach a buyer's prompt", ["owasp_pi"], { tip: "Relevance never grants access. Enforce scope in your code, not the prompt." }],
     ["w12-d", "proj", "Flagship RAG: eval report (retrieval hit rate, answer correctness, abstention) and your first failure report", ["hamel_evals", "anth_evals"]],
     ["w12-e", "career", "Start a job tracker and save 10 target job descriptions from top companies", ["jobs_google", "jobs_ms", "jobs_amazon", "linkedin_jobs"], { tip: "Search titles like AI Engineer, Software Engineer (AI/ML) and Applied AI." }],
+    ["w12-g", "ai", "Frameworks: rebuild your retrieval step once with LlamaIndex or LangChain, and compare it with your hand-built version", ["llamaindex_docs", "langchain_docs"], { tip: "Job descriptions often list these. Knowing what a framework does for you, and what it hides, is the interview answer." }],
     ["w12-f", "career", "Month 3 review", []]
   ]),
 
@@ -699,16 +722,18 @@ const WEEKS = [
   ]),
   W("Field-level evaluation and tool calling", [
     ["w14-a", "dsa", "A2Z step 10: sliding window and two pointers", ["a2z", "tuf_yt"]],
-    ["w14-b", "ai", "Tool (function) calling under the hood, without a framework", ["claude_tools", "openai_docs"]],
+    ["w14-b", "ai", "Tool (function) calling under the hood, without a framework", ["claude_tools", "openai_docs", "anth_academy"]],
     ["w14-c", "proj", "Flagship extraction: field-level error analysis on 30+ invoices, including malformed and ambiguous ones", ["hamel_field"]],
     ["w14-d", "proj", "Flagship: three-way match logic (invoice vs PO vs goods receipt) with quantity and price mismatch flags", []],
-    ["w14-e", "cs", "Networks: DNS, HTTP/HTTPS, TLS and what happens when you type a URL", ["cip_cn", "howdns", "url_type", "hnasr"]]
+    ["w14-e", "cs", "Networks: DNS, HTTP/HTTPS, TLS and what happens when you type a URL", ["cip_cn", "howdns", "url_type", "hnasr"]],
+    ["w14-f", "swe", "Streaming: send LLM tokens to the browser as they arrive with Server-Sent Events, and know when WebSockets, gRPC or polling fit better", ["fastapi_stream", "mdn_sse"], { tip: "Streaming makes an LLM feel fast even when the full answer takes seconds." }]
   ]),
   W("Agents from primitives", [
     ["w15-a", "dsa", "A2Z step 11: heaps", ["a2z", "tuf_yt"]],
-    ["w15-b", "ai", "Agents: workflows vs agents, the ReAct loop and stopping conditions", ["anth_agents", "dlai_agentic"]],
+    ["w15-b", "ai", "Agents: workflows vs agents, the ReAct loop and stopping conditions", ["anth_agents", "dlai_agentic", "aefs_agent"], { tip: "The interactive simulation lets you switch off retrieval, tools or the verifier and watch what breaks." }],
     ["w15-c", "proj", "Flagship agent from scratch: read-only tools get_po, get_goods_receipt and vendor_history, a 4-call budget and a full trace", ["anth_agents"], { tip: "The model proposes; your app validates and executes." }],
-    ["w15-d", "career", "AWS Solutions Architect Associate prep", ["aws_saa", "aws_saa_yt"], { opt: true, tip: "Only worth it if it gets you onto real AI projects at work." }]
+    ["w15-d", "career", "AWS Solutions Architect Associate prep", ["aws_saa", "aws_saa_yt"], { opt: true, tip: "Only worth it if it gets you onto real AI projects at work." }],
+    ["w15-e", "ai", "Multimodal: extract fields from a scanned invoice image with a vision-capable model, and compare with text extraction", ["claude_vision", "openai_docs"], { tip: "Speech-to-text (for example Whisper) works the same way: an input type, a model, and an evaluation." }]
   ]),
   W("Approvals, LangGraph, MCP and memory", [
     ["w16-a", "dsa", "A2Z step 12: greedy (selected problems)", ["a2z", "tuf_yt"]],
@@ -725,7 +750,7 @@ const WEEKS = [
     ["w17-a", "dsa", "A2Z step 13: binary trees (traversals)", ["a2z", "tuf_yt"]],
     ["w17-b", "proj", "Flagship tracing with Langfuse: prompts, retrieved IDs, tool calls, latency, tokens and cost", ["langfuse", "otel_genai"]],
     ["w17-c", "ai", "Evaluating agents: task success, trajectory checks, graders calibrated to human judgment", ["anth_evals", "dlai_eval_agents"]],
-    ["w17-d", "swe", "System design basics: scalability, load balancing, caching and databases", ["hello_sd", "sdp", "bbg_yt"]],
+    ["w17-d", "swe", "System design basics: scalability, load balancing, caching, CDNs, and SQL vs NoSQL (document, key-value, wide-column, graph)", ["hello_sd", "sdp", "bbg_yt"]],
     ["w17-e", "career", "AWS FDE Validated pathways", ["aws_fde", "aws_fde_blog"], { opt: true, tip: "Needs an active AWS associate-level certification first." }]
   ]),
   W("LLMOps: versions, experiments and evals in CI", [
@@ -733,19 +758,20 @@ const WEEKS = [
     ["w18-b", "proj", "Flagship: version prompts and configs, and track experiments with MLflow", ["mlflow", "madewithml"]],
     ["w18-c", "proj", "Flagship: CI runs your eval suite on every prompt, retrieval or model change", ["gha", "ragas"]],
     ["w18-f", "proj", "Flagship graders: exact checks (schema, citations, tool status) plus an LLM judge calibrated against your own labels, and faithfulness and groundedness metrics", ["anth_evals", "ragas", "hamel_field"], { tip: "Grow the suite to about 50 cases, including missing-evidence, wrong-role and prompt-injection cases." }],
-    ["w18-d", "swe", "System design: replication, sharding, CAP, message queues and rate limiting", ["sdp", "ddia"]],
+    ["w18-d", "swe", "System design: replication, sharding, CAP, message queues (Kafka, RabbitMQ), rate limiting, circuit breakers, and monolith vs microservices vs serverless", ["sdp", "ddia"]],
     ["w18-e", "career", "Resume version 1", ["tih_resume"]]
   ]),
   W("Safety, caching and local models", [
     ["w19-a", "dsa", "A2Z step 14: binary search trees", ["a2z", "tuf_yt"]],
     ["w19-b", "proj", "Flagship security tests: prompt injection hidden in invoice text, PII redaction in logs, a tool allow-list", ["owasp_pi", "owasp_llm", "dlai_safety"]],
     ["w19-c", "proj", "Flagship caching (exact and semantic) keyed by permission scope, plus a cost and latency budget", ["redis", "genai_platform"]],
-    ["w19-d", "ai", "Local models: run an open model with Ollama, learn what vLLM does, and understand quantization (GGUF, AWQ, FP8) and KV cache memory", ["ollama", "vllm"], { tip: "Practice the estimate: parameters times bytes per weight, plus KV cache that grows with context length." }],
-    ["w19-e", "swe", "Low-level design: SOLID, key patterns, and a parking lot design", ["rg_patterns", "lld_repo"]]
+    ["w19-d", "ai", "Local models: run an open model with Ollama, learn what vLLM does, and understand quantization (GGUF, AWQ, FP8) and KV cache memory", ["ollama", "vllm", "aefs_gpu"], { tip: "Practice the estimate: parameters times bytes per weight, plus KV cache that grows with context length." }],
+    ["w19-e", "swe", "Low-level design: SOLID, key patterns, and a parking lot design", ["rg_patterns", "lld_repo"]],
+    ["w19-f", "ai", "Responsible AI: bias and fairness, content moderation, and handling personal data", ["ms_rai", "openai_moderation", "dlai_safety"], { tip: "Google and Microsoft interviewers often ask how you'd make an AI feature safe and fair." }]
   ]),
   W("Fine-tuning experiment and deployment", [
     ["w20-a", "dsa", "A2Z step 15: graphs (BFS, DFS, components, cycle detection)", ["a2z", "yt_striver_graph", "yt_fiset_graph"]],
-    ["w20-b", "ai", "Fine-tuning: when to use it (and when not), and LoRA and QLoRA concepts", ["dlai_finetune", "hf_peft"]],
+    ["w20-b", "ai", "Fine-tuning: when to use it (and when not), and LoRA and QLoRA concepts", ["dlai_finetune", "hf_peft", "hf_llm_course"]],
     ["w20-c", "proj", "Fine-tune a small open model with LoRA on your triage data, and compare it with prompting and the classical baseline on the same test set", ["unsloth", "hf_peft", "hf_training"], { tip: "Evaluation first, then fine-tuning. Often prompting or retrieval wins." }],
     ["w20-d", "proj", "Deploy the flagship to the cloud with a tested rollback", ["render", "aws_ecs", "aws_free", "modal"]],
     ["w20-g", "swe", "Production Docker: multi-stage builds, a non-root user, and secrets kept out of the image", ["docker_multistage", "twelve"]],
@@ -780,7 +806,7 @@ const WEEKS = [
     ["w24-b", "dsa", "LeetCode Top Interview 150: timed medium sets", ["lc_top150", "sde_sheet", "grind75", "algomaster"], { tip: "Mixed problems with no chapter label, the way real interviews feel. Prefer staying with Striver? Use his SDE Sheet instead. Pick one, not both." }],
     ["w24-c", "ai", "ML design practice: fraud detection and ads click prediction", ["mlsd_book", "rules_ml"]],
     ["w24-d", "ai", "Computer vision basics with a pretrained model", ["fastai"], { opt: true, tip: "Only if a target role mentions vision." }],
-    ["w24-e", "career", "Month 6 review", []]
+    ["w24-e", "career", "Month 6 review: check roadmap.sh's AI Engineer and Backend checklists for any gaps", ["roadmap_sh", "roadmap_backend"], { tip: "Note gaps for later rather than adding new study now. Interviews come first." }]
   ]),
 
   /* Month 7: Interview preparation */
@@ -845,7 +871,7 @@ const DECISIONS = [
   ["AI and ML", "Google's ML Crash Course, DeepLearning.AI, Karpathy and official docs. Primitives before frameworks; LangGraph as the one agent framework."],
   ["Software engineering", "Python, FastAPI, PostgreSQL, Docker, CI and one cloud (AWS), learned inside your AI project."],
   ["CS fundamentals", "Your GeeksforGeeks CIP tracks, interview-level only."],
-  ["Skip for now", "Computer vision, classic NLP (POS tagging, parsing), RNN/LSTM depth, Kubeflow, Airflow, KServe, Terraform, and extra agent frameworks."]
+  ["Skip for now", "Computer vision models, classic NLP (POS tagging, parsing), RNN/LSTM depth, Kubernetes, GraphQL, web servers like Nginx, deep NoSQL and Elasticsearch work, Kubeflow, Airflow, KServe, Terraform, and extra agent frameworks. Learn concepts only if a job description asks."]
 ];
 
 const NUDGES = [
@@ -864,6 +890,10 @@ const NUDGES = [
 const STORAGE_KEY = "aej-state-v1";
 const CLOUD_KEY = "aej-cloud-v1";
 const SUPABASE_CDN = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
+const IDLE_KEY = "aej-idle-v1";          // auto sign-out setting, saved per device
+const LAST_ACTIVE_KEY = "aej-last-active"; // shared by all tabs on this device
+const IDLE_OPTIONS = [[15, "15 minutes"], [60, "1 hour"], [480, "8 hours"], [1440, "1 day"], [10080, "7 days"], [0, "Never"]];
+const IDLE_DEFAULT = 1440;
 
 /* ---------- Helpers ---------- */
 const $ = (s, el = document) => el.querySelector(s);
@@ -912,7 +942,7 @@ function loadState() {
 }
 let state = loadState();
 function saveLocal() { Store.set(STORAGE_KEY, state); }
-const ui = { resQuery: "", resArea: "all", showCloudForm: false, pop: null, offline: false, recovery: false, authMode: "in", lastEmail: "" };
+const ui = { resQuery: "", resArea: "all", showCloudForm: false, pop: null, offline: false, recovery: false, authMode: "in", lastEmail: "", loginNotice: "" };
 
 /* ---------- Plan maths ---------- */
 const TASK_WEEK = {}; const CP_MONTH = {};
@@ -1039,6 +1069,35 @@ function isSecretKey(k) {
 const splitKey = k => { const i = k.indexOf(":"); return i < 0 ? [k, ""] : [k.slice(0, i), k.slice(i + 1)]; };
 const fromSettingsRow = r => ({ name: r.display_name || "", start: r.start_date || "", target: r.weekly_target_hours || 20, dsaOffset: r.dsa_offset || 0, updated_at: r.updated_at });
 
+/* Auto sign-out after inactivity (client-side; Supabase's server-side timeouts need a paid plan) */
+const idleLabel = m => (IDLE_OPTIONS.find(([v]) => v === m) || [0, `${m} minutes`])[1];
+const Idle = {
+  _lastWrite: 0, _busy: false,
+  minutes() { const v = Store.get(IDLE_KEY); return typeof v === "number" ? v : IDLE_DEFAULT; },
+  setMinutes(m) { Store.set(IDLE_KEY, m); this.touch(true); },
+  last() { return Number(Store.get(LAST_ACTIVE_KEY)) || 0; },
+  expired() {
+    const m = this.minutes(); const last = this.last();
+    return !!m && last > 0 && Date.now() - last > m * 60000;
+  },
+  touch(force) {
+    if (!force && this.expired()) { this.check(); return; }   // coming back after too long: sign out instead of renewing
+    const now = Date.now();
+    if (force || now - this._lastWrite > 30000) { this._lastWrite = now; Store.set(LAST_ACTIVE_KEY, now); }
+  },
+  async check() {
+    if (!Cloud.session || this._busy || !this.expired()) return;
+    this._busy = true;
+    try { await Cloud.signOut({ reason: "idle" }); } finally { this._busy = false; }
+  },
+  start() {
+    ["pointerdown", "keydown", "scroll", "touchstart"].forEach(ev =>
+      window.addEventListener(ev, () => { if (Cloud.session) this.touch(false); }, { passive: true }));
+    setInterval(() => this.check(), 60000);
+    document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") this.check(); });
+  }
+};
+
 const Cloud = {
   client: null, session: null, status: "local", message: "", lastSync: 0, _lock: Promise.resolve(), _t: null,
   config() {
@@ -1068,32 +1127,46 @@ const Cloud = {
       this.client.auth.onAuthStateChange((event, session) => {
         this.session = session;
         if (event === "PASSWORD_RECOVERY") { ui.recovery = true; setTimeout(render, 0); }
-        else if (event === "SIGNED_OUT") { this.setStatus("signedout"); setTimeout(render, 0); }
+        else if (event === "SIGNED_OUT") {
+          if (!this._signingOut && Date.now() > (this._signOutUntil || 0)) {
+            if (!state.pending.length) { state = defaultState(); saveLocal(); }
+            ui.loginNotice = "You were signed out, possibly from another device.";
+          }
+          this.setStatus("signedout"); setTimeout(render, 0);
+        }
         else if (event === "SIGNED_IN" && Date.now() - this.lastSync > 5000) setTimeout(() => this.fullSync(), 0);
       });
       const { data, error } = await this.client.auth.getSession();
       if (error) throw error;
       this.session = data.session;
-      if (this.session) await this.fullSync(); else this.setStatus("signedout");
+      if (this.session && Idle.expired()) { await this.signOut({ reason: "idle" }); return; }
+      if (this.session) { Idle.touch(true); await this.fullSync(); } else this.setStatus("signedout");
     } catch (e) { this.setStatus("error", friendlyError(e)); }
     render();
   },
   async signIn(email, password) {
     const { data, error } = await this.client.auth.signInWithPassword({ email, password });
     if (error) throw error;
-    this.session = data.session; await this.fullSync();
+    this.session = data.session; ui.loginNotice = ""; Idle.touch(true); await this.fullSync();
   },
   async signUp(email, password) {
     const { data, error } = await this.client.auth.signUp({ email, password, options: { emailRedirectTo: location.origin + location.pathname } });
     if (error) throw error;
-    if (data.session) { this.session = data.session; await this.fullSync(); return "in"; }
+    if (data.session) { this.session = data.session; ui.loginNotice = ""; Idle.touch(true); await this.fullSync(); return "in"; }
     return "confirm";
   },
-  async signOut() {
-    if (this.client) { try { await this.client.auth.signOut(); } catch (e) { /* ignore */ } }
+  async signOut(opts = {}) {
+    const scope = opts.scope === "global" ? "global" : "local";   // Supabase's default is global, which signs out every device
+    if (this.client && this.session) { try { await this.flushPending(); } catch (e) { /* keep going */ } }
+    const keepData = state.pending.length > 0;   // never throw away changes that haven't uploaded
+    this._signingOut = true;
+    if (this.client) { try { await this.client.auth.signOut({ scope }); } catch (e) { /* ignore */ } }
+    this._signingOut = false; this._signOutUntil = Date.now() + 5000;   // ignore the echo of our own sign-out event
     this.session = null;
-    state = defaultState(); saveLocal();   // signing out removes your progress from this device; the cloud copy stays
+    if (!keepData) { state = defaultState(); saveLocal(); }   // removes your progress from this device; the cloud copy stays
     ui.offline = false; this.message = "";
+    ui.loginNotice = opts.reason === "idle" ? `You were signed out after ${idleLabel(Idle.minutes())} without activity.`
+      : keepData ? "Some changes haven't uploaded yet. They're kept on this device and will upload when you sign in again." : "";
     this.setStatus("signedout"); render();
   },
   async changePassword(password) {
@@ -1381,6 +1454,7 @@ function viewLogin() {
   const up = ui.authMode === "up";
   return `<section class="login">
     <h1 class="page-h">${up ? "Create your account" : "Sign in"}</h1>
+    ${ui.loginNotice && !up ? `<p class="banner" style="margin:4px 0 14px">${esc(ui.loginNotice)}</p>` : ""}
     <p class="week-sub">${up ? "Do this once. Afterwards, turn off new sign-ups in Supabase so nobody else can register (see the README)." : "Your progress is stored in your own database and syncs to every device you sign in on."}</p>
     <form data-form="auth" class="panel">
       <label class="field"><span>Email</span><input type="email" name="email" required autocomplete="email" value="${esc(ui.lastEmail)}"></label>
@@ -1533,6 +1607,7 @@ function viewRoadmap() {
     <li>Primitives before frameworks: build it by hand once, then use a library.</li>
     <li>Measure from day one: every AI feature gets a test set before it gets clever.</li>
     <li>Every project shows a number, admits a failure, and has a demo someone can try.</li>
+    <li>Use AI coding assistants in your projects, but understand every line. Solve DSA problems yourself.</li>
     <li>DSA every day and projects every weekend. Top companies hire through strong interviews and referrals.</li>
     <li>On hard days, do a minimum day: just the DSA hour. Every Sunday, write a short weekly review.</li>
     <li>Behind schedule? The plan stretches; you don't quit.</li>
@@ -1641,8 +1716,15 @@ function cloudSectionHTML() {
   return `
     <p>Signed in as <b>${esc(Cloud.session.user.email || "")}</b>.</p>
     <p class="muted small" style="margin-top:4px">${esc(SYNC_TEXT[Cloud.status] || "")}${pending ? `. ${pending} change${pending > 1 ? "s" : ""} waiting to upload.` : "."}${Cloud.message && Cloud.status !== "synced" ? " " + esc(Cloud.message) : ""}</p>
-    <div class="row" style="margin-top:14px"><button type="button" class="btn primary" data-act="sync-now">Sync now</button><button type="button" class="btn quiet" data-act="sign-out">Sign out</button></div>
-    <p class="muted small" style="margin-top:10px">Signing out removes your progress from this device only. It stays safe in your database.</p>
+    <div class="row" style="margin-top:14px"><button type="button" class="btn primary" data-act="sync-now">Sync now</button><button type="button" class="btn quiet" data-act="sign-out">Sign out</button><button type="button" class="btn quiet" data-act="sign-out-all">Sign out everywhere</button></div>
+    <p class="muted small" style="margin-top:10px">Sign out removes your progress from this device only; it stays safe in your database. Sign out everywhere also signs out every other device, which is useful if you lose a phone or used a shared computer.</p>
+    <form data-form="idle" style="margin-top:22px">
+      <label class="field"><span>Sign out automatically on this device after</span>
+        <select name="idle">${IDLE_OPTIONS.map(([m, l]) => `<option value="${m}" ${m === Idle.minutes() ? "selected" : ""}>${m ? `${l} without activity` : "Never"}</option>`).join("")}</select>
+      </label>
+      <button class="btn quiet" type="submit">Save</button>
+      <p class="muted small" style="margin-top:10px">Saved on this device only, so you can choose a shorter time on shared or office computers.</p>
+    </form>
     <form data-form="changepass" style="margin-top:22px">
       <label class="field"><span>Change password, at least 8 characters</span><input type="password" name="password" required minlength="8" autocomplete="new-password"></label>
       <button class="btn quiet" type="submit">Change password</button>
@@ -1734,8 +1816,10 @@ document.addEventListener("click", e => {
   else if (act === "reset") resetLocal();
   else if (act === "sync-now") Cloud.fullSync();
   else if (act === "sign-out") {
-    const n = state.pending.length;
-    if (confirm(n ? `${n} change${n > 1 ? "s haven't" : " hasn't"} uploaded yet and will be lost from this device. Sign out anyway?` : "Sign out on this device?")) Cloud.signOut();
+    if (confirm("Sign out on this device?")) Cloud.signOut();
+  }
+  else if (act === "sign-out-all") {
+    if (confirm("Sign out on every device where you're signed in, including this one?")) Cloud.signOut({ scope: "global" });
   }
   else if (act === "auth-mode") { ui.authMode = b.dataset.mode; Cloud.message = ""; render(); }
   else if (act === "go-offline") { ui.offline = true; render(); }
@@ -1796,6 +1880,11 @@ document.addEventListener("submit", async e => {
       } else { await Cloud.signIn(email, password); toast("Signed in. Your progress is syncing."); }
       render();
     } catch (err) { Cloud.message = friendlyError(err); render(); }
+  } else if (kind === "idle") {
+    const m = parseInt(fd.get("idle"), 10);
+    Idle.setMinutes(IDLE_OPTIONS.some(([v]) => v === m) ? m : IDLE_DEFAULT);
+    toast(Idle.minutes() ? `This device will sign out after ${idleLabel(Idle.minutes())} without activity` : "Auto sign-out turned off on this device");
+    render();
   } else if (kind === "newpass" || kind === "changepass") {
     const password = String(fd.get("password") || "");
     if (kind === "newpass" && password !== String(fd.get("password2") || "")) { toast("The two passwords don't match."); return; }
@@ -1817,6 +1906,7 @@ document.addEventListener("visibilitychange", () => {
 /* ---------- Start ---------- */
 buildIndex();
 render();
+Idle.start();
 Cloud.init();
 </script>
 </body>

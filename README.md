@@ -69,6 +69,8 @@ Sign in once on each device. You stay signed in until you sign out.
 - **Signing in:** your email and password. If you forget the password, use **Forgot your password?** on the sign-in screen, then open the emailed link to choose a new one.
 - **Changing your password:** Settings > Login and sync.
 - **Signing out:** removes your progress from that device only. It stays safe in your database and comes back when you sign in again. Useful on shared computers.
+- **Sign out everywhere:** signs out every device at once, for example if you lose your phone. It's in Settings > Login and sync.
+- **Auto sign-out:** each device signs out after a period without activity (1 day by default). Change it per device in Settings > Login and sync, for example 15 minutes on an office computer. Changes that haven't uploaded yet are never thrown away; they upload when you sign in again.
 - **Offline:** changes are saved on the device first and upload automatically when you're back online. If the database can't be reached at sign-in, you can choose to work offline on that device.
 - **Sync status:** the pill at the top right shows whether everything is synced.
 
@@ -97,7 +99,7 @@ DSA (Striver's A2Z in C++, then LeetCode Top Interview 150) runs every week thro
 
 **Projects.** One flagship, Procurement Copilot, grows layer by layer: backend and data, grounded RAG with role-based access, invoice extraction, a bounded agent with approvals and MCP tools, then production hardening. A second, smaller classic ML project (supplier-email triage) is later used for a fine-tuning comparison. Every project shows a number, admits a failure, and has a demo someone can try.
 
-**Skipped on purpose, for now:** computer vision, classic NLP (POS tagging, parsing), RNN/LSTM depth, Kubeflow, Airflow, KServe, Terraform, and extra agent frameworks. Learn them later if a role needs them.
+**Skipped on purpose, for now:** computer vision models, classic NLP (POS tagging, parsing), RNN/LSTM depth, Kubernetes, GraphQL, web servers like Nginx, deep NoSQL and Elasticsearch work, Kubeflow, Airflow, KServe, Terraform, and extra agent frameworks. Learn the concepts later if a role needs them.
 
 For top companies, 20 to 25 study hours a week works well. If you fall behind, the plan stretches; keep going.
 
