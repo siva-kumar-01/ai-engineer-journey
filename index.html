@@ -248,6 +248,29 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
 .steps li+li{margin-top:4px}
 code{font-size:.92em;background:var(--surface-2);border:1px solid var(--line-2);border-radius:5px;padding:0 5px}
 
+/* Focus timer */
+.top-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.focus-pill{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--ink);background:var(--surface);border:1px solid var(--accent);border-radius:999px;padding:6px 13px;text-decoration:none;font-variant-numeric:tabular-nums;white-space:nowrap}
+.focus-pill[hidden]{display:none}
+.focus-pill .fdot{width:8px;height:8px;border-radius:50%;background:var(--ink);animation:blink 2s ease-in-out infinite}
+.focus-pill.on-break .fdot{background:var(--accent)}
+.focus-pill.paused .fdot{background:var(--ink-3);animation:none}
+body.locked .focus-pill{display:none}
+.focus-wrap{display:grid;justify-items:center;gap:18px;margin:28px 0 12px}
+.dial{position:relative;width:min(300px,78vw);aspect-ratio:1}
+.dial svg{width:100%;height:100%;transform:rotate(-90deg)}
+.dial .track{stroke:var(--line-2)}
+.dial .prog{stroke:var(--ink);transition:stroke-dashoffset 1s linear}
+.dial.break .prog{stroke:var(--accent)}
+.dial-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 30px}
+.dial-mode{font-size:15px;color:var(--ink-2)}
+.dial-time{font-size:clamp(48px,10vw,68px);font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1}
+.dial-task{font-size:13.5px;color:var(--ink-2);margin-top:6px;max-width:24ch;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.fx-controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.fx-main{min-width:140px}
+.range{width:100%;accent-color:var(--ink)}
+select{appearance:auto}
+
 /* Login */
 body.locked .tabs,body.locked .sync{display:none}
 .login{max-width:460px;margin-top:12px}
@@ -281,7 +304,10 @@ body.locked .tabs,body.locked .sync{display:none}
       <p class="brand">AI Engineer Journey</p>
       <p class="status" id="status"></p>
     </div>
-    <a class="sync" id="sync" href="#/settings" data-s="local"><span class="dot" aria-hidden="true"></span><span class="t">Saved on this device</span></a>
+    <div class="top-right">
+      <a class="focus-pill" id="focus-pill" href="#/focus" hidden><span class="fdot" aria-hidden="true"></span><span class="ft">Focus</span></a>
+      <a class="sync" id="sync" href="#/settings" data-s="local"><span class="dot" aria-hidden="true"></span><span class="t">Saved on this device</span></a>
+    </div>
   </div>
   <div id="banner"></div>
   <nav class="tabs" aria-label="Main">
@@ -289,6 +315,7 @@ body.locked .tabs,body.locked .sync{display:none}
     <a href="#/week" data-route="week">This week</a>
     <a href="#/roadmap" data-route="roadmap">Roadmap</a>
     <a href="#/path" data-route="path">Learning path</a>
+    <a href="#/focus" data-route="focus">Focus</a>
     <a href="#/log" data-route="log">Daily log</a>
     <a href="#/resources" data-route="resources">Resources</a>
     <a href="#/settings" data-route="settings">Settings</a>
@@ -1151,6 +1178,7 @@ const Idle = {
   setMinutes(m) { Store.set(IDLE_KEY, m); this.touch(true); },
   last() { return Number(Store.get(LAST_ACTIVE_KEY)) || 0; },
   expired() {
+    if (Focus.isActive()) return false;   // a focus session in progress counts as activity
     const m = this.minutes(); const last = this.last();
     return !!m && last > 0 && Date.now() - last > m * 60000;
   },
@@ -1230,6 +1258,7 @@ const Cloud = {
     return "confirm";
   },
   async signOut(opts = {}) {
+    Focus.clear();
     const scope = opts.scope === "global" ? "global" : "local";   // Supabase's default is global, which signs out every device
     if (this.client && this.session) { try { await this.flushPending(); } catch (e) { /* keep going */ } }
     const keepData = state.pending.length > 0;   // never throw away changes that haven't uploaded
@@ -1403,9 +1432,9 @@ function render() {
   }
   const route = parseRoute();
   setActiveNav(route.name);
-  const views = { week: viewWeek, roadmap: viewRoadmap, path: viewPath, log: viewLog, resources: viewResources, settings: viewSettings };
+  const views = { week: viewWeek, roadmap: viewRoadmap, path: viewPath, focus: viewFocus, log: viewLog, resources: viewResources, settings: viewSettings };
   $("#main").innerHTML = (views[route.name] || viewDashboard)(route.arg);
-  renderHeader(); renderSync();
+  renderHeader(); renderSync(); Focus.updateChrome();
   const j = $(".journey"), cur = $(".node.current");
   if (j && cur && j.scrollWidth > j.clientWidth) {
     j.scrollLeft += cur.getBoundingClientRect().left - j.getBoundingClientRect().left - j.clientWidth / 2;
@@ -1890,6 +1919,337 @@ function toast(msg) {
   clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove("show"), 2800);
 }
 
+
+/* =====================================================================
+   Focus sessions: timer, sounds and automatic study logging
+   ===================================================================== */
+const FOCUS_KEY = "aej-focus-v1";
+const FOCUS_SETTINGS_KEY = "aej-focus-settings-v1";
+const FOCUS_STATS_KEY = "aej-focus-stats-v1";
+const FOCUS_PRESETS = [
+  { id: "25", label: "25 / 5", focus: 25, brk: 5, long: 15 },
+  { id: "50", label: "50 / 10", focus: 50, brk: 10, long: 20 },
+  { id: "90", label: "90 / 15", focus: 90, brk: 15, long: 30 }
+];
+const TAB_ID = Math.random().toString(36).slice(2);
+const BASE_TITLE = document.title;
+const RING_C = 2 * Math.PI * 52;
+const fmtClock = ms => { const s = Math.max(0, Math.ceil(ms / 1000)); return `${pad(Math.floor(s / 60))}:${pad(s % 60)}`; };
+
+/* Soft bell tones made with the Web Audio API, so no sound files are needed.
+   Chimes are scheduled on the audio clock, which keeps time even in background tabs. */
+const Sound = {
+  ctx: null, scheduled: [],
+  ensure() {
+    try {
+      if (!this.ctx) { const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return null; this.ctx = new AC(); }
+      if (this.ctx.state === "suspended") this.ctx.resume();
+    } catch (e) { return null; }
+    return this.ctx;
+  },
+  bell(freq, t, dur, gain, dest) {
+    const ctx = this.ctx, nodes = [];
+    const env = ctx.createGain();
+    env.gain.setValueAtTime(0.0001, t);
+    env.gain.exponentialRampToValueAtTime(gain, t + 0.015);
+    env.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    env.connect(dest);
+    [[1, 1], [2, 0.3], [3.01, 0.1], [4.2, 0.04]].forEach(([mult, g]) => {
+      const o = ctx.createOscillator(); o.type = "sine"; o.frequency.setValueAtTime(freq * mult, t);
+      const pg = ctx.createGain(); pg.gain.value = g;
+      o.connect(pg); pg.connect(env); o.start(t); o.stop(t + dur + 0.05); nodes.push(o);
+    });
+    return nodes;
+  },
+  chime(kind, atMs) {
+    const s = Focus.settings(); if (s.muted) return;
+    const ctx = this.ensure(); if (!ctx) return;
+    const at = atMs || Date.now();
+    const t0 = ctx.currentTime + Math.max(0, (at - Date.now()) / 1000) + 0.03;
+    const vol = clamp(Number(s.volume), 0, 1) * 0.2;
+    const master = ctx.createGain(); master.connect(ctx.destination);
+    const delay = ctx.createDelay(1); delay.delayTime.value = 0.21;           // a light echo for a sense of space
+    const fb = ctx.createGain(); fb.gain.value = 0.25;
+    const wet = ctx.createGain(); wet.gain.value = 0.3;
+    master.connect(delay); delay.connect(fb); fb.connect(delay); delay.connect(wet); wet.connect(ctx.destination);
+    const seq = kind === "start"
+      ? [[659.25, 0], [987.77, 0.17]]                   // E5 then B5: a calm, rising "begin"
+      : [[1046.5, 0], [783.99, 0.24], [659.25, 0.48]];  // C6, G5, E5: a gentle, settling "done"
+    const dur = kind === "start" ? 1.2 : 2;
+    let nodes = [];
+    seq.forEach(([f, off]) => { nodes = nodes.concat(this.bell(f, t0 + off, dur, vol, master)); });
+    this.scheduled.push({ at, nodes });
+  },
+  cancelScheduled() {
+    const now = Date.now();
+    this.scheduled.forEach(x => { if (x.at > now + 50) x.nodes.forEach(o => { try { o.stop(); } catch (e) { /* already stopped */ } }); });
+    this.scheduled = this.scheduled.filter(x => x.at <= now);
+  }
+};
+
+function notify(title, body) {
+  try {
+    if ("Notification" in window && Notification.permission === "granted" && document.hidden) new Notification(title, { body, silent: true, tag: "aej-focus" });
+  } catch (e) { /* notifications not available */ }
+}
+
+const Focus = {
+  _tick: null, _scheduledFor: new Set(),
+  settings() { return { preset: "25", customFocus: 40, customBreak: 8, autoBreak: true, autoLog: true, volume: 0.7, muted: false, task: "", ...(Store.get(FOCUS_SETTINGS_KEY) || {}) }; },
+  saveSettings(p) { Store.set(FOCUS_SETTINGS_KEY, { ...this.settings(), ...p }); },
+  state() { return Store.get(FOCUS_KEY) || { mode: "idle" }; },
+  set(st) { Store.set(FOCUS_KEY, st); this.updateChrome(); },
+  durations() {
+    const s = this.settings(); const p = FOCUS_PRESETS.find(x => x.id === s.preset);
+    if (p) return p;
+    const f = clamp(parseInt(s.customFocus, 10) || 40, 5, 180), b = clamp(parseInt(s.customBreak, 10) || 8, 1, 60);
+    return { id: "custom", label: "Custom", focus: f, brk: b, long: clamp(b * 3, 5, 60) };
+  },
+  isActive() { return this.state().mode !== "idle"; },
+  isRunning() { const st = this.state(); return st.mode !== "idle" && !st.paused && !!st.endsAt; },
+  remaining(st = this.state()) {
+    if (st.mode === "idle") return this.durations().focus * 60000;
+    if (st.paused) return st.paused;
+    return Math.max(0, st.endsAt - Date.now());
+  },
+  todayStats() { const all = Store.get(FOCUS_STATS_KEY) || {}; return all[todayStr()] || { sessions: 0, minutes: 0 }; },
+  addStats(date, minutes, completed) {
+    const all = Store.get(FOCUS_STATS_KEY) || {};
+    const x = all[date] || { sessions: 0, minutes: 0 };
+    if (completed) x.sessions++;
+    x.minutes += minutes; all[date] = x;
+    const cutoff = ymd(addDays(new Date(), -90));
+    Object.keys(all).forEach(d => { if (d < cutoff) delete all[d]; });
+    Store.set(FOCUS_STATS_KEY, all);
+  },
+  logMinutes(date, minutes) {
+    if (!this.settings().autoLog || minutes < 1 || isLocked()) return false;
+    const l = state.logs[date] || {};
+    saveLog(date, { minutes: (l.minutes || 0) + minutes, dsa: l.dsa || 0, min: !!l.min, note: l.note || "" });
+    return true;
+  },
+  scheduleEnd(st) {
+    if (!st.endsAt) return;
+    Sound.chime(st.mode === "focus" ? "end" : "start", st.endsAt);
+    this._scheduledFor.add(st.endsAt);
+  },
+  start() {
+    Sound.ensure();
+    const d = this.durations(); const now = Date.now();
+    const st = { mode: "focus", startedAt: now, endsAt: now + d.focus * 60000, total: d.focus * 60000, task: this.settings().task, owner: TAB_ID, paused: null };
+    this.set(st);
+    Sound.chime("start");
+    this.scheduleEnd(st);
+    this.loop(); render();
+    toast(`Focus for ${d.focus} minutes. One task, nothing else.`);
+  },
+  pause() {
+    const st = this.state(); if (!st.endsAt) return;
+    st.paused = Math.max(1000, st.endsAt - Date.now()); st.endsAt = null;
+    Sound.cancelScheduled(); this.set(st); render();
+  },
+  resume() {
+    Sound.ensure();
+    const st = this.state(); if (!st.paused) return;
+    st.endsAt = Date.now() + st.paused; st.paused = null; st.owner = TAB_ID;
+    this.set(st); this.scheduleEnd(st); this.loop(); render();
+  },
+  stop() {
+    const st = this.state(); Sound.cancelScheduled();
+    let msg = "Session stopped.";
+    if (st.mode === "focus") {
+      const elapsed = Math.round((st.total - this.remaining(st)) / 60000);
+      if (elapsed >= 5) {
+        this.addStats(todayStr(), elapsed, false);
+        if (this.logMinutes(todayStr(), elapsed)) msg = `Session stopped. ${elapsed} minutes added to today's log.`;
+      }
+    }
+    this.set({ mode: "idle" }); render(); toast(msg);
+  },
+  skipBreak() { Sound.cancelScheduled(); this.set({ mode: "idle" }); render(); },
+  clear() { Sound.cancelScheduled(); Store.set(FOCUS_KEY, { mode: "idle" }); this.updateChrome(); },
+  complete(st) {
+    const date = ymd(new Date(st.endsAt)); const minutes = Math.round(st.total / 60000);
+    this.addStats(date, minutes, true);
+    const logged = this.logMinutes(date, minutes);
+    if (!this._scheduledFor.has(st.endsAt) && Date.now() - st.endsAt < 90000) Sound.chime("end");
+    Idle.touch(true);
+    const s = this.settings(), d = this.durations();
+    const n = this.todayStats().sessions; const brk = n > 0 && n % 4 === 0 ? d.long : d.brk;
+    const done = `Session complete${logged ? `, ${minutes} minutes added to today's log` : ""}.`;
+    notify("Focus session complete", `${logged ? `${minutes} minutes logged. ` : ""}Time for a ${brk}-minute break.`);
+    if (s.autoBreak) {
+      const endsAt = st.endsAt + brk * 60000;
+      if (endsAt > Date.now()) {
+        const b = { mode: "break", startedAt: st.endsAt, endsAt, total: brk * 60000, task: st.task, owner: TAB_ID, paused: null };
+        this.set(b); this.scheduleEnd(b);
+        toast(`${done} Enjoy a ${brk}-minute break.`);
+        return;
+      }
+    }
+    this.set({ mode: "idle" }); toast(done);
+  },
+  breakDone(st) {
+    if (!this._scheduledFor.has(st.endsAt) && Date.now() - st.endsAt < 90000) Sound.chime("start");
+    notify("Break's over", "Ready for your next focus session?");
+    this.set({ mode: "idle" });
+    toast("Break's over. Start your next session when you're ready.");
+  },
+  check() {
+    const st = this.state();
+    if (st.mode === "idle" || !st.endsAt || Date.now() < st.endsAt) return false;
+    if (st.owner !== TAB_ID && Date.now() - st.endsAt < 5000) return false;   // let the tab that started it finish first
+    if (st.mode === "focus") this.complete(st); else this.breakDone(st);
+    return true;
+  },
+  tick() {
+    if (this.check()) {
+      const typing = document.activeElement && document.activeElement.matches("input, textarea, select");
+      if (!typing) render();
+    }
+    this.updateChrome();
+    if (!this.isActive()) this.stopLoop();
+  },
+  loop() { if (!this._tick) this._tick = setInterval(() => this.tick(), 1000); },
+  stopLoop() { clearInterval(this._tick); this._tick = null; },
+  updateChrome() {
+    const st = this.state(); const rem = this.remaining(st); const txt = fmtClock(rem);
+    const label = st.paused ? "Paused" : st.mode === "focus" ? "Focus" : st.mode === "break" ? "Break" : "";
+    const pill = $("#focus-pill");
+    if (st.mode === "idle") { if (pill) pill.hidden = true; document.title = BASE_TITLE; }
+    else {
+      if (pill) { pill.hidden = false; pill.classList.toggle("paused", !!st.paused); pill.classList.toggle("on-break", st.mode === "break"); pill.querySelector(".ft").textContent = `${label} ${txt}`; }
+      document.title = `${txt} ${label} – ${BASE_TITLE}`;
+    }
+    const time = $("#fx-time"); if (time) time.textContent = txt;
+    const ring = $("#fx-prog");
+    if (ring) { const frac = st.mode === "idle" ? 0 : 1 - rem / (st.total || 1); ring.style.strokeDashoffset = (RING_C * (1 - frac)).toFixed(2); }
+  }
+};
+
+function viewFocus() {
+  const s = Focus.settings(), st = Focus.state(), d = Focus.durations();
+  const paused = st.mode !== "idle" && !!st.paused;
+  const cw = clampWeek(currentWeek() || 1);
+  const tasks = WEEKS[cw - 1].tasks.filter(t => !state.tasks[t.id]);
+  const taskTitle = id => { const w = TASK_WEEK[id]; const t = w && WEEKS[w - 1].tasks.find(x => x.id === id); return t ? t.t : ""; };
+  const working = st.mode !== "idle" ? taskTitle(st.task) : "";
+  const today = Focus.todayStats();
+  const perm = "Notification" in window ? Notification.permission : "unsupported";
+  const modeLabel = st.mode === "idle" ? "Ready" : paused ? "Paused" : st.mode === "focus" ? "Focus" : "Break";
+  const controls = st.mode === "idle"
+    ? `<button type="button" class="btn primary fx-main" data-act="fx-start">Start focus</button>`
+    : `${paused ? `<button type="button" class="btn primary fx-main" data-act="fx-resume">Resume</button>` : `<button type="button" class="btn primary fx-main" data-act="fx-pause">Pause</button>`}
+       ${st.mode === "break" ? `<button type="button" class="btn quiet" data-act="fx-skip">Skip break</button>` : `<button type="button" class="btn quiet" data-act="fx-stop">Stop</button>`}`;
+  const presetBtn = (id, label) => `<button type="button" class="q ${s.preset === id ? "on" : ""}" data-act="fx-preset" data-id="${id}">${esc(label)}</button>`;
+  return `
+  <h1 class="page-h">Focus session</h1>
+  <p class="week-sub">One task, one block of time, nothing else. Completed sessions are added to today's study log, and a soft chime tells you when to start and stop.</p>
+  <div class="focus-wrap">
+    <div class="dial ${st.mode === "break" ? "break" : ""}">
+      <svg viewBox="0 0 120 120" aria-hidden="true">
+        <circle class="track" cx="60" cy="60" r="52" fill="none" stroke-width="6"></circle>
+        <circle id="fx-prog" class="prog" cx="60" cy="60" r="52" fill="none" stroke-width="6" stroke-linecap="round" stroke-dasharray="${RING_C.toFixed(2)}" stroke-dashoffset="${RING_C.toFixed(2)}"></circle>
+      </svg>
+      <div class="dial-center">
+        <span class="dial-mode">${esc(modeLabel)}</span>
+        <span class="dial-time" id="fx-time" role="timer">${fmtClock(Focus.remaining(st))}</span>
+        ${working ? `<span class="dial-task">${esc(working)}</span>` : ""}
+      </div>
+    </div>
+    <div class="fx-controls">${controls}</div>
+    <p class="muted small">Press the space bar to start or pause.</p>
+  </div>
+  <div class="dash">
+    <section class="panel" aria-labelledby="fx-set-h">
+      <h2 id="fx-set-h">Session settings</h2>
+      <div class="field"><span>Focus and break, in minutes${st.mode !== "idle" ? " (changes apply to your next session)" : ""}</span>
+        <div class="quick">${FOCUS_PRESETS.map(p => presetBtn(p.id, p.label)).join("")}${presetBtn("custom", "Custom")}</div>
+      </div>
+      ${s.preset === "custom" ? `<div class="row" style="margin-bottom:14px">
+        <label class="field" style="margin:0;flex:1"><span>Focus minutes</span><input type="number" id="fx-cf" min="5" max="180" value="${esc(d.focus)}"></label>
+        <label class="field" style="margin:0;flex:1"><span>Break minutes</span><input type="number" id="fx-cb" min="1" max="60" value="${esc(d.brk)}"></label>
+      </div>` : ""}
+      <p class="muted small" style="margin:-4px 0 14px">Every fourth break is a longer one (${d.long} minutes).</p>
+      <label class="field"><span>What are you working on?</span>
+        <select id="fx-task"><option value="">No specific task</option>${tasks.map(t => `<option value="${t.id}" ${s.task === t.id ? "selected" : ""}>${esc(t.t)}</option>`).join("")}</select>
+      </label>
+      <label class="check-field"><input type="checkbox" id="fx-autobreak" ${s.autoBreak ? "checked" : ""}><span>Start breaks automatically</span></label>
+      <label class="check-field"><input type="checkbox" id="fx-autolog" ${s.autoLog ? "checked" : ""}><span>Add completed sessions to today's study log</span></label>
+      <label class="check-field"><input type="checkbox" id="fx-sound" ${s.muted ? "" : "checked"}><span>Play chimes</span></label>
+      <label class="field"><span>Chime volume</span><input type="range" class="range" id="fx-volume" min="0" max="100" value="${Math.round(clamp(Number(s.volume), 0, 1) * 100)}"></label>
+      <div class="row"><button type="button" class="btn quiet sm" data-act="fx-test" data-kind="start">Play start chime</button><button type="button" class="btn quiet sm" data-act="fx-test" data-kind="end">Play end chime</button></div>
+      <p class="muted small" style="margin-top:14px">${perm === "granted" ? "Desktop notifications are on, so you'll also see a message when the tab is in the background."
+        : perm === "denied" ? "Desktop notifications are blocked in your browser settings. The chimes still play."
+        : perm === "default" ? `<button type="button" class="linkbtn" data-act="fx-notify">Turn on desktop notifications</button> to also see a message when the tab is in the background.`
+        : ""}</p>
+    </section>
+    <aside class="stack">
+      <div class="panel">
+        <h2>Today</h2>
+        <div class="stats" style="margin-top:8px">
+          <div class="stat"><span>Focus sessions completed</span><b>${today.sessions}</b></div>
+          <div class="stat"><span>Focused time</span><b>${fmtMin(today.minutes)}</b></div>
+        </div>
+      </div>
+      <div class="note-card">
+        <h2>Getting the most from a session</h2>
+        <p>Before you start, pick one task and close everything else. Put your phone in another room.</p>
+        <p style="margin-top:8px">If your mind wanders, that's normal. Notice it, and gently come back to the task.</p>
+        <p style="margin-top:8px">On breaks, stand up, stretch or drink water. Avoid your phone, so your break actually rests your mind.</p>
+        <p style="margin-top:8px">Chimes play reliably on a computer. On a phone, keep the screen on, since phones can pause sound when locked.</p>
+      </div>
+    </aside>
+  </div>`;
+}
+
+/* Focus events */
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-act]"); if (!b) return;
+  const act = b.dataset.act;
+  if (act === "fx-start") Focus.start();
+  else if (act === "fx-pause") Focus.pause();
+  else if (act === "fx-resume") Focus.resume();
+  else if (act === "fx-stop") Focus.stop();
+  else if (act === "fx-skip") Focus.skipBreak();
+  else if (act === "fx-preset") { Focus.saveSettings({ preset: b.dataset.id }); render(); }
+  else if (act === "fx-test") { Sound.ensure(); Sound.chime(b.dataset.kind === "start" ? "start" : "end"); }
+  else if (act === "fx-notify" && "Notification" in window) Notification.requestPermission().then(() => render());
+});
+document.addEventListener("change", e => {
+  const t = e.target;
+  const resched = () => { Sound.cancelScheduled(); const st = Focus.state(); if (Focus.isRunning()) { Sound.ensure(); Focus.scheduleEnd(st); } };
+  if (t.id === "fx-task") Focus.saveSettings({ task: t.value });
+  else if (t.id === "fx-autobreak") Focus.saveSettings({ autoBreak: t.checked });
+  else if (t.id === "fx-autolog") Focus.saveSettings({ autoLog: t.checked });
+  else if (t.id === "fx-sound") { Focus.saveSettings({ muted: !t.checked }); resched(); }
+  else if (t.id === "fx-volume") { Focus.saveSettings({ volume: Number(t.value) / 100 }); resched(); }
+  else if (t.id === "fx-cf") { Focus.saveSettings({ customFocus: clamp(parseInt(t.value, 10) || 40, 5, 180) }); Focus.updateChrome(); }
+  else if (t.id === "fx-cb") { Focus.saveSettings({ customBreak: clamp(parseInt(t.value, 10) || 8, 1, 60) }); Focus.updateChrome(); }
+});
+document.addEventListener("keydown", e => {
+  if (e.code !== "Space" || parseRoute().name !== "focus" || isLocked()) return;
+  if (e.target.closest("input, textarea, select, button, a")) return;
+  e.preventDefault();
+  const st = Focus.state();
+  if (st.mode === "idle") Focus.start(); else if (st.paused) Focus.resume(); else Focus.pause();
+});
+/* After a page reload, the first tap re-arms the chime for a running session (browsers need a tap before playing sound). */
+document.addEventListener("pointerdown", () => {
+  const st = Focus.state();
+  if (Focus.isRunning() && !Focus._scheduledFor.has(st.endsAt) && st.endsAt - Date.now() > 1000) {
+    Sound.ensure(); st.owner = TAB_ID; Store.set(FOCUS_KEY, st); Focus.scheduleEnd(st);
+  }
+}, { passive: true });
+window.addEventListener("storage", e => {
+  if (e.key !== FOCUS_KEY) return;
+  if (Focus.isActive()) Focus.loop();
+  Focus.updateChrome();
+  const typing = document.activeElement && document.activeElement.matches("input, textarea, select");
+  if (parseRoute().name === "focus" && !typing) render();
+});
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && Focus.isActive()) Focus.tick(); });
+
 /* ---------- Events ---------- */
 document.addEventListener("change", e => {
   const t = e.target;
@@ -2005,6 +2365,7 @@ document.addEventListener("visibilitychange", () => {
 buildIndex();
 render();
 Idle.start();
+if (Focus.isActive()) { Focus.loop(); Focus.tick(); }
 Cloud.init();
 </script>
 </body>
