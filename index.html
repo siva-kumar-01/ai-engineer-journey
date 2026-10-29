@@ -271,6 +271,26 @@ body.locked .focus-pill{display:none}
 .range{width:100%;accent-color:var(--ink)}
 select{appearance:auto}
 
+/* Learning quality */
+.scale,.checks{border:0;margin:0 0 16px;padding:0}
+.scale legend,.checks legend{font-size:14px;color:var(--ink-2);margin-bottom:8px;padding:0}
+.scale-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.scale label{cursor:pointer}
+.scale input{position:absolute;opacity:0;pointer-events:none}
+.scale span{display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;font-size:12.5px;line-height:1.25;color:var(--ink-2);border:1px solid var(--line);border-radius:10px;padding:8px 4px;background:var(--surface);height:100%}
+.scale span b{font-size:16px;color:var(--ink)}
+.scale label:hover span{border-color:var(--ink-3)}
+.scale input:checked+span{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.scale input:checked+span b{color:var(--paper)}
+.scale input:focus-visible+span{outline:2px solid var(--accent);outline-offset:2px}
+.checks .check-field{margin:0 0 8px;align-items:flex-start}
+.checks .check-field input{margin-top:3px;flex:none}
+.q-score{display:flex;align-items:baseline;gap:12px;margin:6px 0 4px}
+.q-score b{font-size:44px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1}
+.q-score span{color:var(--ink-2)}
+.bar.none{background:var(--line-2)}
+@media (max-width:560px){.scale span{font-size:11px;padding:7px 2px}}
+
 /* Login */
 body.locked .tabs,body.locked .sync{display:none}
 .login{max-width:460px;margin-top:12px}
@@ -316,6 +336,7 @@ body.locked .tabs,body.locked .sync{display:none}
     <a href="#/roadmap" data-route="roadmap">Roadmap</a>
     <a href="#/path" data-route="path">Learning path</a>
     <a href="#/focus" data-route="focus">Focus</a>
+    <a href="#/reflect" data-route="reflect">Quality</a>
     <a href="#/log" data-route="log">Daily log</a>
     <a href="#/resources" data-route="resources">Resources</a>
     <a href="#/settings" data-route="settings">Settings</a>
@@ -1028,7 +1049,7 @@ const Store = (() => {
 })();
 
 function defaultState() {
-  return { v: 1, settings: { name: "", start: "", target: 20, dsaOffset: 0, updated_at: null }, tasks: {}, logs: {}, reviews: {}, pending: [], meta: { syncedUser: null } };
+  return { v: 1, settings: { name: "", start: "", target: 20, dsaOffset: 0, updated_at: null }, tasks: {}, logs: {}, reviews: {}, reflections: {}, pending: [], meta: { syncedUser: null } };
 }
 function loadState() {
   const s = Store.get(STORAGE_KEY); const d = defaultState();
@@ -1036,14 +1057,15 @@ function loadState() {
   return {
     ...d, ...s,
     settings: { ...d.settings, ...(s.settings || {}) },
-    tasks: s.tasks || {}, logs: s.logs || {}, reviews: s.reviews || {},
+    tasks: s.tasks || {}, logs: s.logs || {}, reviews: s.reviews || {}, reflections: s.reflections || {},
     pending: Array.isArray(s.pending) ? s.pending : [],
     meta: { ...d.meta, ...(s.meta || {}) }
   };
 }
 let state = loadState();
 function saveLocal() { Store.set(STORAGE_KEY, state); }
-const ui = { resQuery: "", resArea: "all", showCloudForm: false, pop: null, offline: false, recovery: false, authMode: "in", lastEmail: "", loginNotice: "" };
+const isMissingTable = e => /could not find the table|does not exist|schema cache|PGRST205|42P01/i.test(String((e && (e.message || e.code)) || e || ""));
+const ui = { needsSchema: false, resQuery: "", resArea: "all", showCloudForm: false, pop: null, offline: false, recovery: false, authMode: "in", lastEmail: "", loginNotice: "" };
 
 /* ---------- Plan maths ---------- */
 const TASK_WEEK = {}; const CP_MONTH = {};
@@ -1297,7 +1319,10 @@ const Cloud = {
     });
   },
   async _flush() {
-    while (state.pending.length) { await this._push(state.pending[0]); state.pending.shift(); saveLocal(); }
+    for (const key of [...state.pending]) {
+      try { await this._push(key); state.pending = state.pending.filter(k => k !== key); saveLocal(); }
+      catch (e) { if (key.startsWith("refl:") && isMissingTable(e)) { ui.needsSchema = true; continue; } throw e; }
+    }
   },
   async _push(key) {
     const [type, id] = splitKey(key); const uid = this.uid(); const db = this.client; let res = null;
@@ -1313,6 +1338,10 @@ const Cloud = {
       const r = state.reviews[id]; const n = Number(id);
       res = r ? await db.from("week_reviews").upsert({ user_id: uid, week_no: n, note: r.note, updated_at: r.updated_at || nowIso() }, { onConflict: "user_id,week_no" })
               : await db.from("week_reviews").delete().eq("user_id", uid).eq("week_no", n);
+    } else if (type === "refl") {
+      const r = state.reflections[id];
+      res = r ? await db.from("daily_reflections").upsert({ user_id: uid, log_date: id, focus: r.focus, understanding: r.understanding, energy: r.energy, sleep_hours: r.sleep, practices: r.practices || [], distractions: r.distractions || [], went_well: r.well || null, got_in_way: r.block || null, tomorrow: r.tomorrow || null, updated_at: r.updated_at || nowIso() }, { onConflict: "user_id,log_date" })
+              : await db.from("daily_reflections").delete().eq("user_id", uid).eq("log_date", id);
     } else if (type === "settings") {
       const s = state.settings;
       res = await db.from("settings").upsert({ user_id: uid, display_name: s.name || null, start_date: s.start || null, weekly_target_hours: Number(s.target) || 20, dsa_offset: Number(s.dsaOffset) || 0, updated_at: s.updated_at || nowIso() }, { onConflict: "user_id" });
@@ -1335,18 +1364,24 @@ const Cloud = {
           db.from("week_reviews").select("*").eq("user_id", uid)
         ]);
         for (const x of [s, t, l, r]) if (x.error) throw x.error;
+        const rf = await db.from("daily_reflections").select("*").eq("user_id", uid);
+        let remoteRefl = null;
+        if (rf.error) { if (isMissingTable(rf.error)) ui.needsSchema = true; else throw rf.error; }
+        else { ui.needsSchema = false; remoteRefl = Object.fromEntries((rf.data || []).map(x => [x.log_date, { focus: x.focus, understanding: x.understanding, energy: x.energy, sleep: x.sleep_hours == null ? null : Number(x.sleep_hours), practices: x.practices || [], distractions: x.distractions || [], well: x.went_well || "", block: x.got_in_way || "", tomorrow: x.tomorrow || "", updated_at: x.updated_at }])); }
         const remote = {
           settings: s.data ? fromSettingsRow(s.data) : null,
           tasks: Object.fromEntries((t.data || []).map(x => [x.task_id, x.completed_at])),
           logs: Object.fromEntries((l.data || []).map(x => [x.log_date, { minutes: x.minutes || 0, dsa: x.dsa_solved || 0, min: !!x.minimum_day, note: x.note || "", updated_at: x.updated_at }])),
-          reviews: Object.fromEntries((r.data || []).map(x => [String(x.week_no), { note: x.note, updated_at: x.updated_at }]))
+          reviews: Object.fromEntries((r.data || []).map(x => [String(x.week_no), { note: x.note, updated_at: x.updated_at }])),
+          reflections: remoteRefl
         };
-        const remoteEmpty = !Object.keys(remote.tasks).length && !Object.keys(remote.logs).length && !Object.keys(remote.reviews).length;
-        const localHasData = Object.keys(state.tasks).length || Object.keys(state.logs).length || Object.keys(state.reviews).length;
+        const remoteEmpty = !Object.keys(remote.tasks).length && !Object.keys(remote.logs).length && !Object.keys(remote.reviews).length && !Object.keys(remote.reflections || {}).length;
+        const localHasData = Object.keys(state.tasks).length || Object.keys(state.logs).length || Object.keys(state.reviews).length || Object.keys(state.reflections).length;
         if (sameUser && !(remoteEmpty && localHasData)) {
           if (remote.settings && remote.settings.start) state.settings = { ...state.settings, ...remote.settings };
           else if (state.settings.start) state.pending.push("settings");
           state.tasks = remote.tasks; state.logs = remote.logs; state.reviews = remote.reviews;
+          if (remote.reflections) state.reflections = remote.reflections;
         } else {
           state.pending = mergeRemote(remote);
         }
@@ -1381,6 +1416,14 @@ function mergeRemote(remote) {
     if (!state.reviews[w] || newer(rv.updated_at, state.reviews[w].updated_at)) state.reviews[w] = rv;
   }
   for (const w of Object.keys(state.reviews)) if (!remote.reviews[w] || remote.reviews[w] !== state.reviews[w]) push.push("review:" + w);
+  if (remote.reflections) {
+    for (const [d, rv] of Object.entries(remote.reflections)) {
+      if (!state.reflections[d] || newer(rv.updated_at, state.reflections[d].updated_at)) state.reflections[d] = rv;
+    }
+    for (const d of Object.keys(state.reflections)) if (!remote.reflections[d] || remote.reflections[d] !== state.reflections[d]) push.push("refl:" + d);
+  } else {
+    for (const d of Object.keys(state.reflections)) push.push("refl:" + d);
+  }
   return push;
 }
 
@@ -1413,6 +1456,7 @@ function renderHeader() {
   let banner = "";
   if (!Store.persistent) banner = "This preview can't save progress. Host the site (see the README) and your progress will be kept.";
   else if (ui.offline) banner = `Working offline on this device. Changes are kept here; <a href="#/settings">sign in</a> when you're connected to sync them.`;
+  else if (ui.needsSchema && Cloud.session) banner = `Your database needs a quick update to sync learning-quality check-ins: run the latest <code>schema.sql</code> in Supabase's SQL Editor. Your check-ins are safe on this device until then.`;
   else if (!Cloud.configured() && !document.body.classList.contains("locked")) banner = `Progress is saved in this browser only. <a href="#/settings">Set up your login and database</a> to use it on any device.`;
   $("#banner").innerHTML = banner ? `<p class="banner">${banner}</p>` : "";
 }
@@ -1432,7 +1476,7 @@ function render() {
   }
   const route = parseRoute();
   setActiveNav(route.name);
-  const views = { week: viewWeek, roadmap: viewRoadmap, path: viewPath, focus: viewFocus, log: viewLog, resources: viewResources, settings: viewSettings };
+  const views = { week: viewWeek, roadmap: viewRoadmap, path: viewPath, focus: viewFocus, reflect: viewReflect, log: viewLog, resources: viewResources, settings: viewSettings };
   $("#main").innerHTML = (views[route.name] || viewDashboard)(route.arg);
   renderHeader(); renderSync(); Focus.updateChrome();
   const j = $(".journey"), cur = $(".node.current");
@@ -1636,6 +1680,7 @@ function viewDashboard() {
           <div class="stat"><span>Hours this week</span><b>${round1(hrs)} of ${target}</b>${meter(hrs / target, "thin")}</div>
           <div class="stat"><span>DSA problems solved</span><b>${dsa}</b><small>Month ${m.n} target: about ${m.dsaTarget}</small></div>
         </div>
+        ${qualityCardHTML()}
         <p class="nudge">${esc(nudgeText())}</p>
       </div>
     </aside>
@@ -1887,7 +1932,7 @@ function viewSettings() {
 
 /* ---------- Backup ---------- */
 function exportData() {
-  const data = { app: "ai-engineer-journey", v: 1, exported_at: nowIso(), settings: state.settings, tasks: state.tasks, logs: state.logs, reviews: state.reviews };
+  const data = { app: "ai-engineer-journey", v: 1, exported_at: nowIso(), settings: state.settings, tasks: state.tasks, logs: state.logs, reviews: state.reviews, reflections: state.reflections };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
   const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `ai-engineer-journey-${todayStr()}.json`;
   document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1500);
@@ -1900,7 +1945,7 @@ async function importFile(file) {
     if (data.app !== "ai-engineer-journey" || typeof data.tasks !== "object") throw new Error("not a backup");
     if (!confirm("Replace the progress on this device with this backup?")) return;
     state.settings = { ...defaultState().settings, ...(data.settings || {}) };
-    state.tasks = data.tasks || {}; state.logs = data.logs || {}; state.reviews = data.reviews || {};
+    state.tasks = data.tasks || {}; state.logs = data.logs || {}; state.reviews = data.reviews || {}; state.reflections = data.reflections || {};
     state.pending = []; state.meta.syncedUser = null; saveLocal();
     toast("Backup restored"); render();
     if (Cloud.session) Cloud.fullSync();
@@ -2250,6 +2295,174 @@ window.addEventListener("storage", e => {
 });
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && Focus.isActive()) Focus.tick(); });
 
+
+/* =====================================================================
+   Learning quality: a one-minute daily check-in, a gentle score,
+   trends, and personal insights from your own patterns
+   ===================================================================== */
+const PRACTICES = [
+  ["attempt", "Tried problems myself before looking at solutions"],
+  ["recall", "Explained or recalled what I learned without notes"],
+  ["built", "Wrote code or built something"],
+  ["review", "Reviewed something from an earlier day"],
+  ["single", "Worked on one thing at a time"],
+  ["phone", "Kept my phone away while studying"]
+];
+const DISTRACTIONS = [
+  ["phone", "Phone or social media"],
+  ["tired", "Tiredness or low energy"],
+  ["doubt", "Overthinking or doubt"],
+  ["resources", "Searching for new resources or roadmaps"],
+  ["unclear", "Unclear what to do next"],
+  ["work", "Work pressure"],
+  ["interrupt", "Interruptions"]
+];
+const SCALES = {
+  focus: ["Scattered", "Distracted", "Okay", "Focused", "Deeply focused"],
+  understanding: ["Lost", "Shaky", "Getting there", "Solid", "Could teach it"],
+  energy: ["Drained", "Low", "Okay", "Good", "Energized"]
+};
+
+function dailyTargetMinutes() { return (Number(state.settings.target) || 20) * 60 / 7; }
+function qualityOf(date) {
+  const r = state.reflections[date]; if (!r || !r.focus || !r.understanding) return null;
+  const minutes = (state.logs[date] || {}).minutes || 0;
+  const parts = {
+    time: Math.min(minutes / dailyTargetMinutes(), 1) * 25,
+    focus: (r.focus - 1) / 4 * 25,
+    understanding: (r.understanding - 1) / 4 * 20,
+    practices: Math.min((r.practices || []).length, PRACTICES.length) / PRACTICES.length * 30
+  };
+  const score = Math.round(parts.time + parts.focus + parts.understanding + parts.practices);
+  return { score, parts, minutes };
+}
+function qualityLabel(score) {
+  return score >= 80 ? "A strong learning day" : score >= 60 ? "A solid day" : score >= 40 ? "Some good learning" : "A light day, and that's okay";
+}
+function recentScores(days, endDate = todayStr()) {
+  const out = [];
+  for (let i = days - 1; i >= 0; i--) { const d = ymd(addDays(parseYmd(endDate), -i)); const q = qualityOf(d); out.push({ d, q }); }
+  return out;
+}
+function avg(xs) { return xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : null; }
+
+/* Compare your average score on days with and without a condition. Needs at least 2 days on each side. */
+function qualityInsights() {
+  const days = Object.keys(state.reflections).map(d => ({ d, r: state.reflections[d], q: qualityOf(d) })).filter(x => x.q);
+  if (days.length < 5) return { count: days.length, list: [] };
+  const tests = [
+    { yes: "you sleep 7 or more hours", no: "you sleep less than 7 hours", f: x => x.r.sleep >= 7, valid: x => typeof x.r.sleep === "number" && x.r.sleep > 0 },
+    { yes: "you keep your phone away", no: "your phone is nearby", f: x => (x.r.practices || []).includes("phone") },
+    { yes: "your energy is good", no: "your energy is low", f: x => x.r.energy >= 4, valid: x => !!x.r.energy && x.r.energy !== 3 },
+    { yes: "you work on one thing at a time", no: "you switch between things", f: x => (x.r.practices || []).includes("single") },
+    { yes: "you try problems before looking at solutions", no: "you look at solutions first", f: x => (x.r.practices || []).includes("attempt") },
+    ...DISTRACTIONS.map(([id, label]) => ({ yes: `${label.toLowerCase()} doesn't get in the way`, no: `${label.toLowerCase()} gets in the way`, f: x => !(x.r.distractions || []).includes(id) }))
+  ];
+  const list = [];
+  for (const t of tests) {
+    const pool = days.filter(x => !t.valid || t.valid(x));
+    const a = pool.filter(t.f).map(x => x.q.score), b = pool.filter(x => !t.f(x)).map(x => x.q.score);
+    if (a.length < 2 || b.length < 2) continue;
+    const diff = Math.round(avg(a) - avg(b));
+    if (Math.abs(diff) >= 8) list.push({ diff, text: diff > 0
+      ? `Your learning quality is ${diff} points higher on days ${t.yes}.`
+      : `Interesting: your learning quality is ${-diff} points higher on days ${t.no}.` });
+  }
+  list.sort((x, y) => Math.abs(y.diff) - Math.abs(x.diff));
+  return { count: days.length, list: list.slice(0, 3) };
+}
+function saveReflection(date, data) {
+  const r = {
+    focus: clamp(parseInt(data.focus, 10) || 0, 0, 5) || null,
+    understanding: clamp(parseInt(data.understanding, 10) || 0, 0, 5) || null,
+    energy: clamp(parseInt(data.energy, 10) || 0, 0, 5) || null,
+    sleep: data.sleep === "" || data.sleep == null ? null : clamp(Math.round(parseFloat(data.sleep) * 2) / 2 || 0, 0, 16),
+    practices: (data.practices || []).filter(p => PRACTICES.some(([id]) => id === p)),
+    distractions: (data.distractions || []).filter(p => DISTRACTIONS.some(([id]) => id === p)),
+    well: String(data.well || "").trim().slice(0, 500),
+    block: String(data.block || "").trim().slice(0, 500),
+    tomorrow: String(data.tomorrow || "").trim().slice(0, 300),
+    updated_at: nowIso()
+  };
+  state.reflections[date] = r; saveLocal(); Cloud.queue("refl:" + date);
+}
+
+function scaleHTML(name, label, value) {
+  return `<fieldset class="scale"><legend>${esc(label)}</legend><div class="scale-row">${SCALES[name].map((t, i) => `
+    <label><input type="radio" name="${name}" value="${i + 1}" ${value === i + 1 ? "checked" : ""} ${name !== "energy" ? "required" : ""}><span><b>${i + 1}</b>${esc(t)}</span></label>`).join("")}</div></fieldset>`;
+}
+function qualityTrendHTML() {
+  const rows = recentScores(14);
+  return `<div class="plot" role="img" aria-label="Learning quality for the last 14 days">
+      ${rows.map(x => `<div class="bar ${x.d === todayStr() ? "cur" : ""} ${x.q ? "" : "none"}" style="height:${x.q ? Math.max(x.q.score, 3) : 2}%" title="${esc(fmtDate(x.d))}: ${x.q ? x.q.score : "no check-in"}"></div>`).join("")}
+    </div>
+    <div class="xlab" aria-hidden="true">${rows.map(x => `<span>${parseYmd(x.d).toLocaleDateString(undefined, { weekday: "narrow" })}</span>`).join("")}</div>`;
+}
+function viewReflect(arg) {
+  const date = isYmd(arg) && arg <= todayStr() ? arg : todayStr();
+  const r = state.reflections[date] || {}; const q = qualityOf(date);
+  const minutes = (state.logs[date] || {}).minutes || 0;
+  const last7 = recentScores(7).map(x => x.q && x.q.score).filter(v => v != null);
+  const prev7 = recentScores(7, ymd(addDays(new Date(), -7))).map(x => x.q && x.q.score).filter(v => v != null);
+  const a7 = avg(last7), p7 = avg(prev7);
+  const ins = qualityInsights();
+  const yesterday = state.reflections[ymd(addDays(parseYmd(date), -1))];
+  const part = (label, v, max, hint) => `<div class="stat"><span>${esc(label)}</span><b>${Math.round(v)} of ${max}</b><small>${esc(hint)}</small>${meter(v / max, "thin")}</div>`;
+  return `
+  <h1 class="page-h">Learning quality</h1>
+  <p class="week-sub">A one-minute check-in at the end of each day. It's for noticing patterns, not judging yourself. Low days are normal and still count.</p>
+  <div class="dash">
+    <section aria-labelledby="ci-h">
+      <h2 id="ci-h">${date === todayStr() ? "Today's check-in" : "Check-in for " + esc(fmtDateLong(date))}</h2>
+      ${yesterday && yesterday.tomorrow && date === todayStr() ? `<p class="nudge" style="margin:0 0 16px">Yesterday you planned to try: ${esc(yesterday.tomorrow)}</p>` : ""}
+      <form data-form="reflect" class="panel">
+        <label class="field"><span>Date</span><input type="date" name="date" value="${date}" max="${todayStr()}" required></label>
+        ${scaleHTML("focus", "How focused were you while studying?", r.focus)}
+        ${scaleHTML("understanding", "How well did you understand what you studied?", r.understanding)}
+        ${scaleHTML("energy", "How was your energy today? (optional)", r.energy)}
+        <label class="field"><span>Hours of sleep last night (optional)</span><input type="number" name="sleep" min="0" max="16" step="0.5" value="${r.sleep ?? ""}" inputmode="decimal"></label>
+        <fieldset class="checks"><legend>What did you do today?</legend>
+          ${PRACTICES.map(([id, t]) => `<label class="check-field"><input type="checkbox" name="practices" value="${id}" ${(r.practices || []).includes(id) ? "checked" : ""}><span>${esc(t)}</span></label>`).join("")}
+        </fieldset>
+        <fieldset class="checks"><legend>What got in the way? (optional)</legend>
+          ${DISTRACTIONS.map(([id, t]) => `<label class="check-field"><input type="checkbox" name="distractions" value="${id}" ${(r.distractions || []).includes(id) ? "checked" : ""}><span>${esc(t)}</span></label>`).join("")}
+        </fieldset>
+        <label class="field"><span>What helped today? (optional)</span><input type="text" name="well" maxlength="500" value="${esc(r.well || "")}"></label>
+        <label class="field"><span>One small thing to try tomorrow</span><input type="text" name="tomorrow" maxlength="300" value="${esc(r.tomorrow || "")}" placeholder="For example: start DSA before checking my phone"></label>
+        <button class="btn primary" type="submit">${state.reflections[date] ? "Update check-in" : "Save check-in"}</button>
+      </form>
+    </section>
+    <aside class="stack">
+      <div class="panel">
+        <h2>${date === todayStr() ? "Today" : esc(fmtDateLong(date))}</h2>
+        ${q ? `<p class="q-score"><b>${q.score}</b><span>${esc(qualityLabel(q.score))}</span></p>
+          <div class="stats">
+            ${part("Study time", q.parts.time, 25, `${fmtMin(minutes)} of about ${fmtMin(dailyTargetMinutes())}`)}
+            ${part("Focus", q.parts.focus, 25, SCALES.focus[(r.focus || 1) - 1])}
+            ${part("Understanding", q.parts.understanding, 20, SCALES.understanding[(r.understanding || 1) - 1])}
+            ${part("Active learning", q.parts.practices, 30, `${(r.practices || []).length} of ${PRACTICES.length} habits`)}
+          </div>`
+          : `<p class="muted">Save a check-in to see this day's learning quality. Study time comes from your daily log and focus sessions.</p>`}
+      </div>
+      <div class="panel">
+        <h2>Last 14 days</h2>
+        ${qualityTrendHTML()}
+        <p class="chart-note">${a7 != null ? `7-day average: <b>${Math.round(a7)}</b>${p7 != null ? `, ${Math.round(a7 - p7) >= 0 ? "up" : "down"} ${Math.abs(Math.round(a7 - p7))} from the week before` : ""}.` : "Your trend appears after your first check-ins."}</p>
+      </div>
+      <div class="note-card">
+        <h2>What helps you learn</h2>
+        ${ins.list.length ? ins.list.map(i => `<p style="margin-top:8px">${esc(i.text)}</p>`).join("")
+          : `<p>${ins.count < 5 ? `After 5 check-ins (you have ${ins.count}), this shows patterns from your own days, like how sleep or your phone affects your learning.` : "No clear patterns yet. They appear as your check-ins build up."}</p>`}
+      </div>
+    </aside>
+  </div>`;
+}
+function qualityCardHTML() {
+  const q = qualityOf(todayStr()); const y = state.reflections[ymd(addDays(new Date(), -1))];
+  return `<div class="stat"><span>Learning quality today</span><b>${q ? q.score : "–"}</b><small>${q ? esc(qualityLabel(q.score)) : `<a href="#/reflect">Check in tonight</a>, it takes a minute`}</small></div>
+    ${y && y.tomorrow ? `<p class="nudge">Yesterday you planned to try: ${esc(y.tomorrow)}</p>` : ""}`;
+}
+
 /* ---------- Events ---------- */
 document.addEventListener("change", e => {
   const t = e.target;
@@ -2338,6 +2551,13 @@ document.addEventListener("submit", async e => {
       } else { await Cloud.signIn(email, password); toast("Signed in. Your progress is syncing."); }
       render();
     } catch (err) { Cloud.message = friendlyError(err); render(); }
+  } else if (kind === "reflect") {
+    const date = fd.get("date");
+    if (!isYmd(date) || date > todayStr()) { toast("Pick a date up to today."); return; }
+    saveReflection(date, { focus: fd.get("focus"), understanding: fd.get("understanding"), energy: fd.get("energy"), sleep: fd.get("sleep"), practices: fd.getAll("practices"), distractions: fd.getAll("distractions"), well: fd.get("well"), tomorrow: fd.get("tomorrow") });
+    const q = qualityOf(date);
+    toast(q ? `Check-in saved. Learning quality: ${q.score}, ${qualityLabel(q.score).toLowerCase()}.` : "Check-in saved.");
+    if (parseRoute().name === "reflect" && date !== todayStr()) location.hash = "#/reflect/" + date; render();
   } else if (kind === "idle") {
     const m = parseInt(fd.get("idle"), 10);
     Idle.setMinutes(IDLE_OPTIONS.some(([v]) => v === m) ? m : IDLE_DEFAULT);

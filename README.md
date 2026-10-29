@@ -70,6 +70,8 @@ Sign in once on each device. You stay signed in until you sign out.
 - **Changing your password:** Settings > Login and sync.
 - **Signing out:** removes your progress from that device only. It stays safe in your database and comes back when you sign in again. Useful on shared computers.
 - **Sign out everywhere:** signs out every device at once, for example if you lose your phone. It's in Settings > Login and sync.
+- **Focus sessions:** the Focus page runs a timer with soft start and end chimes, and adds completed sessions to today's study log.
+- **Learning quality:** the Quality page has a one-minute end-of-day check-in. It gives the day a gentle score (study time, focus, understanding and active-learning habits), shows your 14-day trend, and after 5 check-ins points out patterns from your own days, such as how sleep or your phone affects your learning.
 - **Auto sign-out:** each device signs out after a period without activity (1 day by default). Change it per device in Settings > Login and sync, for example 15 minutes on an office computer. Changes that haven't uploaded yet are never thrown away; they upload when you sign in again.
 - **Offline:** changes are saved on the device first and upload automatically when you're back online. If the database can't be reached at sign-in, you can choose to work offline on that device.
 - **Sync status:** the pill at the top right shows whether everything is synced.
@@ -102,6 +104,8 @@ DSA (Striver's A2Z in C++, then LeetCode Top Interview 150) runs every week thro
 **Skipped on purpose, for now:** computer vision models, classic NLP (POS tagging, parsing), RNN/LSTM depth, Kubernetes, GraphQL, web servers like Nginx, deep NoSQL and Elasticsearch work, Kubeflow, Airflow, KServe, Terraform, and extra agent frameworks. Learn the concepts later if a role needs them.
 
 For top companies, 20 to 25 study hours a week works well. If you fall behind, the plan stretches; keep going.
+
+**Database update for learning-quality check-ins:** if you set up Supabase before the Quality page existed, run the latest `schema.sql` again in the SQL Editor. It adds the `daily_reflections` table and is safe to re-run. Until then, check-ins are kept on your device and everything else keeps syncing.
 
 **If you used an earlier version of this tracker:** tasks now have new ids, so earlier ticks won't show against the new plan. If you already ran an older `schema.sql`, run the new one again; it safely widens the week limit for weekly reviews.
 
