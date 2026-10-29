@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; object-src 'none'; base-uri 'none'; form-action 'self'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>AI Engineer Journey</title>
 <meta name="description" content="Track your 32-week roadmap from SAP to AI Engineer.">
 <meta name="theme-color" content="#EEF1F5" media="(prefers-color-scheme: light)">
@@ -1038,6 +1040,7 @@ const PATH = [
 const STORAGE_KEY = "aej-state-v1";
 const CLOUD_KEY = "aej-cloud-v1";
 const SUPABASE_CDN = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
+const SUPABASE_SRI = "";   // optional hardening: pin an exact version above and paste its SRI hash here (see the README)
 const IDLE_KEY = "aej-idle-v1";          // auto sign-out setting, saved per device
 const LAST_ACTIVE_KEY = "aej-last-active"; // shared by all tabs on this device
 const IDLE_OPTIONS = [[15, "15 minutes"], [60, "1 hour"], [480, "8 hours"], [1440, "1 day"], [10080, "7 days"], [0, "Never"]];
@@ -1192,6 +1195,7 @@ function loadScript(src) {
     if (window.supabase && window.supabase.createClient) return resolve();
     const s = document.createElement("script");
     s.src = src; s.async = true; s.onload = () => resolve(); s.onerror = () => reject(new Error("script"));
+    if (SUPABASE_SRI) { s.integrity = SUPABASE_SRI; s.crossOrigin = "anonymous"; }
     document.head.appendChild(s);
   });
 }
@@ -1592,9 +1596,9 @@ function logFormHTML(dateStr, compact) {
     ${compact ? `<input type="hidden" name="date" value="${dateStr}">` : `<label class="field"><span>Date</span><input type="date" name="date" value="${dateStr}" max="${todayStr()}" required></label>`}
     <div class="field" role="group" aria-labelledby="min-l-${compact ? "c" : "f"}"><span id="min-l-${compact ? "c" : "f"}">Minutes studied</span>
       <div class="quick">${[30, 60, 90, 120, 180].map(m => `<button type="button" class="q ${l.minutes === m ? "on" : ""}" data-act="qmin" data-min="${m}">${m < 60 ? m + "m" : (m / 60) + "h"}</button>`).join("")}</div>
-      <input type="number" name="minutes" min="0" max="1440" step="5" inputmode="numeric" value="${l.minutes ?? ""}" aria-label="Minutes studied">
+      <input type="number" name="minutes" min="0" max="1440" step="5" inputmode="numeric" value="${esc(l.minutes ?? "")}" aria-label="Minutes studied">
     </div>
-    <label class="field"><span>DSA problems solved</span><input type="number" name="dsa" min="0" max="200" inputmode="numeric" value="${l.dsa ?? ""}"></label>
+    <label class="field"><span>DSA problems solved</span><input type="number" name="dsa" min="0" max="200" inputmode="numeric" value="${esc(l.dsa ?? "")}"></label>
     <label class="check-field"><input type="checkbox" name="min" ${l.min ? "checked" : ""}><span>Minimum day (just the DSA hour)</span></label>
     <label class="field"><span>Note, optional</span><input type="text" name="note" maxlength="1000" value="${esc(l.note || "")}" placeholder="What did you learn?"></label>
     <button class="btn primary" type="submit">${state.logs[dateStr] ? "Update log" : "Save log"}</button>
@@ -1631,8 +1635,8 @@ function viewLogin() {
     <p class="week-sub">${up ? "Do this once. Afterwards, turn off new sign-ups in Supabase so nobody else can register (see the README)." : "Your progress is stored in your own database and syncs to every device you sign in on."}</p>
     <form data-form="auth" class="panel">
       <label class="field"><span>Email</span><input type="email" name="email" required autocomplete="email" value="${esc(ui.lastEmail)}"></label>
-      <label class="field"><span>Password${up ? ", at least 8 characters" : ""}</span><input type="password" name="password" required minlength="${up ? 8 : 6}" autocomplete="${up ? "new-password" : "current-password"}"></label>
-      ${up ? `<label class="field"><span>Confirm password</span><input type="password" name="password2" required minlength="8" autocomplete="new-password"></label>` : ""}
+      <label class="field"><span>Password${up ? ", at least 12 characters" : ""}</span><input type="password" name="password" required minlength="${up ? 12 : 6}" autocomplete="${up ? "new-password" : "current-password"}"></label>
+      ${up ? `<label class="field"><span>Confirm password</span><input type="password" name="password2" required minlength="12" autocomplete="new-password"></label>` : ""}
       <button class="btn primary" type="submit" value="${up ? "up" : "in"}">${up ? "Create account" : "Sign in"}</button>
       ${Cloud.message ? `<p class="err" style="margin-top:12px">${esc(Cloud.message)}</p>` : ""}
     </form>
@@ -1648,8 +1652,8 @@ function viewRecovery() {
     <h1 class="page-h">Choose a new password</h1>
     <p class="week-sub">You opened a password reset link. Set a new password to continue.</p>
     <form data-form="newpass" class="panel">
-      <label class="field"><span>New password, at least 8 characters</span><input type="password" name="password" required minlength="8" autocomplete="new-password"></label>
-      <label class="field"><span>Confirm new password</span><input type="password" name="password2" required minlength="8" autocomplete="new-password"></label>
+      <label class="field"><span>New password, at least 12 characters</span><input type="password" name="password" required minlength="12" autocomplete="new-password"></label>
+      <label class="field"><span>Confirm new password</span><input type="password" name="password2" required minlength="12" autocomplete="new-password"></label>
       <button class="btn primary" type="submit">Save new password</button>
       ${Cloud.message ? `<p class="err" style="margin-top:12px">${esc(Cloud.message)}</p>` : ""}
     </form>
@@ -1825,7 +1829,7 @@ function viewLog(arg) {
       ${entries.length ? `<ul class="logs">${entries.map(([d, l]) => `<li class="log">
           <span class="d">${esc(fmtDateLong(d))}</span>
           <span class="b">${fmtMin(l.minutes)}, ${l.dsa || 0} ${(l.dsa || 0) === 1 ? "problem" : "problems"}${l.min ? ", minimum day" : ""}${l.note ? `<span class="n">${esc(l.note)}</span>` : ""}</span>
-          <span class="acts"><a class="btn quiet sm" href="#/log/${d}">Edit</a><button type="button" class="btn quiet sm" data-act="del-log" data-date="${d}">Delete</button></span>
+          <span class="acts"><a class="btn quiet sm" href="#/log/${esc(d)}">Edit</a><button type="button" class="btn quiet sm" data-act="del-log" data-date="${esc(d)}">Delete</button></span>
         </li>`).join("")}</ul>`
         : `<p class="empty">No logs yet. Log today's study time here; even a minimum day counts.</p>`}
     </section>
@@ -1924,7 +1928,7 @@ function cloudSectionHTML() {
       <p class="muted small" style="margin-top:10px">Saved on this device only, so you can choose a shorter time on shared or office computers.</p>
     </form>
     <form data-form="changepass" style="margin-top:22px">
-      <label class="field"><span>Change password, at least 8 characters</span><input type="password" name="password" required minlength="8" autocomplete="new-password"></label>
+      <label class="field"><span>Change password, at least 12 characters</span><input type="password" name="password" required minlength="12" autocomplete="new-password"></label>
       <button class="btn quiet" type="submit">Change password</button>
     </form>
     ${changeLink}`;
@@ -1964,14 +1968,49 @@ function exportData() {
   document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1500);
   toast("Backup downloaded");
 }
+/* A backup file is untrusted input: keep only well-formed values, so a crafted file can't inject code or break sync. */
+function sanitizeBackup(data) {
+  const obj = x => (x && typeof x === "object" && !Array.isArray(x)) ? x : {};
+  const isoOr = (v, f) => (typeof v === "string" && !isNaN(Date.parse(v))) ? new Date(v).toISOString() : f;
+  const num = (v, lo, hi) => clamp(Math.round(Number(v)) || 0, lo, hi);
+  const str = (v, n) => typeof v === "string" ? v.slice(0, n) : "";
+  const s = obj(data.settings);
+  const out = {
+    settings: { ...defaultState().settings, name: str(s.name, 60), start: isYmd(s.start) ? s.start : "", target: num(s.target, 1, 80) || 20, dsaOffset: num(s.dsaOffset, 0, 2000), updated_at: isoOr(s.updated_at, null) },
+    tasks: {}, logs: {}, reviews: {}, reflections: {}
+  };
+  for (const [k, v] of Object.entries(obj(data.tasks))) if (/^[a-z0-9-]{1,20}$/.test(k)) out.tasks[k] = isoOr(v, nowIso());
+  for (const [k, v] of Object.entries(obj(data.logs))) {
+    if (!isYmd(k)) continue; const l = obj(v);
+    out.logs[k] = { minutes: num(l.minutes, 0, 1440), dsa: num(l.dsa, 0, 200), min: l.min === true, note: str(l.note, 1000), updated_at: isoOr(l.updated_at, nowIso()) };
+  }
+  for (const [k, v] of Object.entries(obj(data.reviews))) {
+    const w = Number(k); if (!/^\d{1,2}$/.test(k) || w < 1 || w > 52) continue; const r = obj(v);
+    if (typeof r.note === "string" && r.note.trim()) out.reviews[k] = { note: r.note.slice(0, 4000), updated_at: isoOr(r.updated_at, nowIso()) };
+  }
+  const score = v => { const n = Math.round(Number(v)); return n >= 1 && n <= 5 ? n : null; };
+  for (const [k, v] of Object.entries(obj(data.reflections))) {
+    if (!isYmd(k)) continue; const r = obj(v); const sl = Number(r.sleep);
+    out.reflections[k] = {
+      focus: score(r.focus), understanding: score(r.understanding), energy: score(r.energy),
+      sleep: r.sleep == null || r.sleep === "" || !isFinite(sl) ? null : clamp(Math.round(sl * 2) / 2, 0, 16),
+      practices: Array.isArray(r.practices) ? r.practices.filter(p => PRACTICES.some(([id]) => id === p)) : [],
+      distractions: Array.isArray(r.distractions) ? r.distractions.filter(p => DISTRACTIONS.some(([id]) => id === p)) : [],
+      well: str(r.well, 500), block: str(r.block, 500), tomorrow: str(r.tomorrow, 300), updated_at: isoOr(r.updated_at, nowIso())
+    };
+  }
+  return out;
+}
 async function importFile(file) {
   if (!file) return;
   try {
+    if (file.size > 5 * 1024 * 1024) throw new Error("too large");
     const data = JSON.parse(await file.text());
     if (data.app !== "ai-engineer-journey" || typeof data.tasks !== "object") throw new Error("not a backup");
     if (!confirm("Replace the progress on this device with this backup?")) return;
-    state.settings = { ...defaultState().settings, ...(data.settings || {}) };
-    state.tasks = data.tasks || {}; state.logs = data.logs || {}; state.reviews = data.reviews || {}; state.reflections = data.reflections || {};
+    const clean = sanitizeBackup(data);
+    state.settings = clean.settings;
+    state.tasks = clean.tasks; state.logs = clean.logs; state.reviews = clean.reviews; state.reflections = clean.reflections;
     state.pending = []; state.meta.syncedUser = null; saveLocal();
     toast("Backup restored"); render();
     if (Cloud.session) Cloud.fullSync();
@@ -2446,7 +2485,7 @@ function viewReflect(arg) {
         ${scaleHTML("focus", "How focused were you while studying?", r.focus)}
         ${scaleHTML("understanding", "How well did you understand what you studied?", r.understanding)}
         ${scaleHTML("energy", "How was your energy today? (optional)", r.energy)}
-        <label class="field"><span>Hours of sleep last night (optional)</span><input type="number" name="sleep" min="0" max="16" step="0.5" value="${r.sleep ?? ""}" inputmode="decimal"></label>
+        <label class="field"><span>Hours of sleep last night (optional)</span><input type="number" name="sleep" min="0" max="16" step="0.5" value="${esc(r.sleep ?? "")}" inputmode="decimal"></label>
         <fieldset class="checks"><legend>What did you do today?</legend>
           ${PRACTICES.map(([id, t]) => `<label class="check-field"><input type="checkbox" name="practices" value="${id}" ${(r.practices || []).includes(id) ? "checked" : ""}><span>${esc(t)}</span></label>`).join("")}
         </fieldset>

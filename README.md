@@ -58,7 +58,7 @@ Back in Supabase, go to **Authentication > URL Configuration** and set **Site UR
 
 ### 4. Create your account and lock sign-ups
 
-1. Open your site, choose **First time here? Create your account**, and enter your email and a password of at least 8 characters.
+1. Open your site, choose **First time here? Create your account**, and enter your email and a password of at least 12 characters.
 2. If Supabase sends a confirmation email, open the link, then sign in.
 3. In Supabase, open the **Authentication** settings and turn off **Allow new users to sign up**. Since only you use the site, this stops anyone else from creating an account on your database.
 
@@ -77,6 +77,32 @@ Sign in once on each device. You stay signed in until you sign out.
 - **Sync status:** the pill at the top right shows whether everything is synced.
 
 **Note:** Supabase pauses free projects after about a week with no activity. If sign-in stops working after a long break, open your Supabase dashboard and restore the project. Your data is kept.
+
+## Security
+
+**How your data is protected**
+
+- **Sign-in required:** with your database connected, the site shows only a sign-in screen until you sign in.
+- **Row Level Security:** the database only lets a signed-in user read or change their own rows. Visitors who aren't signed in have no table access at all.
+- **Public key by design:** the project URL and publishable key in `index.html` are meant to be public. They can't read your data on their own. Never put the `service_role` or secret key in the site; the app refuses it.
+- **Content Security Policy:** the page may only load code and connect to your Supabase project, the Supabase library on jsDelivr, and Google Fonts. Even if something went wrong, data couldn't be sent anywhere else.
+- **Safe backups:** restored backup files are checked field by field, so a tampered file can't inject code.
+- **Escaped content:** everything you type, and everything loaded from the database, is shown as plain text.
+- **Sessions:** auto sign-out after inactivity, "Sign out" for one device, and "Sign out everywhere" for all devices.
+
+**Your security checklist**
+
+1. Supabase: **Authentication > Sign In / Providers**, make sure **Allow new users to sign up** is **off**.
+2. Supabase: **Authentication > Rate Limits**, keep sign-in attempts limited.
+3. Supabase: open **Advisors > Security Advisor** occasionally and check it shows no warnings.
+4. Turn on two-factor authentication for your **Supabase**, **GitHub** and **email** accounts. Whoever controls these controls everything.
+5. GitHub: **Settings > Emails > Keep my email addresses private**.
+6. Use a long, unique password (12+ characters) for the site, ideally from a password manager.
+7. Only restore backup files you downloaded yourself.
+
+**If you ever route Supabase through a proxy** (for example a Cloudflare Worker, if your network blocks Supabase), add its address to `connect-src` in the `Content-Security-Policy` line at the top of `index.html`, or sign-in will be blocked.
+
+**Optional extra hardening:** the Supabase library loads from `cdn.jsdelivr.net/npm/@supabase/supabase-js@2`. To lock it to one exact file, open jsdelivr.com, find `@supabase/supabase-js`, choose a specific version, copy its SRI hash, then set `SUPABASE_CDN` to that version's URL and paste the hash into `SUPABASE_SRI` in `index.html`. The browser will then refuse any altered copy of the library.
 
 ## Backups
 
