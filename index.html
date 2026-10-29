@@ -134,6 +134,8 @@ h2{font-size:18px;font-weight:700;margin-bottom:12px}
 .chip{display:inline-flex;align-items:baseline;gap:6px;font-size:13.5px;line-height:1.35;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:5px 11px;max-width:100%}
 .chip:hover{border-color:var(--ink-3)}
 .chip .kind{font-size:12px;color:var(--ink-3);flex:none}
+.chip.primary{border-color:var(--accent);background:var(--accent-soft)}
+.chip .start{font-size:12px;font-weight:700;color:var(--accent-ink);flex:none}
 .group+.group{margin-top:30px}
 .group-h{display:flex;align-items:center;gap:8px;font-size:15px;color:var(--ink-2);margin-bottom:8px}
 .more{display:inline-block;margin-top:16px;font-size:15px}
@@ -286,6 +288,7 @@ body.locked .tabs,body.locked .sync{display:none}
     <a href="#/" data-route="dashboard">Dashboard</a>
     <a href="#/week" data-route="week">This week</a>
     <a href="#/roadmap" data-route="roadmap">Roadmap</a>
+    <a href="#/path" data-route="path">Learning path</a>
     <a href="#/log" data-route="log">Daily log</a>
     <a href="#/resources" data-route="resources">Resources</a>
     <a href="#/settings" data-route="settings">Settings</a>
@@ -577,7 +580,16 @@ const RES = {
   ai_eng_hub:     R("AI engineering hub, extra project ideas", "https://github.com/patchy631/ai-engineering-hub", "Practice", "proj", "GitHub"),
   the_batch:      R("The Batch, weekly AI news", "https://www.deeplearning.ai/the-batch/", "Article", "news", "DeepLearning.AI"),
   latent_space:   R("Latent Space, the AI engineer newsletter and podcast", "https://www.latent.space/", "Article", "news", "Latent Space"),
-  simon_willison: R("Simon Willison's weblog, hands-on LLM news", "https://simonwillison.net/", "Article", "news", "Simon Willison")
+  simon_willison: R("Simon Willison's weblog, hands-on LLM news", "https://simonwillison.net/", "Article", "news", "Simon Willison"),
+  openai_academy: R("OpenAI Academy, Build with AI track (Codex)", "https://academy.openai.com/", "Course", "swe", "OpenAI"),
+  dlai_genai_everyone: R("Generative AI for Everyone", "https://www.deeplearning.ai/courses/generative-ai-for-everyone", "Course", "ai", "DeepLearning.AI, Andrew Ng"),
+  dlai_ai_everyone: R("AI for Everyone", "https://www.deeplearning.ai/courses/ai-for-everyone", "Course", "ai", "DeepLearning.AI, Andrew Ng"),
+  dlai_math:      R("Mathematics for Machine Learning and Data Science", "https://www.deeplearning.ai/courses/mathematics-for-machine-learning-and-data-science-specialization", "Course", "ai", "DeepLearning.AI"),
+  yt_3b1b_la:     R("Essence of linear algebra", YT("3blue1brown essence of linear algebra"), "Video", "ai", "3Blue1Brown, YouTube search"),
+  skilljar_api:   R("Building with the Claude API", "https://anthropic.skilljar.com/claude-with-the-anthropic-api", "Course", "ai", "Anthropic Academy, free"),
+  skilljar_mcp:   R("Introduction to Model Context Protocol", "https://anthropic.skilljar.com/introduction-to-model-context-protocol", "Course", "ai", "Anthropic Academy, free"),
+  skilljar_cc:    R("Claude Code in Action", "https://anthropic.skilljar.com/claude-code-in-action", "Course", "swe", "Anthropic Academy, free"),
+  skilljar_home:  R("Anthropic Academy course catalog", "https://anthropic.skilljar.com/", "Course", "ai", "Anthropic Academy, free")
 };
 
 /* Weekly "stay current" habit shown on the dashboard */
@@ -643,7 +655,8 @@ const WEEKS = [
     ["w2-c", "ai", "NumPy: arrays, broadcasting, vectorization, matrix multiply. Do the first 50 exercises", ["numpy_quick", "numpy100"], { tip: "If you wrote a for loop over an array, there's almost always a vectorized way." }],
     ["w2-d", "ai", "Pandas: load a messy dataset, clean it, and answer 5 questions with groupby", ["kaggle_pandas", "pandas_ex"]],
     ["w2-e", "ai", "Matplotlib, Seaborn and notebooks: three labeled plots that answer three questions", ["kaggle_viz"]],
-    ["w2-f", "swe", "Python: generators, decorators, context managers and async/await basics", ["realpy_gen", "realpy_decor", "fastapi_async"], { tip: "Beginner guides skip async. You need it, because LLM apps call slow APIs concurrently." }]
+    ["w2-f", "swe", "Python: generators, decorators, context managers and async/await basics", ["realpy_gen", "realpy_decor", "fastapi_async"], { tip: "Beginner guides skip async. You need it, because LLM apps call slow APIs concurrently." }],
+    ["w2-g", "ai", "AI orientation: Generative AI for Everyone, and AI for Everyone if you want the wider picture", ["dlai_genai_everyone", "dlai_ai_everyone"], { tip: "Non-technical and short. It gives you the map before the details." }],
   ]),
   W("APIs, JSON, SQL and how LLMs work", [
     ["w3-a", "dsa", "A2Z step 3: arrays (easy)", ["a2z", "tuf_yt"]],
@@ -669,22 +682,26 @@ const WEEKS = [
     ["w5-c", "ai", "Linear and logistic regression, gradient descent and regularization", ["mlcc", "ml_spec"]],
     ["w5-d", "swe", "SQLAlchemy ORM and database migrations", ["sqla_tut", "alembic"]],
     ["w5-e", "proj", "Flagship setup: Procurement Copilot repo and a PostgreSQL schema for vendors, POs, goods receipts and invoices, with synthetic data", ["fastapi_sql", "faker", "readme_guide"], { tip: "Use your SAP MM knowledge for the data model. Never client data." }],
-    ["w5-f", "swe", "Set up an AI coding assistant (such as GitHub Copilot, Cursor or Claude Code) and practice reviewing every change it makes", ["copilot_docs", "claude_code", "harness_course"], { tip: "Interviewers increasingly ask how you use AI tools. Keep solving DSA problems yourself. The harness engineering course is for later, once you use an assistant daily." }]
+    ["w5-f", "swe", "Set up an AI coding assistant (such as GitHub Copilot, Cursor or Claude Code) and practice reviewing every change it makes", ["copilot_docs", "claude_code", "openai_academy", "harness_course"], { tip: "Interviewers increasingly ask how you use AI tools. Keep solving DSA problems yourself. The harness engineering course is for later, once you use an assistant daily." }],
+    ["w5-g", "ai", "Claude sprint 1: Building with the Claude API, first half (messages, conversations, prompting, structured output)", ["skilljar_api", "claude_docs", "skilljar_home"], { tip: "Your certification deadline is the end of November, so this runs alongside ML fundamentals for four weeks." }],
+    ["w5-h", "ai", "Math refresh as needed: vectors and matrices, derivatives, probability and statistics", ["dlai_math", "yt_3b1b_la"], { opt: true, tip: "Learn math when a lesson needs it, not all up front." }],
   ]),
   W("Metrics, trees and DBMS", [
     ["w6-a", "dsa", "A2Z step 4: binary search on 1D arrays", ["a2z", "tuf_yt"]],
     ["w6-b", "ai", "Metrics: confusion matrix, precision, recall, F1, ROC-AUC, class imbalance", ["mlcc", "sklearn"]],
     ["w6-c", "ai", "Decision trees, ensembles, bias-variance, cross-validation and hyperparameter tuning", ["mlcc", "ml_spec"]],
     ["w6-d", "cs", "DBMS: keys, normalization, joins, indexes (B+ trees) and EXPLAIN plans", ["cip_dbms", "useindex", "pg_explain"], { tip: "The same idea as ST05 SQL traces in SAP." }],
-    ["w6-e", "proj", "Flagship API: endpoints for POs, goods receipts and invoices, with tests", ["fastapi_tut", "fastapi_test"]]
+    ["w6-e", "proj", "Flagship API: endpoints for POs, goods receipts and invoices, with tests", ["fastapi_tut", "fastapi_test"]],
+    ["w6-f", "ai", "Claude sprint 2: Building with the Claude API, second half (tool use, RAG, prompt caching, streaming, agents)", ["skilljar_api"]]
   ]),
   W("Docker, transactions and your first ML baseline", [
     ["w7-a", "dsa", "A2Z step 4: binary search on answers and 2D arrays", ["a2z", "tuf_yt"]],
-    ["w7-b", "ai", "Unsupervised basics: k-means and PCA, and embeddings as vectors", ["mlcc", "sklearn"]],
+    ["w7-b", "ai", "Unsupervised basics: k-means and PCA, and embeddings as vectors", ["mlcc", "sklearn"], { opt: true, tip: "Optional during your Claude sprint. k-means comes back in week 26." }],
     ["w7-c", "swe", "Docker and docker compose, with configuration through environment variables", ["docker_start", "compose", "twelve"]],
     ["w7-d", "cs", "DBMS: transactions, ACID, isolation levels, locking and deadlocks", ["cip_dbms", "cmu_db_yt"], { tip: "Compare with SAP lock objects and SELECT inside LOOP." }],
     ["w7-e", "proj", "ML project: a labeled supplier-email triage dataset, an honest split and a TF-IDF plus logistic regression baseline", ["sklearn", "sk_pitfalls"], { tip: "Split before fitting, and keep near-duplicate emails in the same split." }],
-    ["w7-f", "swe", "Simple auth for the flagship (JWT): every request tied to a user, company and role. Also learn sessions vs tokens and how OAuth sign-in works", ["fastapi_sec", "oauth_com"], { tip: "Keep it simple. Later, the role limits what your assistant may read." }]
+    ["w7-f", "swe", "Simple auth for the flagship (JWT): every request tied to a user, company and role. Also learn sessions vs tokens and how OAuth sign-in works", ["fastapi_sec", "oauth_com"], { tip: "Keep it simple. Later, the role limits what your assistant may read." }],
+    ["w7-g", "ai", "Claude sprint 3: Introduction to Model Context Protocol, then build a tiny MCP server", ["skilljar_mcp", "mcp_docs", "skilljar_home"]],
   ]),
   W("Error analysis and shipping the baseline", [
     ["w8-a", "dsa", "A2Z step 5: strings (basic and medium)", ["a2z", "tuf_yt"]],
@@ -692,13 +709,14 @@ const WEEKS = [
     ["w8-c", "proj", "ML project: serve the classifier through FastAPI in Docker, with a README showing metrics and one documented failure", ["readme_guide"]],
     ["w8-d", "proj", "Flagship: docker compose runs the API and database, and CI runs tests on every push", ["gha", "compose"]],
     ["w8-f", "swe", "Web security basics: OWASP Top 10, CORS, HTTPS, password hashing (bcrypt or Argon2) and keeping secrets out of code", ["owasp_top10", "mdn_cors", "twelve"]],
+    ["w8-g", "career", "Claude sprint 4: Claude Code in Action and your company's prep course, then take the Claude Certified Developer – Foundations exam before your deadline", ["skilljar_cc", "claude_cert"], { tip: "If practice questions still feel far off at the end of week 7, ask for an extension instead of rushing. If the deadline moves, take it in week 23." }],
     ["w8-e", "career", "Month 2 review", []]
   ]),
 
   /* Month 3: Deep learning and RAG from scratch */
   W("Neural networks and your golden question set", [
     ["w9-a", "dsa", "A2Z step 6: linked lists (singly and doubly)", ["a2z", "tuf_yt", "lft_cpp"]],
-    ["w9-b", "ai", "Neural networks and backpropagation, by building micrograd", ["threeb1b", "z2h", "mit_dl"], { tip: "The first Zero to Hero video is enough for interviews." }],
+    ["w9-b", "ai", "Neural networks and backpropagation: Course 1 of the Deep Learning Specialization, then build micrograd", ["dl_spec", "threeb1b", "z2h"], { tip: "Course 1 is the gentlest structured start. Karpathy's first Zero to Hero video is the hands-on version." }],
     ["w9-c", "ai", "Embeddings and similarity, hands-on with sentence-transformers", ["sbert", "dlai_vectordb"]],
     ["w9-d", "cs", "OS: processes, threads, context switching and CPU scheduling", ["cip_os", "ostep"]],
     ["w9-e", "proj", "Flagship RAG: write procurement policy documents and a 30 to 50 question golden set before building retrieval", ["hamel_evals"], { tip: "Include questions the documents can't answer. The right reply is to say so." }]
@@ -707,12 +725,12 @@ const WEEKS = [
     ["w10-a", "dsa", "A2Z step 6: linked lists (medium, a few hard)", ["a2z", "tuf_yt"]],
     ["w10-b", "ai", "PyTorch basics: tensors, autograd, a training loop, and a small classifier", ["pytorch", "learnpytorch"]],
     ["w10-c", "cs", "OS: synchronization, deadlocks, and a race-condition experiment with Python threads", ["cip_os", "py_threading"], { tip: "Make two threads update one counter, watch it go wrong, then fix it with a lock." }],
-    ["w10-d", "proj", "Flagship RAG from scratch: chunking, a keyword (BM25) baseline, grounded answers with citations, and abstaining when evidence is missing", ["llm_zoomcamp", "dlai_rag", "anth_contextual"], { tip: "No LangChain yet. Measure retrieval hit rate on your golden set. DeepLearning.AI's full RAG course needs PRO after module 1; LLM Zoomcamp is free." }],
+    ["w10-d", "proj", "Flagship RAG from scratch: chunking, a keyword (BM25) baseline, grounded answers with citations, and abstaining when evidence is missing", ["dlai_rag", "llm_zoomcamp", "anth_contextual"], { tip: "No LangChain yet. Measure retrieval hit rate on your golden set. You have full DeepLearning.AI access, so its RAG course is your main resource for weeks 10 to 12." }],
     ["w10-e", "proj", "Compare chunking strategies (fixed-size, recursive, semantic) on your golden set, and keep each rule with its exceptions in one chunk", ["llm_zoomcamp", "pinecone_learn"], { tip: "Pick the strategy your retrieval hit rate supports, not the one a tutorial uses." }]
   ]),
   W("Transformers and vector search", [
     ["w11-a", "dsa", "A2Z step 7: recursion patterns and subsequences", ["a2z", "yt_striver_rec"]],
-    ["w11-b", "ai", "Transformers: attention, positional encoding, encoder vs decoder", ["illustrated", "dlai_transformers", "dlai_tip", "hf_llm_course"]],
+    ["w11-b", "ai", "Transformers: attention, positional encoding, encoder vs decoder", ["dlai_transformers", "illustrated", "dlai_tip", "hf_llm_course"]],
     ["w11-c", "ai", "Tokenization, decoding (temperature, top-p), KV cache and context limits", ["hf_tokenizers", "karpathy_deep"]],
     ["w11-d", "proj", "Flagship RAG: embeddings in pgvector, hybrid search that merges keyword and vector results with Reciprocal Rank Fusion, then a cross-encoder reranker, each compared with your keyword baseline", ["pgvector", "pinecone_learn", "dlai_adv_rag", "sbert"], { tip: "Add each technique only when failed cases justify it. sentence-transformers also provides cross-encoder rerankers." }],
     ["w11-f", "ai", "Vector indexes: how HNSW and IVF trade a little recall for a lot of speed, and when exact search is fine", ["pinecone_learn", "pgvector"], { tip: "A common interview question: why is approximate search used at scale?" }],
@@ -747,9 +765,8 @@ const WEEKS = [
   ]),
   W("Agents from primitives", [
     ["w15-a", "dsa", "A2Z step 11: heaps", ["a2z", "tuf_yt"]],
-    ["w15-b", "ai", "Agents: workflows vs agents, the ReAct loop and stopping conditions", ["anth_agents", "dlai_agentic", "aefs_agent"], { tip: "The interactive simulation lets you switch off retrieval, tools or the verifier and watch what breaks." }],
+    ["w15-b", "ai", "Agents: workflows vs agents, the ReAct loop and stopping conditions", ["dlai_agentic", "anth_agents", "aefs_agent"], { tip: "The interactive simulation lets you switch off retrieval, tools or the verifier and watch what breaks." }],
     ["w15-c", "proj", "Flagship agent from scratch: read-only tools get_po, get_goods_receipt and vendor_history, a 4-call budget and a full trace", ["anth_agents"], { tip: "The model proposes; your app validates and executes." }],
-    ["w15-d", "career", "AWS Solutions Architect Associate prep", ["aws_saa", "aws_saa_yt"], { opt: true, tip: "Only worth it if it gets you onto real AI projects at work." }],
     ["w15-e", "ai", "Multimodal: extract fields from a scanned invoice image with a vision-capable model, and compare with text extraction", ["claude_vision", "openai_docs"], { tip: "Speech-to-text (for example Whisper) works the same way: an input type, a model, and an evaluation." }]
   ]),
   W("Approvals, LangGraph, MCP and memory", [
@@ -766,9 +783,8 @@ const WEEKS = [
   W("Observability and agent evaluation", [
     ["w17-a", "dsa", "A2Z step 13: binary trees (traversals)", ["a2z", "tuf_yt"]],
     ["w17-b", "proj", "Flagship tracing with Langfuse: prompts, retrieved IDs, tool calls, latency, tokens and cost", ["langfuse", "otel_genai"]],
-    ["w17-c", "ai", "Evaluating agents: task success, trajectory checks, graders calibrated to human judgment", ["anth_evals", "dlai_eval_agents"]],
-    ["w17-d", "swe", "System design basics: scalability, load balancing, caching, CDNs, and SQL vs NoSQL (document, key-value, wide-column, graph)", ["hello_sd", "sdp", "bbg_yt"]],
-    ["w17-e", "career", "AWS FDE Validated pathways", ["aws_fde", "aws_fde_blog"], { opt: true, tip: "Needs an active AWS associate-level certification first." }]
+    ["w17-c", "ai", "Evaluating agents: task success, trajectory checks, graders calibrated to human judgment", ["dlai_eval_agents", "anth_evals"]],
+    ["w17-d", "swe", "System design basics: scalability, load balancing, caching, CDNs, and SQL vs NoSQL (document, key-value, wide-column, graph)", ["hello_sd", "sdp", "bbg_yt"]]
   ]),
   W("LLMOps: versions, experiments and evals in CI", [
     ["w18-a", "dsa", "A2Z step 13: binary trees (medium, a few hard)", ["a2z", "tuf_yt"]],
@@ -784,7 +800,7 @@ const WEEKS = [
     ["w19-c", "proj", "Flagship caching (exact and semantic) keyed by permission scope, plus a cost and latency budget", ["redis", "genai_platform"]],
     ["w19-d", "ai", "Local models: run an open model with Ollama, learn what vLLM does, and understand quantization (GGUF, AWQ, FP8) and KV cache memory", ["ollama", "vllm", "aefs_gpu"], { tip: "Practice the estimate: parameters times bytes per weight, plus KV cache that grows with context length." }],
     ["w19-e", "swe", "Low-level design: SOLID, key patterns, and a parking lot design", ["rg_patterns", "lld_repo"]],
-    ["w19-f", "ai", "Responsible AI: bias and fairness, content moderation, and handling personal data", ["ms_rai", "openai_moderation", "dlai_safety"], { tip: "Google and Microsoft interviewers often ask how you'd make an AI feature safe and fair." }]
+    ["w19-f", "ai", "Responsible AI: bias and fairness, content moderation, and handling personal data", ["dlai_safety", "ms_rai", "openai_moderation"], { tip: "Google and Microsoft interviewers often ask how you'd make an AI feature safe and fair." }]
   ]),
   W("Fine-tuning experiment and deployment", [
     ["w20-a", "dsa", "A2Z step 15: graphs (BFS, DFS, components, cycle detection)", ["a2z", "yt_striver_graph", "yt_fiset_graph"]],
@@ -816,7 +832,7 @@ const WEEKS = [
     ["w23-b", "ai", "ML design practice: recommendation feed and search ranking", ["rec_sd", "mlsd_book"]],
     ["w23-c", "swe", "Design practice: news feed and file storage", ["hello_sd", "sdp"]],
     ["w23-d", "career", "Apply: second batch, and follow up on referrals", ["jobs_nvidia", "jobs_apple", "wellfound", "linkedin_jobs"], { tip: "Keep a few strong product companies and AI startups in the mix." }],
-    ["w23-e", "career", "Claude Certified Developer exam", ["claude_cert"], { opt: true, tip: "Only if your company covers it." }]
+    ["w23-e", "career", "Only if you didn't take it in week 8: Claude Certified Developer – Foundations exam", ["claude_cert", "skilljar_api"], { opt: true }]
   ]),
   W("Timed DSA begins", [
     ["w24-a", "dsa", "A2Z step 16: selected DP (stocks and partitions)", ["a2z", "yt_striver_dp"]],
@@ -889,6 +905,8 @@ const DECISIONS = [
   ["AI and ML", "Google's ML Crash Course, DeepLearning.AI, Karpathy and official docs. Primitives before frameworks; LangGraph as the one agent framework."],
   ["Software engineering", "Python, FastAPI, PostgreSQL, Docker, CI and one cloud (AWS), learned inside your AI project."],
   ["CS fundamentals", "Your GeeksforGeeks CIP tracks, interview-level only."],
+  ["Courses", "DeepLearning.AI is your main course platform, plus Anthropic Academy for the Claude sprint in weeks 5 to 8. Start each task with its highlighted resource, and see the Learning path page for the full order. If your DeepLearning.AI license ends, renew it or watch the free videos. Skip OpenAI Academy, except its Codex lessons in week 5."],
+  ["Certifications", "One: Claude Certified Developer – Foundations by your end-of-November deadline (weeks 5 to 8). Skip the AWS, Microsoft and Google FDE programs, unless your company staffs you on a project that requires one."],
   ["Skip for now", "Computer vision models, classic NLP (POS tagging, parsing), RNN/LSTM depth, Kubernetes, GraphQL, web servers like Nginx, deep NoSQL and Elasticsearch work, Kubeflow, Airflow, KServe, Terraform, and extra agent frameworks. Learn concepts only if a job description asks."]
 ];
 
@@ -900,6 +918,39 @@ const NUDGES = [
   "Good enough to move on is a skill. Your weekly review will deepen it.",
   "Every checked box is something an interviewer can ask you about.",
   "Compare yourself with last month, not with anyone else."
+];
+
+/* The AI and ML learning path, zero to hero (shown on the Learning path page).
+   Software engineering, DSA, system design and CS fundamentals run alongside it every week. */
+const PATH = [
+  { t: "Orientation", w: "Week 2", why: "What AI, machine learning, deep learning and LLMs are, and what they can and can't do. Start here if AI is new to you.",
+    main: ["dlai_genai_everyone"], extra: ["dlai_ai_everyone", "roadmap_sh"] },
+  { t: "Python for AI", w: "Weeks 1 to 2", why: "Engineering-grade Python, plus NumPy, Pandas and plotting, the tools every later step uses.",
+    main: ["py_tut", "numpy100", "kaggle_pandas"], extra: ["numpy_quick", "kaggle_viz", "arjancodes"] },
+  { t: "How LLMs work, and how to use them", w: "Weeks 3 to 4", why: "Tokens, context windows and sampling, your first raw API call, and prompting.",
+    main: ["karpathy_intro", "dlai_transformers", "dlai_prompt", "dlai_systems"], extra: ["claude_docs", "openai_docs", "prompt_guide"] },
+  { t: "Claude sprint and certification", w: "Weeks 5 to 8", why: "Uses your company's free certification before its end-of-November deadline: the Claude API, tool use, RAG, MCP and Claude Code, then the Claude Certified Developer – Foundations exam.",
+    main: ["skilljar_api", "skilljar_mcp", "skilljar_cc", "claude_cert"], extra: ["skilljar_home", "mcp_docs"] },
+  { t: "Math for ML, as needed", w: "From week 5", why: "Vectors and matrices, derivatives and gradients, probability and statistics. Learn each piece when a lesson needs it.",
+    main: ["yt_3b1b_la"], extra: ["dlai_math"] },
+  { t: "Machine learning", w: "Weeks 5 to 8", why: "Supervised learning, honest evaluation, regression, trees and ensembles, clustering, and error analysis.",
+    main: ["mlcc"], extra: ["ml_spec", "kaggle_iml", "sk_pitfalls"] },
+  { t: "Deep learning and transformers", w: "Weeks 9 to 12", why: "Neural networks, backpropagation, PyTorch, attention and tokenization.",
+    main: ["dl_spec", "z2h", "pytorch", "dlai_transformers"], extra: ["threeb1b", "learnpytorch", "illustrated", "hf_llm_course", "hf_tokenizers", "dlai_tip"] },
+  { t: "Embeddings and RAG", w: "Weeks 9 to 12", why: "Semantic search, vector databases, hybrid search, reranking, and grounded answers with citations.",
+    main: ["sbert", "dlai_rag"], extra: ["dlai_vectordb", "dlai_adv_rag", "anth_contextual", "llm_zoomcamp"] },
+  { t: "LLM engineering", w: "Weeks 13 to 15", why: "Structured output, context engineering, tool calling, streaming and multimodal input.",
+    main: ["dlai_structured", "claude_tools"], extra: ["dlai_pydantic", "labonne", "openai_docs", "fastapi_stream", "claude_vision"] },
+  { t: "Agents and MCP", w: "Weeks 15 to 16", why: "Agent loops built by hand, human approvals, one framework (LangGraph), MCP and memory.",
+    main: ["dlai_agentic", "anth_agents", "dlai_langgraph", "dlai_mcp"], extra: ["hf_agents", "lc_academy", "mcp_docs", "aefs_agent"] },
+  { t: "Evaluation, production and safety", w: "Weeks 17 to 19", why: "Eval suites and graders, tracing, experiment tracking, evals in CI, security and responsible AI.",
+    main: ["dlai_eval_agents", "hamel_evals", "langfuse", "dlai_safety"], extra: ["anth_evals", "mlflow", "ragas", "owasp_pi", "madewithml"] },
+  { t: "Fine-tuning and open models", w: "Weeks 19 to 20", why: "When fine-tuning beats prompting, LoRA, and running and serving open models.",
+    main: ["dlai_finetune", "hf_peft"], extra: ["unsloth", "ollama", "vllm", "aefs_gpu"] },
+  { t: "AI and ML system design", w: "Weeks 21 to 24", why: "Generative AI system design and ML system design, the way interviews ask them.",
+    main: ["genai_platform", "ml_interviews", "mlsd_book"], extra: ["aie_book", "rules_ml", "rec_sd", "llm_patterns", "aimlinterviews"] },
+  { t: "Interview preparation", w: "Weeks 25 to 32", why: "Real AI engineering interview questions, ML coding practice and mock interviews.",
+    main: ["ai_iq_topics", "ai_iq_company"], extra: ["aimlinterviews", "tih_mock", "interview_warmup"] }
 ];
 
 /* =====================================================================
@@ -1347,7 +1398,7 @@ function render() {
   }
   const route = parseRoute();
   setActiveNav(route.name);
-  const views = { week: viewWeek, roadmap: viewRoadmap, log: viewLog, resources: viewResources, settings: viewSettings };
+  const views = { week: viewWeek, roadmap: viewRoadmap, path: viewPath, log: viewLog, resources: viewResources, settings: viewSettings };
   $("#main").innerHTML = (views[route.name] || viewDashboard)(route.arg);
   renderHeader(); renderSync();
   const j = $(".journey"), cur = $(".node.current");
@@ -1363,8 +1414,8 @@ function rerenderKeepFocus(id) {
 }
 
 /* ---------- Pieces ---------- */
-function resChip(r) {
-  return `<a class="chip" href="${esc(r.u)}" target="_blank" rel="noopener noreferrer"><span class="kind">${esc(r.k)}</span>${esc(r.t)}</a>`;
+function resChip(r, first) {
+  return `<a class="chip${first ? " primary" : ""}" href="${esc(r.u)}" target="_blank" rel="noopener noreferrer">${first ? `<span class="start">Start here</span>` : ""}<span class="kind">${esc(r.k)}</span>${esc(r.t)}</a>`;
 }
 function taskHTML(t, hideTrack) {
   const done = !!state.tasks[t.id];
@@ -1379,7 +1430,7 @@ function taskHTML(t, hideTrack) {
         ${t.tip ? `<span class="tip">${esc(t.tip)}</span>` : ""}
       </span>
     </label>
-    ${res.length ? `<div class="res">${res.map(resChip).join("")}</div>` : ""}
+    ${res.length ? `<div class="res">${res.map((r, i) => resChip(r, i === 0 && res.length > 1)).join("")}</div>` : ""}
   </li>`;
 }
 function cpHTML([id, t]) {
@@ -1571,7 +1622,7 @@ function viewDashboard() {
       <aside class="panel" aria-labelledby="cur-h">
         <h2 id="cur-h">Stay current: 30 minutes a week</h2>
         <p class="muted">Once a week, skim these and note only what affects your project or your interviews in your weekly review. Everything else can wait.</p>
-        <div class="res" style="margin-left:0">${STAY_CURRENT.map(k => RES[k]).filter(Boolean).map(resChip).join("")}</div>
+        <div class="res" style="margin-left:0">${STAY_CURRENT.map(k => RES[k]).filter(Boolean).map(r => resChip(r, false)).join("")}</div>
       </aside>
     </div>
   </div>
@@ -1633,6 +1684,7 @@ function viewRoadmap() {
     <li>Measure from day one: every AI feature gets a test set before it gets clever.</li>
     <li>Every project shows a number, admits a failure, and has a demo someone can try.</li>
     <li>Use AI coding assistants in your projects, but understand every line. Solve DSA problems yourself.</li>
+    <li>Each task's highlighted "Start here" link is the one to follow. The others are extras for when you're stuck.</li>
     <li>DSA every day and projects every weekend. Top companies hire through strong interviews and referrals.</li>
     <li>On hard days, do a minimum day: just the DSA hour. Every Sunday, write a short weekly review.</li>
     <li>Behind schedule? The plan stretches; you don't quit.</li>
@@ -1674,6 +1726,22 @@ function viewLog(arg) {
     </section>
     <aside><div class="panel"><h2>${date === todayStr() ? "Log today" : "Edit " + esc(fmtDateLong(date))}</h2>${logFormHTML(date, false)}</div></aside>
   </div>`;
+}
+
+function viewPath() {
+  const item = (k, main) => {
+    const r = RES[k]; if (!r) return "";
+    return `<li class="res-item"><a href="${esc(r.u)}" target="_blank" rel="noopener noreferrer">${esc(r.t)}</a><p>${esc(r.k)}, ${esc(r.s)}${main ? "" : ". Extra"}</p></li>`;
+  };
+  return `
+  <h1 class="page-h">Your AI engineering learning path</h1>
+  <p class="week-sub">From zero AI knowledge to interview-ready, in order. Each step lists its main courses first, then extras for when you're stuck. Software engineering, DSA, system design and CS fundamentals run alongside these every week, in your <a href="#/roadmap">Roadmap</a>.</p>
+  ${PATH.map((p, i) => `<section class="res-group">
+    <h2>${i + 1}. ${esc(p.t)} <span class="muted small" style="font-weight:400">${esc(p.w)}</span></h2>
+    <p class="muted" style="margin:0 0 10px;max-width:70ch">${esc(p.why)}</p>
+    <ul class="res-list">${p.main.map(k => item(k, true)).join("")}</ul>
+    ${p.extra.length ? `<details style="margin-top:8px"><summary class="muted small" style="cursor:pointer">Extras (${p.extra.length})</summary><ul class="res-list" style="margin-top:6px">${p.extra.map(k => item(k, false)).join("")}</ul></details>` : ""}
+  </section>`).join("")}`;
 }
 
 function resourceUsage() {
