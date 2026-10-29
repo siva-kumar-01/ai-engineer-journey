@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AI Engineer Journey</title>
-<meta name="description" content="Track your 26-week roadmap from SAP to AI Engineer.">
+<meta name="description" content="Track your 32-week roadmap from SAP to AI Engineer.">
 <meta name="theme-color" content="#EEF1F5" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0E1525" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='none' stroke='%2316213A' stroke-width='4'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23E2A21B'/%3E%3C/svg%3E">
@@ -589,7 +589,10 @@ const RES = {
   skilljar_api:   R("Building with the Claude API", "https://anthropic.skilljar.com/claude-with-the-anthropic-api", "Course", "ai", "Anthropic Academy, free"),
   skilljar_mcp:   R("Introduction to Model Context Protocol", "https://anthropic.skilljar.com/introduction-to-model-context-protocol", "Course", "ai", "Anthropic Academy, free"),
   skilljar_cc:    R("Claude Code in Action", "https://anthropic.skilljar.com/claude-code-in-action", "Course", "swe", "Anthropic Academy, free"),
-  skilljar_home:  R("Anthropic Academy course catalog", "https://anthropic.skilljar.com/", "Course", "ai", "Anthropic Academy, free")
+  skilljar_home:  R("Anthropic Academy course catalog", "https://anthropic.skilljar.com/", "Course", "ai", "Anthropic Academy, free"),
+  hf_deep_rl:     R("Deep Reinforcement Learning Course", "https://huggingface.co/learn/deep-rl-course/unit0/introduction", "Course", "ai", "Hugging Face, free"),
+  huyen_rlhf:     R("RLHF: reinforcement learning from human feedback", "https://huyenchip.com/2023/05/02/rlhf.html", "Article", "ai", "Chip Huyen"),
+  dlai_diffusion: R("How Diffusion Models Work", "https://www.deeplearning.ai/courses/how-diffusion-models-work", "Course", "ai", "DeepLearning.AI")
 };
 
 /* Weekly "stay current" habit shown on the dashboard */
@@ -705,7 +708,7 @@ const WEEKS = [
   ]),
   W("Error analysis and shipping the baseline", [
     ["w8-a", "dsa", "A2Z step 5: strings (basic and medium)", ["a2z", "tuf_yt"]],
-    ["w8-b", "ai", "Error analysis: failure slices and one concrete data repair", ["sk_pitfalls", "mlcc"]],
+    ["w8-b", "ai", "Feature engineering and selection, a scikit-learn pipeline so preprocessing can't leak, then error analysis: failure slices and one concrete data repair", ["sk_pitfalls", "mlcc", "kaggle_iml"]],
     ["w8-c", "proj", "ML project: serve the classifier through FastAPI in Docker, with a README showing metrics and one documented failure", ["readme_guide"]],
     ["w8-d", "proj", "Flagship: docker compose runs the API and database, and CI runs tests on every push", ["gha", "compose"]],
     ["w8-f", "swe", "Web security basics: OWASP Top 10, CORS, HTTPS, password hashing (bcrypt or Argon2) and keeping secrets out of code", ["owasp_top10", "mdn_cors", "twelve"]],
@@ -804,9 +807,9 @@ const WEEKS = [
   ]),
   W("Fine-tuning experiment and deployment", [
     ["w20-a", "dsa", "A2Z step 15: graphs (BFS, DFS, components, cycle detection)", ["a2z", "yt_striver_graph", "yt_fiset_graph"]],
-    ["w20-b", "ai", "Fine-tuning: when to use it (and when not), and LoRA and QLoRA concepts", ["dlai_finetune", "hf_peft", "hf_llm_course"]],
+    ["w20-b", "ai", "Fine-tuning as transfer learning: when to adapt a pretrained model (and when not), LoRA and QLoRA, and how RLHF and DPO align LLMs", ["dlai_finetune", "hf_peft", "huyen_rlhf", "hf_llm_course"]],
     ["w20-c", "proj", "Fine-tune a small open model with LoRA on your triage data, and compare it with prompting and the classical baseline on the same test set", ["unsloth", "hf_peft", "hf_training"], { tip: "Evaluation first, then fine-tuning. Often prompting or retrieval wins." }],
-    ["w20-d", "proj", "Deploy the flagship to the cloud with a tested rollback", ["render", "aws_ecs", "aws_free", "modal"]],
+    ["w20-d", "proj", "Deploy the flagship to the cloud with a tested rollback and least-privilege access (IAM roles, no shared admin keys)", ["render", "aws_ecs", "aws_free", "modal"]],
     ["w20-g", "swe", "Production Docker: multi-stage builds, a non-root user, and secrets kept out of the image", ["docker_multistage", "twelve"]],
     ["w20-e", "career", "Final one-page resume, and ask 5 engineers for referrals", ["tih_resume"], { tip: "Share your demo and one line on why you fit the role." }],
     ["w20-f", "career", "Month 5 review, plus a job-description check", ["linkedin_jobs"], { tip: "Skim 5 new AI Engineer job descriptions from your target companies. If a skill keeps appearing that your plan doesn't cover, note it here." }]
@@ -839,6 +842,8 @@ const WEEKS = [
     ["w24-b", "dsa", "LeetCode Top Interview 150: timed medium sets", ["lc_top150", "sde_sheet", "grind75", "algomaster"], { tip: "Mixed problems with no chapter label, the way real interviews feel. Prefer staying with Striver? Use his SDE Sheet instead. Pick one, not both." }],
     ["w24-c", "ai", "ML design practice: fraud detection and ads click prediction", ["mlsd_book", "rules_ml"]],
     ["w24-d", "ai", "Computer vision basics with a pretrained model", ["fastai"], { opt: true, tip: "Only if a target role mentions vision." }],
+    ["w24-f", "ai", "Reinforcement learning basics: agents, environments, rewards and policies, and how they connect to RLHF", ["karpathy_deep", "hf_deep_rl", "huyen_rlhf"], { tip: "Concept level is enough. Interviewers ask what RL is and how it's used to align LLMs." }],
+    ["w24-g", "ai", "Generative models beyond LLMs: GANs, VAEs and diffusion models, at concept level", ["dlai_diffusion"], { opt: true, tip: "Useful if a role involves images or multimodal AI." }],
     ["w24-e", "career", "Month 6 review: check roadmap.sh's AI Engineer and Backend checklists for any gaps", ["roadmap_sh", "roadmap_backend"], { tip: "Note gaps for later rather than adding new study now. Interviews come first." }]
   ]),
 
@@ -868,7 +873,7 @@ const WEEKS = [
   W("Company-specific preparation", [
     ["w28-a", "dsa", "Mixed timed sets, explaining your approach out loud", ["lc"]],
     ["w28-b", "career", "Company-specific prep: read your target companies' reported interview loops and questions, practice coding without an IDE (Google), at speed (Meta), and with an AI assistant, and map stories to Amazon's Leadership Principles", ["ai_iq_company", "google_hire", "amazon_lp", "interview_warmup"], { tip: "Some 2026 loops, including at Meta and Anthropic, include an AI-assisted coding round." }],
-    ["w28-c", "ai", "Revise RAG, agents, evals and fine-tuning trade-offs, plus inference basics: KV cache, prefill vs decode, batching and latency metrics", ["aie_book", "ai_iq_topics", "karpathy_deep"]],
+    ["w28-c", "ai", "Revise RAG, agents, evals and fine-tuning trade-offs, plus inference basics (KV cache, prefill vs decode, batching, latency metrics) and distributed training basics (data vs model parallelism)", ["aie_book", "ai_iq_topics", "karpathy_deep"]],
     ["w28-d", "career", "Follow up on applications and referrals", []],
     ["w28-e", "career", "Month 7 review, plus a job-description check", ["linkedin_jobs"], { tip: "Skim 5 new AI Engineer job descriptions from your target companies. If a skill keeps appearing that your plan doesn't cover, note it here." }]
   ]),
@@ -907,7 +912,7 @@ const DECISIONS = [
   ["CS fundamentals", "Your GeeksforGeeks CIP tracks, interview-level only."],
   ["Courses", "DeepLearning.AI is your main course platform, plus Anthropic Academy for the Claude sprint in weeks 5 to 8. Start each task with its highlighted resource, and see the Learning path page for the full order. If your DeepLearning.AI license ends, renew it or watch the free videos. Skip OpenAI Academy, except its Codex lessons in week 5."],
   ["Certifications", "One: Claude Certified Developer – Foundations by your end-of-November deadline (weeks 5 to 8). Skip the AWS, Microsoft and Google FDE programs, unless your company staffs you on a project that requires one."],
-  ["Skip for now", "Computer vision models, classic NLP (POS tagging, parsing), RNN/LSTM depth, Kubernetes, GraphQL, web servers like Nginx, deep NoSQL and Elasticsearch work, Kubeflow, Airflow, KServe, Terraform, and extra agent frameworks. Learn concepts only if a job description asks."]
+  ["Skip for now", "Computer vision models, classic NLP (POS tagging, parsing), RNN/LSTM depth, Kubernetes, GraphQL, web servers like Nginx, deep NoSQL and Elasticsearch work, Kubeflow, Airflow, KServe, Terraform, federated learning, Azure ML specifics, and extra agent frameworks. Learn concepts only if a job description asks."]
 ];
 
 const NUDGES = [
@@ -936,7 +941,7 @@ const PATH = [
   { t: "Machine learning", w: "Weeks 5 to 8", why: "Supervised learning, honest evaluation, regression, trees and ensembles, clustering, and error analysis.",
     main: ["mlcc"], extra: ["ml_spec", "kaggle_iml", "sk_pitfalls"] },
   { t: "Deep learning and transformers", w: "Weeks 9 to 12", why: "Neural networks, backpropagation, PyTorch, attention and tokenization.",
-    main: ["dl_spec", "z2h", "pytorch", "dlai_transformers"], extra: ["threeb1b", "learnpytorch", "illustrated", "hf_llm_course", "hf_tokenizers", "dlai_tip"] },
+    main: ["dl_spec", "z2h", "pytorch", "dlai_transformers"], extra: ["threeb1b", "learnpytorch", "illustrated", "hf_llm_course", "hf_tokenizers", "dlai_tip", "dlai_diffusion"] },
   { t: "Embeddings and RAG", w: "Weeks 9 to 12", why: "Semantic search, vector databases, hybrid search, reranking, and grounded answers with citations.",
     main: ["sbert", "dlai_rag"], extra: ["dlai_vectordb", "dlai_adv_rag", "anth_contextual", "llm_zoomcamp"] },
   { t: "LLM engineering", w: "Weeks 13 to 15", why: "Structured output, context engineering, tool calling, streaming and multimodal input.",
@@ -945,8 +950,8 @@ const PATH = [
     main: ["dlai_agentic", "anth_agents", "dlai_langgraph", "dlai_mcp"], extra: ["hf_agents", "lc_academy", "mcp_docs", "aefs_agent"] },
   { t: "Evaluation, production and safety", w: "Weeks 17 to 19", why: "Eval suites and graders, tracing, experiment tracking, evals in CI, security and responsible AI.",
     main: ["dlai_eval_agents", "hamel_evals", "langfuse", "dlai_safety"], extra: ["anth_evals", "mlflow", "ragas", "owasp_pi", "madewithml"] },
-  { t: "Fine-tuning and open models", w: "Weeks 19 to 20", why: "When fine-tuning beats prompting, LoRA, and running and serving open models.",
-    main: ["dlai_finetune", "hf_peft"], extra: ["unsloth", "ollama", "vllm", "aefs_gpu"] },
+  { t: "Fine-tuning and open models", w: "Weeks 19 to 20", why: "When fine-tuning beats prompting, LoRA, how RLHF and DPO align models, and running and serving open models.",
+    main: ["dlai_finetune", "hf_peft"], extra: ["huyen_rlhf", "hf_deep_rl", "unsloth", "ollama", "vllm", "aefs_gpu"] },
   { t: "AI and ML system design", w: "Weeks 21 to 24", why: "Generative AI system design and ML system design, the way interviews ask them.",
     main: ["genai_platform", "ml_interviews", "mlsd_book"], extra: ["aie_book", "rules_ml", "rec_sd", "llm_patterns", "aimlinterviews"] },
   { t: "Interview preparation", w: "Weeks 25 to 32", why: "Real AI engineering interview questions, ML coding practice and mock interviews.",
