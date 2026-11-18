@@ -146,6 +146,8 @@ Everything is in the `<script>` section of `index.html`:
 
 Keep existing task ids such as `"w3-b"` unchanged, because your saved progress uses them. To add a task, append it with a new id.
 
+**First-switch focus.** Near the top of the script, `const FIRST_SWITCH = true;` marks the tasks and checkpoints you don't need for your first job switch (consulting and Big 4 firms, funded AI startups, and enterprise SaaS and ERP companies). They show **Not needed for first switch** and don't count toward your progress. Some tasks you still do also show a short **First switch** note saying how much of them you need. The marked ids are in `FIRST_SWITCH_LATER` and the notes are in `FIRST_SWITCH_NOTES`. When you start preparing for Big Tech, change the line to `const FIRST_SWITCH = false;` and upload the file again. Every task then counts again, and everything you've already ticked stays ticked.
+
 ## About the resources
 
 - DSA: Striver's A2Z sheet, Logic First Tamil for concepts, LeetCode Top Interview 150 for timed practice.

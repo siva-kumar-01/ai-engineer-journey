@@ -131,6 +131,9 @@ h2{font-size:18px;font-weight:700;margin-bottom:12px}
 .track::before,.dot{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--tc)}
 .t-dsa{--tc:var(--t-dsa)}.t-swe{--tc:var(--t-swe)}.t-cs{--tc:var(--t-cs)}.t-ai{--tc:var(--t-ai)}.t-proj{--tc:var(--t-proj)}.t-career{--tc:var(--t-career)}
 .opt{border:1px solid var(--line);border-radius:999px;padding:0 8px;line-height:1.5}
+.opt.later{border-style:dashed}
+.is-later .task-title{color:var(--ink-2)}
+.switch-note b{font-weight:600;color:var(--ink)}
 .tip{display:block;font-size:14px;color:var(--ink-2);margin-top:5px}
 .res{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0 32px}
 .chip{display:inline-flex;align-items:baseline;gap:6px;font-size:13.5px;line-height:1.35;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:5px 11px;max-width:100%}
@@ -359,6 +362,12 @@ body.locked .tabs,body.locked .sync{display:none}
    so sync works on every device without typing them in Settings.
    The anon key is designed to be public; Row Level Security protects your data. */
 const CLOUD_CONFIG = { url: "https://ohbsurbiwepcrqagmzzg.supabase.co", key: "sb_publishable_0eSGb8VngklzP1xn379QeA_fz8KcozD" };
+
+/* First-switch focus. While this is true, the tasks listed in FIRST_SWITCH_LATER
+   (further down) show "Not needed for first switch" and don't count toward your progress.
+   When you start preparing for Big Tech, change it to false: every task counts again,
+   and anything you already ticked stays ticked. */
+const FIRST_SWITCH = true;
 
 const TOTAL_WEEKS = 32;
 
@@ -675,6 +684,63 @@ const RES = {
 const STAY_CURRENT = ["the_batch", "latent_space", "simon_willison"];
 
 /* =====================================================================
+   First-switch marks, used while FIRST_SWITCH is true.
+   Your first switch targets consulting and Big 4 firms, funded AI startups,
+   and enterprise SaaS and ERP companies. The ids below wait for your
+   Big Tech preparation. Task ids are unchanged, so progress is safe.
+   ===================================================================== */
+const FIRST_SWITCH_LATER = new Set([
+  // DSA beyond the basics: Striver's A2Z in C++, contests and hard problems
+  "w1-a", "w1-b", "w5-a", "w6-a", "w7-a", "w9-a", "w10-a", "w11-a", "w12-a", "w15-a", "w16-a",
+  "w17-a", "w18-a", "w19-a", "w20-a", "w21-a", "w22-a", "w23-a", "w24-a", "w26-b", "w27-b", "w30-a", "w31-a",
+  // OS, computer networks and CS revision notes
+  "w9-d", "w10-c", "w11-e", "w13-e", "w14-e", "w26-e", "w27-e",
+  // Classic system design and low-level design
+  "w18-d", "w19-e", "w21-b", "w22-c", "w22-d", "w23-c", "w25-c",
+  // ML design for recommendations, search, fraud and ads
+  "w23-b", "w24-c",
+  // Deeper ML builds and breadth topics
+  "w12-b", "w26-f", "w24-d", "w24-f", "w24-g",
+  // Fine-tuning project and its write-up
+  "w20-c", "w31-c",
+  // Big Tech-specific interview prep
+  "w28-b",
+  // Checkpoints: DSA counts, ranking ML design, fine-tuning comparison
+  "m1-d", "m2-d", "m3-d", "m4-d", "m5-e", "m6-e", "m7-d", "m6-b", "m5-c"
+]);
+
+/* Notes for tasks you still do, in a smaller form, for your first switch. */
+const FS_CODING = "In Python, easy and medium problems only.";
+const FS_TARGETS = "Aim at consulting firms, AI startups and enterprise SaaS companies.";
+const FS_STAR = "STAR stories from your SAP work are enough. The Amazon mapping can wait.";
+const FIRST_SWITCH_NOTES = {
+  "w1-f": "Focus on how consulting firms, AI startups and enterprise SaaS companies interview.",
+  "w2-a": FS_CODING, "w2-b": FS_CODING, "w3-a": FS_CODING, "w4-a": FS_CODING, "w8-a": FS_CODING,
+  "w13-a": FS_CODING, "w14-a": FS_CODING, "w24-b": FS_CODING, "w25-a": FS_CODING, "w25-b": FS_CODING,
+  "w26-a": FS_CODING, "w27-a": FS_CODING, "w28-a": FS_CODING, "w29-a": FS_CODING, "w30-b": FS_CODING,
+  "w32-a": FS_CODING, "m7-a": FS_CODING,
+  "w2-c": "About 20 exercises are enough.",
+  "w6-d": "Joins, indexes and EXPLAIN are enough. Normalization theory can wait.",
+  "w7-d": "Transactions and ACID are enough. Isolation levels and deadlocks can wait.",
+  "w8-g": "The certification helps most for consulting roles. It's optional for the others.",
+  "w9-b": "Watch the course. Building micrograd can wait.",
+  "w12-e": "Save job descriptions from consulting firms, AI startups and enterprise SaaS companies.",
+  "w17-d": "Caching and SQL vs NoSQL are enough for now.",
+  "w19-f": "This matters most for consulting roles.",
+  "w21-c": "A skim is enough. GenAI design practice matters more.",
+  "w21-e": FS_TARGETS, "w23-d": FS_TARGETS, "w25-e": FS_TARGETS, "w29-d": FS_TARGETS, "m6-d": FS_TARGETS,
+  "w25-d": FS_STAR, "m7-c": FS_STAR,
+  "w26-c": "Focus on LLM, RAG and agent questions, plus basic ML.",
+  "w26-d": "Do the GenAI design mock. The ML design mock can wait.",
+  "w28-c": "Distributed training can wait.",
+  "w29-b": "Do the GenAI design mock. The high-level design mock can wait.",
+  "m6-a": "The RAG design is the part you need. The URL shortener can wait.",
+  "m7-b": "Coding, GenAI design and project deep-dive mocks are enough."
+};
+const isLater = id => FIRST_SWITCH && FIRST_SWITCH_LATER.has(id);
+const switchNote = id => (FIRST_SWITCH && !FIRST_SWITCH_LATER.has(id) && FIRST_SWITCH_NOTES[id]) || "";
+
+/* =====================================================================
    The final 32-week plan (8 months).
    Task ids use letters ("w3-a") so they never clash with earlier versions.
    ===================================================================== */
@@ -715,7 +781,7 @@ const MONTHS = [
 
 const W = (focus, tasks) => ({
   focus,
-  tasks: tasks.map(([id, tr, t, r = [], o = {}]) => ({ id, tr, t, r, opt: !!o.opt, tip: o.tip || "" }))
+  tasks: tasks.map(([id, tr, t, r = [], o = {}]) => ({ id, tr, t, r, opt: !!o.opt, tip: o.tip || "", later: isLater(id), note: switchNote(id) }))
 });
 
 const WEEKS = [
@@ -1113,14 +1179,14 @@ function weekRange(w) { const s = addDays(parseYmd(state.settings.start), 7 * (w
 const monthOfWeek = w => MONTHS.find(m => m.weeks.includes(w)) || MONTHS[MONTHS.length - 1];
 
 function weekStats(w) {
-  const ts = WEEKS[w - 1].tasks.filter(t => !t.opt);
+  const ts = WEEKS[w - 1].tasks.filter(t => !t.opt && !t.later);
   const done = ts.filter(t => state.tasks[t.id]).length;
   return { done, total: ts.length, pct: ts.length ? done / ts.length : 0 };
 }
 function monthStats(m) {
   let done = 0, total = 0;
   m.weeks.forEach(w => { const s = weekStats(w); done += s.done; total += s.total; });
-  m.checkpoints.forEach(([id]) => { total++; if (state.tasks[id]) done++; });
+  m.checkpoints.forEach(([id]) => { if (isLater(id)) return; total++; if (state.tasks[id]) done++; });
   return { done, total, pct: total ? done / total : 0 };
 }
 function overallStats() {
@@ -1128,7 +1194,7 @@ function overallStats() {
   MONTHS.forEach(m => { const s = monthStats(m); done += s.done; total += s.total; });
   return { done, total, pct: total ? done / total : 0 };
 }
-const checkpointsDone = m => m.checkpoints.every(([id]) => state.tasks[id]);
+const checkpointsDone = m => m.checkpoints.filter(([id]) => !isLater(id)).every(([id]) => state.tasks[id]);
 
 /* ---------- Log maths ---------- */
 const logActive = l => !!l && ((l.minutes || 0) > 0 || (l.dsa || 0) > 0 || !!l.min);
@@ -1525,29 +1591,32 @@ function rerenderKeepFocus(id) {
 function resChip(r, first) {
   return `<a class="chip${first ? " primary" : ""}" href="${esc(r.u)}" target="_blank" rel="noopener noreferrer">${first ? `<span class="start">Start here</span>` : ""}<span class="kind">${esc(r.k)}</span>${esc(r.t)}</a>`;
 }
+const LATER_BADGE = `<span class="opt later">Not needed for first switch</span>`;
+const noteHTML = n => `<span class="tip switch-note"><b>First switch:</b> ${esc(n)}</span>`;
 function taskHTML(t, hideTrack) {
   const done = !!state.tasks[t.id];
   const res = (t.r || []).map(k => RES[k]).filter(Boolean);
-  return `<li class="task ${done ? "is-done" : ""}">
+  return `<li class="task ${done ? "is-done" : ""}${t.later ? " is-later" : ""}">
     <label class="task-main">
       <input type="checkbox" class="task-chk" data-id="${t.id}" ${done ? "checked" : ""}>
       <span class="box" aria-hidden="true"></span>
       <span class="task-text">
         <span class="task-title">${esc(t.t)}</span>
-        ${hideTrack && !t.opt ? "" : `<span class="task-meta">${hideTrack ? "" : `<span class="track t-${t.tr}">${TRACKS[t.tr].name}</span>`}${t.opt ? `<span class="opt">Optional</span>` : ""}</span>`}
+        ${hideTrack && !t.opt && !t.later ? "" : `<span class="task-meta">${hideTrack ? "" : `<span class="track t-${t.tr}">${TRACKS[t.tr].name}</span>`}${t.later ? LATER_BADGE : t.opt ? `<span class="opt">Optional</span>` : ""}</span>`}
         ${t.tip ? `<span class="tip">${esc(t.tip)}</span>` : ""}
+        ${t.note ? noteHTML(t.note) : ""}
       </span>
     </label>
     ${res.length ? `<div class="res">${res.map((r, i) => resChip(r, i === 0 && res.length > 1)).join("")}</div>` : ""}
   </li>`;
 }
 function cpHTML([id, t]) {
-  const done = !!state.tasks[id];
-  return `<li class="task ${done ? "is-done" : ""}">
+  const done = !!state.tasks[id]; const later = isLater(id); const note = switchNote(id);
+  return `<li class="task ${done ? "is-done" : ""}${later ? " is-later" : ""}">
     <label class="task-main">
       <input type="checkbox" class="task-chk" data-id="${id}" ${done ? "checked" : ""}>
       <span class="box" aria-hidden="true"></span>
-      <span class="task-text"><span class="task-title">${esc(t)}</span></span>
+      <span class="task-text"><span class="task-title">${esc(t)}</span>${later ? `<span class="task-meta">${LATER_BADGE}</span>` : ""}${note ? noteHTML(note) : ""}</span>
     </label></li>`;
 }
 function journeyHTML(cw) {
@@ -1708,7 +1777,7 @@ function viewDashboard() {
           <div class="stat"><span>Days in a row</span><b>${st}</b><small>Best so far: ${best}</small></div>
           <div class="stat"><span>Active days this week</span><b>${wl.days} of 7</b></div>
           <div class="stat"><span>Hours this week</span><b>${round1(hrs)} of ${target}</b>${meter(hrs / target, "thin")}</div>
-          <div class="stat"><span>DSA problems solved</span><b>${dsa}</b><small>Month ${m.n} target: about ${m.dsaTarget}</small></div>
+          <div class="stat"><span>DSA problems solved</span><b>${dsa}</b><small>${FIRST_SWITCH ? "Light practice: easy and medium, in Python" : `Month ${m.n} target: about ${m.dsaTarget}`}</small></div>
         </div>
         ${qualityCardHTML()}
         <p class="nudge">${esc(nudgeText())}</p>
@@ -1788,6 +1857,7 @@ function viewRoadmap() {
   <p class="week-sub">${o.done} of ${o.total} tasks and checkpoints done.</p>
   ${meter(o.pct)}
   <ul class="rules">
+    ${FIRST_SWITCH ? `<li>First switch focus: tasks marked "Not needed for first switch" wait for your Big Tech preparation and don't count toward your progress.</li>` : ""}
     <li>Build, don't binge: for every hour of watching, spend an hour typing.</li>
     <li>Primitives before frameworks: build it by hand once, then use a library.</li>
     <li>Measure from day one: every AI feature gets a test set before it gets clever.</li>
@@ -2241,7 +2311,7 @@ function viewFocus() {
   const s = Focus.settings(), st = Focus.state(), d = Focus.durations();
   const paused = st.mode !== "idle" && !!st.paused;
   const cw = clampWeek(currentWeek() || 1);
-  const tasks = WEEKS[cw - 1].tasks.filter(t => !state.tasks[t.id]);
+  const tasks = WEEKS[cw - 1].tasks.filter(t => !state.tasks[t.id] && !t.later);
   const taskTitle = id => { const w = TASK_WEEK[id]; const t = w && WEEKS[w - 1].tasks.find(x => x.id === id); return t ? t.t : ""; };
   const working = st.mode !== "idle" ? taskTitle(st.task) : "";
   const today = Focus.todayStats();
