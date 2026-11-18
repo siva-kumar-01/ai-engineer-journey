@@ -246,6 +246,22 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
 .res-item a{font-weight:700;text-decoration:none}
 .res-item a:hover{text-decoration:underline}
 .res-item p{font-size:14px;color:var(--ink-2);margin-top:2px}
+.idea{border-top:1px solid var(--line);padding:26px 0 8px}
+.idea:first-child{border-top:0;padding-top:0}
+.idea h2{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;font-size:21px;letter-spacing:-.01em;margin:0 0 6px}
+.idea h2 .opt{font-size:13px;font-weight:400;color:var(--ink-2)}
+.idea p{max-width:68ch;margin:6px 0}
+.idea p b{font-weight:600}
+.layers{list-style:none;margin:14px 0;padding:0;border-top:1px solid var(--line-2)}
+.layers li{display:grid;grid-template-columns:minmax(130px,170px) minmax(0,1fr);gap:4px 16px;padding:9px 0;border-bottom:1px solid var(--line-2);font-size:14.5px}
+.layers b{font-weight:600}
+.layers span{color:var(--ink-2)}
+@media (max-width:560px){.layers li{grid-template-columns:1fr}}
+.idea details{margin-top:10px}
+.idea summary{cursor:pointer;color:var(--ink-2);font-size:14.5px}
+.idea summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.plain{margin:0;padding:0 0 0 18px;font-size:14.5px;color:var(--ink-2)}
+.plain li+li{margin-top:6px}
 
 /* Settings */
 .settings{display:grid;gap:28px;max-width:760px;margin-top:22px}
@@ -339,6 +355,7 @@ body.locked .tabs,body.locked .sync{display:none}
     <a href="#/" data-route="dashboard">Dashboard</a>
     <a href="#/week" data-route="week">This week</a>
     <a href="#/roadmap" data-route="roadmap">Roadmap</a>
+    <a href="#/projects" data-route="projects">Projects</a>
     <a href="#/path" data-route="path">Learning path</a>
     <a href="#/focus" data-route="focus">Focus</a>
     <a href="#/reflect" data-route="reflect">Quality</a>
@@ -790,7 +807,7 @@ const MONTHS = [
   { n: 4, short: "Agents", title: "LLM engineering: structured output, agents and MCP",
     goal: "Reliable structured extraction, then a bounded agent built from primitives, rebuilt with one framework, and exposed through MCP.",
     weeks: [13, 14, 15, 16], dsaTarget: 170,
-    checkpoints: [["m4-a", "Invoice extraction with field-level error analysis"], ["m4-b", "Bounded agent with tool traces, a step budget and human approval"], ["m4-c", "Procurement tools exposed through an MCP server"], ["m4-d", "About 170 DSA problems solved"]] },
+    checkpoints: [["m4-a", "Document extraction with field-level error analysis"], ["m4-b", "Bounded agent with tool traces, a step budget and human approval"], ["m4-c", "Your flagship's tools exposed through an MCP server"], ["m4-d", "About 170 DSA problems solved"]] },
   { n: 5, short: "Production", title: "Production AI, fine-tuning and design basics",
     goal: "Operate your AI system like production: tracing, experiments, evals in CI, safety tests, caching, a fine-tuning experiment and a real deployment.",
     weeks: [17, 18, 19, 20], dsaTarget: 210,
@@ -856,7 +873,7 @@ const WEEKS = [
     ["w5-b", "ai", "ML fundamentals: supervised learning, train, validation and test splits, overfitting, data leakage", ["mlcc", "kaggle_iml", "sk_pitfalls"], { tip: "Top companies ask ML basics even for AI engineering roles." }],
     ["w5-c", "ai", "Linear and logistic regression, gradient descent and regularization", ["mlcc", "ml_spec"]],
     ["w5-d", "swe", "SQLAlchemy ORM and database migrations", ["sqla_tut", "alembic", "yt_sqlalchemy"]],
-    ["w5-e", "proj", "Flagship setup: Procurement Copilot repo and a PostgreSQL schema for vendors, POs, goods receipts and invoices, with synthetic data", ["fastapi_sql", "faker", "readme_guide"], { tip: "Use your SAP MM knowledge for the data model. Never client data." }],
+    ["w5-e", "proj", "Flagship setup: create the repo for the project you chose on the Projects page, and a PostgreSQL schema for its core records, with synthetic data", ["fastapi_sql", "faker", "readme_guide"], { tip: "Use public or synthetic data. Never use someone's private documents without their consent." }],
     ["w5-f", "swe", "Set up an AI coding assistant (such as GitHub Copilot, Cursor or Claude Code) and practice reviewing every change it makes", ["copilot_docs", "claude_code", "academy_cc101", "openai_academy", "harness_course"], { tip: "Interviewers increasingly ask how you use AI tools. Keep solving DSA problems yourself. The harness engineering course is for later, once you use an assistant daily." }],
     ["w5-g", "ai", "Claude sprint 1: Building with the Claude API, first half (messages, conversations, prompting, structured output)", ["skilljar_api", "claude_docs", "skilljar_home"], { tip: "Your certification deadline is the end of November, so this runs alongside ML fundamentals for four weeks." }],
     ["w5-h", "ai", "Math refresh as needed: vectors and matrices, derivatives, probability and statistics", ["dlai_math", "yt_3b1b_la"], { opt: true, tip: "Learn math when a lesson needs it, not all up front." }],
@@ -866,7 +883,7 @@ const WEEKS = [
     ["w6-b", "ai", "Metrics: confusion matrix, precision, recall, F1, ROC-AUC, class imbalance", ["mlcc", "sklearn"]],
     ["w6-c", "ai", "Decision trees, ensembles, bias-variance, cross-validation and hyperparameter tuning", ["mlcc", "ml_spec"]],
     ["w6-d", "cs", "DBMS: keys, normalization, joins, indexes (B+ trees) and EXPLAIN plans", ["cip_dbms", "useindex", "pg_explain"], { tip: "The same idea as ST05 SQL traces in SAP." }],
-    ["w6-e", "proj", "Flagship API: endpoints for POs, goods receipts and invoices, with tests", ["fastapi_tut", "fastapi_test"]],
+    ["w6-e", "proj", "Flagship API: endpoints for your project's core records, with tests", ["fastapi_tut", "fastapi_test"]],
     ["w6-f", "ai", "Claude sprint 2: Building with the Claude API, second half (tool use, RAG, prompt caching, streaming, agents)", ["skilljar_api"]]
   ]),
   W("Docker, transactions and your first ML baseline", [
@@ -874,7 +891,7 @@ const WEEKS = [
     ["w7-b", "ai", "Unsupervised basics: k-means and PCA, and embeddings as vectors", ["mlcc", "sklearn"], { opt: true, tip: "Optional during your Claude sprint. k-means comes back in week 26." }],
     ["w7-c", "swe", "Docker and docker compose, with configuration through environment variables", ["docker_start", "compose", "twelve", "yt_docker"]],
     ["w7-d", "cs", "DBMS: transactions, ACID, isolation levels, locking and deadlocks", ["cip_dbms", "cmu_db_yt"], { tip: "Compare with SAP lock objects and SELECT inside LOOP." }],
-    ["w7-e", "proj", "ML project: a labeled supplier-email triage dataset, an honest split and a TF-IDF plus logistic regression baseline", ["sklearn", "sk_pitfalls"], { tip: "Split before fitting, and keep near-duplicate emails in the same split." }],
+    ["w7-e", "proj", "ML project: a labeled dataset for your smaller project (for example scam versus genuine messages), an honest split and a TF-IDF plus logistic regression baseline", ["sklearn", "sk_pitfalls"], { tip: "Split before fitting, and keep near-duplicate messages in the same split." }],
     ["w7-f", "swe", "Simple auth for the flagship (JWT): every request tied to a user, company and role. Also learn sessions vs tokens and how OAuth sign-in works", ["fastapi_sec", "oauth_com", "yt_oauth"], { tip: "Keep it simple. Later, the role limits what your assistant may read." }],
     ["w7-g", "ai", "Claude sprint 3: Introduction to Model Context Protocol, then build a tiny MCP server", ["skilljar_mcp", "mcp_docs", "skilljar_home"]],
   ]),
@@ -894,7 +911,7 @@ const WEEKS = [
     ["w9-b", "ai", "Neural networks and backpropagation: Course 1 of the Deep Learning Specialization, then build micrograd", ["dl_spec", "threeb1b", "z2h"], { tip: "Course 1 is the gentlest structured start. Karpathy's first Zero to Hero video is the hands-on version." }],
     ["w9-c", "ai", "Embeddings and similarity, hands-on with sentence-transformers", ["sbert", "dlai_vectordb"]],
     ["w9-d", "cs", "OS: processes, threads, context switching and CPU scheduling", ["cip_os", "ostep"]],
-    ["w9-e", "proj", "Flagship RAG: write procurement policy documents and a 30 to 50 question golden set before building retrieval", ["hamel_evals"], { tip: "Include questions the documents can't answer. The right reply is to say so." }]
+    ["w9-e", "proj", "Flagship RAG: collect your project's trusted source documents and write a 30 to 50 question golden set before building retrieval", ["hamel_evals"], { tip: "Include questions the documents can't answer. The right reply is to say so." }]
   ]),
   W("PyTorch and keyword-first RAG", [
     ["w10-a", "dsa", "A2Z step 6: linked lists (medium, a few hard)", ["a2z", "tuf_yt"]],
@@ -914,7 +931,7 @@ const WEEKS = [
   W("Access control and honest evaluation", [
     ["w12-a", "dsa", "A2Z step 7: a few hard backtracking problems, and step 8 bit manipulation basics", ["a2z", "tuf_yt"]],
     ["w12-b", "ai", "Build a small GPT from scratch with Karpathy", ["z2h"], { opt: true, tip: "The best way to truly understand transformers, if you have the time." }],
-    ["w12-c", "proj", "Flagship RAG: role-based retrieval, so finance-only policies never reach a buyer's prompt", ["supabase_rag_perms", "owasp_pi"], { tip: "Relevance never grants access. Enforce scope in your code, not the prompt." }],
+    ["w12-c", "proj", "Flagship RAG: access-controlled retrieval, so each user only ever retrieves documents they're allowed to see", ["supabase_rag_perms", "owasp_pi"], { tip: "Relevance never grants access. Enforce scope in your code, not the prompt." }],
     ["w12-d", "proj", "Flagship RAG: eval report (retrieval hit rate, answer correctness, abstention) and your first failure report", ["hamel_evals", "anth_evals"]],
     ["w12-e", "career", "Start a job tracker and save 10 target job descriptions from top companies", ["jobs_google", "jobs_ms", "jobs_amazon", "linkedin_jobs"], { tip: "Search titles like AI Engineer, Software Engineer (AI/ML) and Applied AI." }],
     ["w12-g", "ai", "Frameworks: rebuild your retrieval step once with LlamaIndex or LangChain, and compare it with your hand-built version", ["llamaindex_docs", "langchain_docs", "yt_rag_framework"], { tip: "Job descriptions often list these. Knowing what a framework does for you, and what it hides, is the interview answer." }],
@@ -926,29 +943,29 @@ const WEEKS = [
     ["w13-a", "dsa", "A2Z step 9: stacks and queues, including monotonic stack", ["a2z", "tuf_yt", "lft_java"]],
     ["w13-b", "ai", "Structured outputs: JSON schemas, Pydantic validation and retries. A schema checks shape, not truth", ["dlai_structured", "pydantic_models", "dlai_pydantic"]],
     ["w13-c", "ai", "Context engineering: what goes into the window, token budgets and contextual retrieval", ["anth_context_eng", "anth_contextual", "labonne"]],
-    ["w13-d", "proj", "Flagship extraction: invoice PDF to typed fields (vendor, PO number, lines, totals, needs_review). Missing stays missing", ["pdfplumber", "reportlab", "pydantic_models"]],
+    ["w13-d", "proj", "Flagship extraction: turn your project's documents (PDFs, photos or screenshots) into typed fields with a needs_review flag. Missing stays missing", ["pdfplumber", "reportlab", "pydantic_models"]],
     ["w13-e", "cs", "Networks: OSI and TCP/IP models, TCP vs UDP and the handshake", ["kunal_cn", "cip_cn", "kurose"]],
-    ["w13-f", "swe", "Async batch processing: run your extraction over hundreds of invoices with a concurrency limit, retries with backoff and jitter, and per-item error handling", ["py_asyncio", "fastapi_async", "yt_asyncio"], { tip: "Anthropic and Perplexity have asked candidates to write exactly this in interviews." }]
+    ["w13-f", "swe", "Async batch processing: run your extraction over hundreds of documents with a concurrency limit, retries with backoff and jitter, and per-item error handling", ["py_asyncio", "fastapi_async", "yt_asyncio"], { tip: "Anthropic and Perplexity have asked candidates to write exactly this in interviews." }]
   ]),
   W("Field-level evaluation and tool calling", [
     ["w14-a", "dsa", "A2Z step 10: sliding window and two pointers", ["a2z", "tuf_yt"]],
     ["w14-b", "ai", "Tool (function) calling under the hood, without a framework", ["claude_tools", "anth_tools_article", "openai_docs", "anth_academy"]],
-    ["w14-c", "proj", "Flagship extraction: field-level error analysis on 30+ invoices, including malformed and ambiguous ones", ["hamel_field"]],
-    ["w14-d", "proj", "Flagship: three-way match logic (invoice vs PO vs goods receipt) with quantity and price mismatch flags", []],
+    ["w14-c", "proj", "Flagship extraction: field-level error analysis on 30+ documents, including malformed and ambiguous ones", ["hamel_field"]],
+    ["w14-d", "proj", "Flagship: matching logic that checks extracted fields against trusted rules or records, and flags each mismatch with a reason", []],
     ["w14-e", "cs", "Networks: DNS, HTTP/HTTPS, TLS and what happens when you type a URL", ["cip_cn", "howdns", "url_type", "hnasr"]],
     ["w14-f", "swe", "Streaming: send LLM tokens to the browser as they arrive with Server-Sent Events, and know when WebSockets, gRPC or polling fit better", ["fastapi_stream", "mdn_sse", "yt_sse"], { tip: "Streaming makes an LLM feel fast even when the full answer takes seconds." }]
   ]),
   W("Agents from primitives", [
     ["w15-a", "dsa", "A2Z step 11: heaps", ["a2z", "tuf_yt"]],
     ["w15-b", "ai", "Agents: workflows vs agents, the ReAct loop and stopping conditions", ["dlai_agentic", "anth_agents", "aefs_agent"], { tip: "The interactive simulation lets you switch off retrieval, tools or the verifier and watch what breaks." }],
-    ["w15-c", "proj", "Flagship agent from scratch: read-only tools get_po, get_goods_receipt and vendor_history, a 4-call budget and a full trace", ["anth_agents", "anth_tools_article"], { tip: "The model proposes; your app validates and executes." }],
-    ["w15-e", "ai", "Multimodal: extract fields from a scanned invoice image with a vision-capable model, and compare with text extraction", ["claude_vision", "openai_docs", "yt_vlm"], { tip: "Speech-to-text (for example Whisper) works the same way: an input type, a model, and an evaluation." }]
+    ["w15-c", "proj", "Flagship agent from scratch: two or three read-only tools over your project's data, a 4-call budget and a full trace", ["anth_agents", "anth_tools_article"], { tip: "The model proposes; your app validates and executes." }],
+    ["w15-e", "ai", "Multimodal: extract fields from a scanned document, photo or screenshot with a vision-capable model, and compare with text extraction", ["claude_vision", "openai_docs", "yt_vlm"], { tip: "Speech-to-text (for example Whisper) works the same way: an input type, a model, and an evaluation." }]
   ]),
   W("Approvals, LangGraph, MCP and memory", [
     ["w16-a", "dsa", "A2Z step 12: greedy (selected problems)", ["a2z", "tuf_yt"]],
     ["w16-b", "ai", "LangGraph: rebuild your agent with one framework", ["lc_academy", "langgraph_docs", "dlai_langgraph"], { tip: "One framework is enough. Skip CrewAI and AutoGen for now." }],
-    ["w16-c", "ai", "MCP: expose your procurement tools as an MCP server", ["dlai_mcp", "mcp_docs", "academy_mcp_adv"]],
-    ["w16-d", "proj", "Flagship agent: propose a vendor email or return, with human approval bound to the exact action and ownership checks", ["owasp_pi", "anth_agents"]],
+    ["w16-c", "ai", "MCP: expose your flagship's tools as an MCP server", ["dlai_mcp", "mcp_docs", "academy_mcp_adv"]],
+    ["w16-d", "proj", "Flagship agent: propose one real action (a message, a report or a plan) with human approval bound to the exact action and ownership checks", ["owasp_pi", "anth_agents"]],
     ["w16-e", "ai", "Memory patterns: conversation state, long-term notes, and when not to use memory", ["dlai_memory", "hf_agents"]],
     ["w16-f", "career", "Update LinkedIn and connect with engineers at your target companies", [], { tip: "Former SAP or IT services engineers now at top companies are the most likely to help." }],
     ["w16-g", "career", "Month 4 review, plus a job-description check", ["linkedin_jobs"], { tip: "Skim 5 new AI Engineer job descriptions from your target companies. If a skill keeps appearing that your plan doesn't cover, note it here." }]
@@ -971,7 +988,7 @@ const WEEKS = [
   ]),
   W("Safety, caching and local models", [
     ["w19-a", "dsa", "A2Z step 14: binary search trees", ["a2z", "tuf_yt"]],
-    ["w19-b", "proj", "Flagship security tests: prompt injection hidden in invoice text, PII redaction in logs, a tool allow-list", ["owasp_pi", "owasp_llm", "dlai_safety"]],
+    ["w19-b", "proj", "Flagship security tests: prompt injection hidden in uploaded documents or messages, PII redaction in logs, a tool allow-list", ["owasp_pi", "owasp_llm", "dlai_safety"]],
     ["w19-c", "proj", "Flagship caching (exact and semantic) keyed by permission scope, plus a cost and latency budget", ["dlai_semantic_cache", "redis", "genai_platform"]],
     ["w19-d", "ai", "Local models: run an open model with Ollama, learn what vLLM does, and understand quantization (GGUF, AWQ, FP8) and KV cache memory", ["ollama", "vllm", "aefs_gpu", "yt_quant"], { tip: "Practice the estimate: parameters times bytes per weight, plus KV cache that grows with context length." }],
     ["w19-e", "swe", "Low-level design: SOLID, key patterns, and a parking lot design", ["rg_patterns", "lld_repo", "yt_lld"]],
@@ -980,7 +997,7 @@ const WEEKS = [
   W("Fine-tuning experiment and deployment", [
     ["w20-a", "dsa", "A2Z step 15: graphs (BFS, DFS, components, cycle detection)", ["a2z", "yt_striver_graph", "yt_fiset_graph"]],
     ["w20-b", "ai", "Fine-tuning as transfer learning: when to adapt a pretrained model (and when not), LoRA and QLoRA, and how RLHF and DPO align LLMs", ["dlai_finetune", "hf_peft", "huyen_rlhf", "hf_llm_course"]],
-    ["w20-c", "proj", "Fine-tune a small open model with LoRA on your triage data, and compare it with prompting and the classical baseline on the same test set", ["unsloth", "hf_peft", "hf_training"], { tip: "Evaluation first, then fine-tuning. Often prompting or retrieval wins." }],
+    ["w20-c", "proj", "Fine-tune a small open model with LoRA on your classifier's data, and compare it with prompting and the classical baseline on the same test set", ["unsloth", "hf_peft", "hf_training"], { tip: "Evaluation first, then fine-tuning. Often prompting or retrieval wins." }],
     ["w20-d", "proj", "Deploy the flagship to the cloud with a tested rollback and least-privilege access (IAM roles, no shared admin keys)", ["render", "aws_ecs", "aws_free", "modal"]],
     ["w20-g", "swe", "Production Docker: multi-stage builds, a non-root user, and secrets kept out of the image", ["docker_multistage", "twelve", "yt_docker_prod"]],
     ["w20-e", "career", "Final one-page resume, and ask 5 engineers for referrals", ["tih_resume"], { tip: "Share your demo and one line on why you fit the role." }],
@@ -1075,9 +1092,125 @@ const WEEKS = [
   ])
 ];
 
+/* =====================================================================
+   Project ideas, shown on the Projects page. Each one uses the same
+   layers as the roadmap, so the tasks stay the same whichever you pick.
+   ===================================================================== */
+const PROJECT_IDEAS = [
+  { id: "scam", name: "Scam and fraud shield", tag: "Recommended flagship",
+    problem: "Fake bank messages, UPI fraud, \"digital arrest\" calls and fake job offers reach almost every family, and elderly parents are hit hardest.",
+    does: "Someone forwards a suspicious message or screenshot. The tool says whether it looks like a scam and why, in Tamil or English, citing official advisories, and helps draft a complaint for the national cybercrime portal that the person reviews and submits.",
+    layers: [
+      ["Backend and data", "Users, checks and reports, plus a library of known scam patterns built from public examples."],
+      ["RAG", "Answers grounded in official advisories from banks, the RBI and cybercrime authorities, with citations and \"not sure\" answers."],
+      ["Extraction and matching", "Pull the sender, links, amounts and phone numbers from text or screenshots, then match them against known scam patterns."],
+      ["Agent with approval", "Drafts the complaint and a what-to-do-now checklist. Nothing is sent without the person's approval."],
+      ["Production", "Prompt-injection tests (scammers write tricky text), PII redaction, caching for repeated forwards and a latency budget."],
+      ["Impact to measure", "Share of real scams caught (missing one is the worst error), false-alarm rate, and people who come back weekly."]
+    ],
+    hardest: "Scam patterns change every month, so your test set has to keep growing.",
+    care: "It never says a message is definitely safe. When unsure, it says so and suggests calling the bank on its official number.",
+    resume: "Built a Tamil and English scam checker used by [N] people. It caught [X]% of scams in a [Y]-message test set with a [Z]% false-alarm rate." },
+  { id: "paperwork", name: "Paperwork explainer in your own language", tag: "",
+    problem: "People sign rental agreements, loan papers and bank notices they don't fully understand.",
+    does: "Upload a photo or PDF and get a plain-language explanation in Tamil or English, with fees, penalties and deadlines highlighted and every answer quoting the exact clause.",
+    layers: [
+      ["Backend and data", "Users, documents and explanations, with strict per-user access."],
+      ["RAG", "Answers grounded in the uploaded document, quoting the clause, and \"this document doesn't say\" when it doesn't."],
+      ["Extraction and matching", "Pull parties, amounts, dates and penalty clauses into fields, and flag clauses that differ from a standard template."],
+      ["Agent with approval", "Drafts a question or reply to the other party that the person approves before sending."],
+      ["Production", "Injection hidden inside documents, deleting documents on request, and translation quality checks."],
+      ["Impact to measure", "How often it finds the right clause on a labeled test set, user ratings of the translation, documents explained."]
+    ],
+    hardest: "Explaining clearly without giving legal advice.",
+    care: "It says plainly when someone should ask a lawyer, and deletes documents when asked.",
+    resume: "Built a Tamil and English document explainer used by [N] people. It found the right clause for [X]% of [Y] test questions." },
+  { id: "lab", name: "Lab report explainer", tag: "",
+    problem: "People get blood test reports full of numbers and no explanation until their next doctor visit.",
+    does: "It reads the report, explains each value in plain language using the report's own reference ranges, and suggests questions to ask the doctor.",
+    layers: [
+      ["Backend and data", "Users, reports and values over time, with strict per-user access."],
+      ["RAG", "Explanations grounded in trusted public health sources, with citations."],
+      ["Extraction and matching", "Pull test names, values, units and reference ranges from PDFs or photos, then match each value to its range."],
+      ["Agent with approval", "Prepares a questions-for-your-doctor list and a follow-up reminder that the person approves."],
+      ["Production", "Health data protection, unit conversion tests, and refusal tests for diagnosis requests."],
+      ["Impact to measure", "Extraction accuracy per field, correct refusals, and user ratings of clarity."]
+    ],
+    hardest: "Testing very carefully, because mistakes matter.",
+    care: "It never diagnoses or suggests treatment, and always points back to the doctor.",
+    resume: "Built a lab report explainer with [X]% field-level extraction accuracy on [Y] reports and no unsafe answers in a [Z]-case safety test set." },
+  { id: "focus", name: "Focus and planning assistant", tag: "",
+    problem: "Overwhelm, procrastination and inconsistency affect huge numbers of students and working people.",
+    does: "It breaks a big task into a first small step, plans the day around the person's energy, and learns from short daily check-ins.",
+    layers: [
+      ["Backend and data", "You already have sign-in, tasks, logs and check-ins in this tracker to build on."],
+      ["RAG", "Suggestions grounded in a curated library of evidence-based study and focus techniques, with citations."],
+      ["Extraction and matching", "Turn a free-text brain dump into structured tasks with time estimates, and match plans to the person's past patterns."],
+      ["Agent with approval", "Proposes tomorrow's plan, which the person edits and approves."],
+      ["Production", "Privacy for personal reflections, evals on plan quality, and cost per user per day."],
+      ["Impact to measure", "Share of planned tasks completed, how many people still use it after 4 weeks."]
+    ],
+    hardest: "Proving it really helps, so measure task completion before and after.",
+    care: "It's a planning tool, not therapy, and it points to professional support when someone describes real distress.",
+    resume: "Built an AI planning assistant used by [N] people for [W] weeks. Users completed [X]% more of their planned tasks." },
+  { id: "tutor", name: "Regional-language study tutor", tag: "",
+    problem: "Students in Tamil-medium or Hindi-medium schools get little help in their own language.",
+    does: "It explains textbook concepts, answers doubts grounded in the official textbook, and creates practice questions.",
+    layers: [
+      ["Backend and data", "Students, subjects, questions asked and progress."],
+      ["RAG", "Answers grounded in the official textbook chapters, citing the page."],
+      ["Extraction and matching", "Read questions from photos of homework and match each one to the right chapter and concept."],
+      ["Agent with approval", "Builds a weekly revision plan that the student or a parent approves."],
+      ["Production", "Answer accuracy evals per subject, content filters suitable for children, and cost limits."],
+      ["Impact to measure", "Answer accuracy against the textbook, practice scores over time, active students."]
+    ],
+    hardest: "Teaching instead of just handing out answers.",
+    care: "It's used by children, so age-appropriate content and visibility for parents matter.",
+    resume: "Built a Tamil and English study tutor used by [N] students. [X]% of answers matched the textbook in a [Y]-question test set." },
+  { id: "crop", name: "Crop problem helper for farmers", tag: "",
+    problem: "Small farmers lose crops to diseases and pests they can't identify in time.",
+    does: "From a leaf photo and a short description, it suggests the likely problem and the treatment guidance published by agricultural universities, in the farmer's language.",
+    layers: [
+      ["Backend and data", "Farmers, crops, photos and advice history."],
+      ["RAG", "Guidance grounded in agricultural university and government advisories, with citations."],
+      ["Extraction and matching", "Read the photo and description, then match the symptoms to known problems for that crop and season."],
+      ["Agent with approval", "Drafts a follow-up reminder or a message to the local agriculture officer, which the farmer approves."],
+      ["Production", "A low-bandwidth mode, voice input, and accuracy evals per crop."],
+      ["Impact to measure", "Accuracy on a labeled photo set, farmers helped, and what happened after the advice."]
+    ],
+    hardest: "Reaching farmers to test it, and it needs some computer vision that your roadmap currently skips.",
+    care: "It recommends only published guidance and always shows the source.",
+    resume: "Built a crop problem helper with [X]% accuracy on [Y] labeled photos, tested with [N] farmers." }
+];
+
+const PROJECT_GUIDE = [
+  { t: "What makes a project hard to reject", intro: "", items: [
+    "Real users: even 20 people who come back every week.",
+    "Numbers in the README, such as accuracy on your test set or time saved.",
+    "Depth: a backend, evals, security tests and a real deployment.",
+    "One failure you found, explained and fixed.",
+    "A demo anyone can try in two minutes.",
+    "Recruiters skip generic chatbots, tutorial copies, and projects with no users or tests."
+  ] },
+  { t: "Before you choose", intro: "Build it if every line is true:", items: [
+    "You can name a real person who has this problem. You count.",
+    "It happens often, ideally every week.",
+    "The current way costs real time, money or stress.",
+    "AI is genuinely needed, not just a form.",
+    "You can reach 10 to 20 people who have it.",
+    "You can use the data safely and legally.",
+    "Then talk to 5 of those people. If 3 say they'd use it every week, start building."
+  ] },
+  { t: "Your 2 to 3 projects", intro: "", items: [
+    "One flagship, built over 4 to 5 months with real users.",
+    "One smaller project: the classic ML classifier in weeks 7 and 8, for example scam versus genuine messages. If your flagship is the scam shield, make a small version of another idea instead.",
+    "Optional: a merged contribution to an open-source AI tool you use, such as LangGraph or Langfuse."
+  ] }
+];
+
 const DECISIONS = [
   ["Target", "AI Engineer, Software Engineer (AI/ML) and Applied AI roles at top tech companies such as Google, Microsoft, Amazon, Meta, Apple and NVIDIA. Strong product companies and AI startups stay in the list, so one company never decides the outcome."],
-  ["Projects", "One flagship, Procurement Copilot, built in layers (backend, RAG, extraction, agent, production), plus one classic ML project that you later fine-tune."],
+  ["Projects", "One flagship that helps people, chosen on the Projects page and built in layers (backend, RAG, extraction, agent, production), plus one smaller classic ML project. Your SAP years stay on your resume as work experience, not as a project."],
   ["DSA", "Striver's A2Z in C++, with Logic First Tamil for new concepts, then LeetCode Top Interview 150 for timed practice."],
   ["AI and ML", "Google's ML Crash Course, DeepLearning.AI, Karpathy and official docs. Primitives before frameworks; LangGraph as the one agent framework."],
   ["Software engineering", "Python, FastAPI, PostgreSQL, Docker, CI and one cloud (AWS), learned inside your AI project."],
@@ -1602,7 +1735,7 @@ function render() {
   }
   const route = parseRoute();
   setActiveNav(route.name);
-  const views = { week: viewWeek, roadmap: viewRoadmap, path: viewPath, focus: viewFocus, reflect: viewReflect, log: viewLog, resources: viewResources, settings: viewSettings };
+  const views = { week: viewWeek, roadmap: viewRoadmap, projects: viewProjects, path: viewPath, focus: viewFocus, reflect: viewReflect, log: viewLog, resources: viewResources, settings: viewSettings };
   $("#main").innerHTML = (views[route.name] || viewDashboard)(route.arg);
   renderHeader(); renderSync(); Focus.updateChrome();
   const j = $(".journey"), cur = $(".node.current");
@@ -1934,6 +2067,28 @@ function viewLog(arg) {
         : `<p class="empty">No logs yet. Log today's study time here; even a minimum day counts.</p>`}
     </section>
     <aside><div class="panel"><h2>${date === todayStr() ? "Log today" : "Edit " + esc(fmtDateLong(date))}</h2>${logFormHTML(date, false)}</div></aside>
+  </div>`;
+}
+
+function viewProjects() {
+  const layer = ([k, v]) => `<li><b>${esc(k)}</b><span>${esc(v)}</span></li>`;
+  return `
+  <h1 class="page-h">Project ideas</h1>
+  <p class="week-sub">Choose one flagship by week 5. Weeks 1 to 4 are the same whatever you build. Every idea uses the same layers as your roadmap, so your tasks stay the same and only the problem changes.</p>
+  <div class="dash">
+    <div>${PROJECT_IDEAS.map(p => `<section class="idea" id="idea-${p.id}" aria-labelledby="idea-${p.id}-h">
+      <h2 id="idea-${p.id}-h">${esc(p.name)}${p.tag ? ` <span class="opt">${esc(p.tag)}</span>` : ""}</h2>
+      <p><b>Problem:</b> ${esc(p.problem)}</p>
+      <p><b>What it does:</b> ${esc(p.does)}</p>
+      <ul class="layers">${p.layers.map(layer).join("")}</ul>
+      <p class="small"><b>Hardest part:</b> ${esc(p.hardest)}</p>
+      <p class="small"><b>Built with care:</b> ${esc(p.care)}</p>
+      <details><summary>Resume line once it's built</summary><p class="small">${esc(p.resume)}</p></details>
+    </section>`).join("")}</div>
+    <aside class="stack">${PROJECT_GUIDE.map(g => `<div class="panel">
+      <h2>${esc(g.t)}</h2>${g.intro ? `<p class="muted">${esc(g.intro)}</p>` : ""}
+      <ul class="plain">${g.items.map(i => `<li>${esc(i)}</li>`).join("")}</ul>
+    </div>`).join("")}</aside>
   </div>`;
 }
 

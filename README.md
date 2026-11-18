@@ -70,6 +70,7 @@ Sign in once on each device. You stay signed in until you sign out.
 - **Changing your password:** Settings > Login and sync.
 - **Signing out:** removes your progress from that device only. It stays safe in your database and comes back when you sign in again. Useful on shared computers.
 - **Sign out everywhere:** signs out every device at once, for example if you lose your phone. It's in Settings > Login and sync.
+- **Projects:** the Projects page has six project ideas, a checklist for choosing one, and a resume line for each once it's built.
 - **Focus sessions:** the Focus page runs a timer with soft start and end chimes, and adds completed sessions to today's study log.
 - **Learning quality:** the Quality page has a one-minute end-of-day check-in. It gives the day a gentle score (study time, focus, understanding and active-learning habits), shows your 14-day trend, and after 5 check-ins points out patterns from your own days, such as how sleep or your phone affects your learning.
 - **Auto sign-out:** each device signs out after a period without activity (1 day by default). Change it per device in Settings > Login and sync, for example 15 minutes on an office computer. Changes that haven't uploaded yet are never thrown away; they upload when you sign in again.
@@ -125,7 +126,7 @@ The plan runs for 32 weeks (8 months) and targets AI Engineer, Software Engineer
 
 DSA (Striver's A2Z in C++, then LeetCode Top Interview 150) runs every week throughout, because coding rounds are the first gate at top companies.
 
-**Projects.** One flagship, Procurement Copilot, grows layer by layer: backend and data, grounded RAG with role-based access, invoice extraction, a bounded agent with approvals and MCP tools, then production hardening. A second, smaller classic ML project (supplier-email triage) is later used for a fine-tuning comparison. Every project shows a number, admits a failure, and has a demo someone can try.
+**Projects.** The **Projects** page lists six flagship ideas that solve everyday problems (a scam and fraud shield, a paperwork explainer, a lab report explainer, a focus and planning assistant, a regional-language study tutor and a crop problem helper). Each idea shows how it uses the roadmap's layers: backend and data, RAG with evals, extraction and matching, an agent with human approval, production hardening, and the impact to measure. Choose one by week 5; the project tasks are written so they fit whichever you pick. A smaller classic ML project (for example scam versus genuine messages) runs in weeks 7 and 8. Every project shows a number, admits a failure, and has a demo someone can try.
 
 **Skipped on purpose, for now:** computer vision models, classic NLP (POS tagging, parsing), RNN/LSTM depth, Kubernetes, GraphQL, web servers like Nginx, deep NoSQL and Elasticsearch work, Kubeflow, Airflow, KServe, Terraform, and extra agent frameworks. Learn the concepts later if a role needs them.
 
