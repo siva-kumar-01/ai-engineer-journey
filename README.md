@@ -154,6 +154,8 @@ Keep existing task ids such as `"w3-b"` unchanged, because your saved progress u
 - Python for AI: NumPy quickstart and 100 NumPy exercises, Kaggle's Pandas and visualization courses.
 - ML and deep learning: Google's Machine Learning Crash Course, Andrew Ng's courses on DeepLearning.AI, Karpathy's Zero to Hero, PyTorch tutorials.
 - AI engineering: DeepLearning.AI short courses, official docs, Anthropic's engineering articles, Hamel Husain on evals, LLM Zoomcamp, Maxime Labonne's LLM course.
+- Claude courses link to Claude Academy (academy.claude.com), which replaced Anthropic Academy on Skilljar in August 2026. Claude's API docs now live at platform.claude.com and Claude Code's at code.claude.com.
+- While `FIRST_SWITCH` is true, a few tasks use a different resource list from `FIRST_SWITCH_RES` (for example NeetCode's Python solutions for coding practice, and job boards for your target companies). Big Tech mode uses each task's own list.
 - Production and safety: Langfuse, MLflow, Ragas, OWASP's prompt injection cheat sheet.
 - System design: Hello Interview, the System Design Primer, ByteByteGo, Chip Huyen's ML interviews book.
 - DeepLearning.AI videos are usually free; certificates, graded labs and the full RAG course need PRO.
